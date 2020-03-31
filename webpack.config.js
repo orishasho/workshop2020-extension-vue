@@ -12,6 +12,7 @@ const config = {
   entry: {
     'background': './background.js',
     'popup/popup': './popup/popup.js',
+    'content': './contentScripts/content.js'
   },
   output: {
     path: __dirname + '/dist',

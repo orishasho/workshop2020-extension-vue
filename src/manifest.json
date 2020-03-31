@@ -11,9 +11,20 @@
     "default_title": "workshop2020-extension-vue",
     "default_popup": "popup/popup.html"
   },
+  "content_scripts": [{
+    "matches": ["https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*"],
+    "all_frames": true,
+    "js": ["content.js"],
+    "css": ["content.css"]
+  }],
   "background": {
     "scripts": [
       "background.js"
     ]
-  }
+  },
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*"
+  ]
 }
