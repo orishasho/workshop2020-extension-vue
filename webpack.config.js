@@ -12,7 +12,9 @@ const config = {
   entry: {
     'background': './background.js',
     'popup/popup': './popup/popup.js',
-    'content': './contentScripts/content.js'
+    'content': './content.js',
+    'courses-coloring': './modules/courses-coloring.js',
+    'viewing-states': './modules/viewing-states.js'
   },
   output: {
     path: __dirname + '/dist',
