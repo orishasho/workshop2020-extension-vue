@@ -5,5 +5,5 @@ import * as viewingStatesModule from "./modules/viewing-states"
 if (viewingStatesModule.isViewingCoursesTable()) {
     coursesColoringModule.handleCoursesTableColoring();
 } else if (viewingStatesModule.isViewingGrades()) {
-    // fetchCoursesData();
+    // fetchCoursesData(); 
 }
