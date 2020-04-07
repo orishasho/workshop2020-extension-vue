@@ -14,7 +14,8 @@ const config = {
     'popup/popup': './popup/popup.js',
     'content': './content/content.js',
     'courses-coloring': './content/modules/courses-coloring.js',
-    'viewing-states': './content/modules/viewing-states.js'
+    'viewing-states': './content/modules/viewing-states.js',
+    'fetch-user-courses': './content/modules/fetch-user-courses.js'
   },
   output: {
     path: __dirname + '/dist',
