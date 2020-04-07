@@ -1,14 +1,32 @@
 <template>
   <div>
-    <p>Hello world!</p>
+    <p>{{message}}</p>
+    <ul>
+      <li v-for="fruit in fruitList">{{fruit}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   data () {
-    return {}
+    return {
+      fruitList: [],
+      message: 'Hello world from Vue!'
+    }
+  },
+
+  created() {
+    this.initFruitList();
+  },
+
+  methods: {
+    initFruitList() {
+      this.fruitList = ['Apple', 'Banana', 'Strawberry', 'Peach', 'Pear'];
+      console.log('init')
+    }
   }
+
 }
 </script>
 
