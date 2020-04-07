@@ -2,7 +2,7 @@
   <div>
     <p>{{message}}</p>
     <ul>
-      <li v-for="fruit in fruitList">{{fruit}}</li>
+      <li v-for="beer in beers">{{beer}}</li>
     </ul>
   </div>
 </template>
@@ -11,20 +11,24 @@
 export default {
   data () {
     return {
-      fruitList: [],
+      beers: [],
       message: 'Hello world from Vue!'
     }
   },
 
   created() {
-    this.initFruitList();
+    this.fetchBeers();
   },
 
   methods: {
-    initFruitList() {
-      this.fruitList = ['Apple', 'Banana', 'Strawberry', 'Peach', 'Pear'];
-      console.log('init')
-    }
+    fetchBeers() {
+      const context = this;
+      fetch('https://api.punkapi.com/v2/beers')
+      .then(res => res.json())
+      .then(beersArray => {
+        context.beers = beersArray.map(beer => beer.name);
+      });
+    },
   }
 
 }
