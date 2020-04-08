@@ -2,7 +2,7 @@
   <div>
     <p>{{message}}</p>
     <ul>
-      <li v-for="beer in beers">{{beer}}</li>
+      <li v-for="beer in beers"><p>{{beer}}</p></li>
     </ul>
   </div>
 </template>
