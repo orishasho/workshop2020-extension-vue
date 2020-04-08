@@ -21,14 +21,19 @@ export default {
   },
 
   methods: {
-    fetchBeers() {
-      const context = this;
-      fetch('https://api.punkapi.com/v2/beers')
-      .then(res => res.json())
-      .then(beersArray => {
-        context.beers = beersArray.map(beer => beer.name);
-      });
-    },
+    // fetchBeers() {
+    //   const context = this;
+    //   fetch('https://api.punkapi.com/v2/beers')
+    //   .then(res => res.json())
+    //   .then(beersArray => {
+    //     context.beers = beersArray.map(beer => beer.name);
+    //   });
+    // }
+    async fetchBeers() {
+      this.beers = await fetch('https://api.punkapi.com/v2/beers')
+                          .then(res => res.json())
+                          .then(beersArray => beersArray.map(beer => beer.name));
+    }
   }
 
 }
