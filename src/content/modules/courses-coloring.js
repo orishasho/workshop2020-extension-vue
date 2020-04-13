@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 function getRandomBgColor() {
     const backgroundColors = {
         green: "#4fff81",
@@ -9,47 +11,58 @@ function getRandomBgColor() {
 };
 
 export function handleCoursesTableColoring() {
-    const coursesTableRows = document.getElementsByTagName("tr");
 
-    for (let i = 1; i < coursesTableRows.length; i++) {
-        coursesTableRows[i].style.backgroundColor = getRandomBgColor();
-        /**********/
-        let trCells = coursesTableRows[i].getElementsByTagName("td");
-        console.log(trCells);
+    const defaultCoursesTableRows = document.getElementsByTagName("tr");
+    for (let i = 1; i < defaultCoursesTableRows.length; i++) {
+        handleTrColoring(defaultCoursesTableRows[i]);
+    }
 
-        for (let j = 0; j < trCells.length; j++) {
-            trCells[j].style.verticalAlign = "middle";
-            trCells[j].style.textAlign = "center";
-        }
+    $('body').on('DOMNodeInserted', 'tr', function(e) {
+        handleTrColoring(e.target);
+    });
+}
 
-        let circleContainer1 = document.createElement("div");
-        let circleContainerSpan1 = document.createElement("span");
-        let circleContainer4 = document.createElement("div");
-        let circleContainer2 = document.createElement("div");
-        let circleContainer3 = document.createElement("div");
 
-        let grade = Math.floor(Math.random() * 100) + 1;
-        const gradeClass = "p" + grade.toString();
-        let gardeColorClass;
-        if (grade < 60) {
-            gardeColorClass = "red";
-        } else if (grade >= 60 && grade < 80) {
-            gardeColorClass = "orange";
-        } else {
-            gardeColorClass = "green";
-        }
+function handleTrColoring(currentCoursesTr) {
 
-        circleContainer1.classList.add("c100", gradeClass, gardeColorClass, "small");
-        circleContainerSpan1.innerText = grade;
-        circleContainer4.classList.add("slice");
-        circleContainer2.classList.add("bar");
-        circleContainer3.classList.add("fill");
+    currentCoursesTr.style.backgroundColor = getRandomBgColor();
 
-        circleContainer1.appendChild(circleContainerSpan1);
-        circleContainer4.appendChild(circleContainer2);
-        circleContainer4.appendChild(circleContainer3);
-        circleContainer1.appendChild(circleContainer4);
+    let currentTrCells = currentCoursesTr.querySelectorAll("td");
 
-        trCells[1].appendChild(circleContainer1);
+    for (let j = 0; j < currentTrCells.length; j++) {
+        currentTrCells[j].style.verticalAlign = "middle";
+        currentTrCells[j].style.textAlign = "center";
+    }
+
+    let mainGradeIconContainer = document.createElement("div");
+    let gradeIconContainerSpan = document.createElement("span");
+    let gradeIconContainerSlice = document.createElement("div");
+    let gradeIconContainerBar = document.createElement("div");
+    let gradeIconContainerFill = document.createElement("div");
+
+    let grade = Math.floor(Math.random() * 100) + 1;
+    const gradeClass = "p" + grade.toString();
+    let gardeColorClass;
+    if (grade < 60) {
+        gardeColorClass = "red";
+    } else if (grade >= 60 && grade < 80) {
+        gardeColorClass = "orange";
+    } else {
+        gardeColorClass = "green";
+    }
+
+    mainGradeIconContainer.classList.add("c100", gradeClass, gardeColorClass, "small");
+    gradeIconContainerSpan.innerText = grade;
+    gradeIconContainerSlice.classList.add("slice");
+    gradeIconContainerBar.classList.add("bar");
+    gradeIconContainerFill.classList.add("fill");
+
+    mainGradeIconContainer.appendChild(gradeIconContainerSpan);
+    gradeIconContainerSlice.appendChild(gradeIconContainerBar);
+    gradeIconContainerSlice.appendChild(gradeIconContainerFill);
+    mainGradeIconContainer.appendChild(gradeIconContainerSlice);
+
+    if (currentTrCells[1] && !currentTrCells[1].querySelector("div")) {
+        currentTrCells[1].appendChild(mainGradeIconContainer);
     }
 }
