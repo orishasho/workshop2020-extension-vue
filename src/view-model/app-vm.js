@@ -20,8 +20,7 @@ export default class AppVm {
     get creditsCompleted() {
         let credits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            const courseGrade = parseInt(userCourse['ציון']);
-            if (!isNaN(courseGrade) && courseGrade >= 60) {
+            if (this.isCourseCompleted(userCourse)) {
                 credits += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -40,5 +39,10 @@ export default class AppVm {
         })
 
         return creditsCompleted + creditsToBeCompleted;
+    }
+
+    isCourseCompleted(userCourse) {
+        const courseGrade = parseInt(userCourse['ציון']);
+        return !isNaN(courseGrade) && courseGrade >= 60 || userCourse['ציון'] === 'פטור';
     }
 }
