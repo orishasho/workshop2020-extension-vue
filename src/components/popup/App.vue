@@ -1,8 +1,15 @@
 <template>
   <div>
-    <p>{{message}}</p>
-    <p v-if="vm.userCourses.length > 0"> Credits completed: {{vm.creditPointsCompleted}} </p>
-    <p v-else>Couldn't find courses data</p>
+    <div v-if="vm.hasUserCoursesData">
+      <p>Credits completed:</p>
+      <CreditsStats
+              :firstCreditsStat="vm.creditsCompleted"/>
+      <p>Credits to be completed by year end:</p>
+      <CreditsStats
+              :firstCreditsStat="vm.creditsToBeCompletedByYearEnd"/>
+    </div>
+    <p v-else> Couldn't find courses data </p>
+
   </div>
 </template>
 
@@ -10,19 +17,22 @@
   import AppVm from "../../view-model/app-vm";
   import { instantiate } from "mmlpx"
   import { observer } from "mobx-vue";
+  import CreditsStats from "./credits-stats/CreditsStats";
 
   export default observer({
-  data: function () {
-    return {
-      message: 'Hello world from Vue!',
-      vm: instantiate(AppVm)
+    data: function () {
+      return {
+        vm: instantiate(AppVm)
+      }
+    },
+    components: {
+      CreditsStats
     }
-  }
-})
+  })
 </script>
 
 <style lang="scss" scoped>
-p {
-  font-size: 20px;
-}
+  p {
+    font-size: 20px;
+  }
 </style>

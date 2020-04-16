@@ -7,12 +7,17 @@ export default class AppVm {
     @inject(UserCoursesStore) userCoursesStore;
 
     @computed
+    get hasUserCoursesData() {
+        return this.userCoursesStore.userCourses.length > 0;
+    }
+
+    @computed
     get userCourses() {
         return this.userCoursesStore.userCourses;
     }
 
     @computed
-    get creditPointsCompleted() {
+    get creditsCompleted() {
         let credits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
             const courseGrade = parseInt(userCourse['ציון']);
@@ -22,5 +27,18 @@ export default class AppVm {
         });
 
         return credits;
+    }
+
+    @computed
+    get creditsToBeCompletedByYearEnd() {
+        const creditsCompleted = this.creditsCompleted;
+        let creditsToBeCompleted = 0;
+        this.userCoursesStore.userCourses.forEach(userCourse => {
+            if (userCourse['ציון'] === 'טרם') {
+                creditsToBeCompleted += parseFloat(userCourse['נ"ז']);
+            }
+        })
+
+        return creditsCompleted + creditsToBeCompleted;
     }
 }

@@ -1,13 +1,23 @@
 <template>
-    $END$
+    <p>{{ firstCreditsStat }}/{{ totalRequiredCredits }}</p>
 </template>
 
 <script>
     export default {
-        name: "CreditStats"
+        name: "CreditsStats",
+        data: function() {
+            return {
+                totalRequiredCredits: 124
+            }
+        },
+        props: {
+            firstCreditsStat: Number
+        }
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    p {
+        font-size: 20px;
+    }
 </style>
