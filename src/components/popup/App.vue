@@ -1,12 +1,18 @@
 <template>
   <div>
     <div v-if="vm.hasUserCoursesData">
-      <p>Credits completed:</p>
+      <p>נק״ז שהושלמו:</p>
       <CreditsStats
               :firstCreditsStat="vm.creditsCompleted"/>
-      <p>Credits to be completed by year end:</p>
+      <p>צפי לנק״ז שיושלמו עד סוף השנה:</p>
       <CreditsStats
               :firstCreditsStat="vm.creditsToBeCompletedByYearEnd"/>
+      <p>נק״ז בחירה שהושלמו:</p>
+      <CreditsStats
+              :firstCreditsStat="vm.electiveCreditsCompleted"/>
+      <p>נק״ז חובה שהושלמו:</p>
+      <CreditsStats
+              :firstCreditsStat="vm.mandatoryCreditsCompleted"/>
     </div>
     <p v-else> Couldn't find courses data </p>
 

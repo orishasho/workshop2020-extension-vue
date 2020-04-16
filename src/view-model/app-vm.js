@@ -6,6 +6,8 @@ import UserCoursesStore from "../store/user-courses-store";
 export default class AppVm {
     @inject(UserCoursesStore) userCoursesStore;
 
+    // computed properties:
+
     @computed
     get hasUserCoursesData() {
         return this.userCoursesStore.userCourses.length > 0;
@@ -41,8 +43,51 @@ export default class AppVm {
         return creditsCompleted + creditsToBeCompleted;
     }
 
+    @computed
+    get mandatoryCreditsCompleted() {
+        let mandatoryCredits = 0;
+        this.userCoursesStore.userCourses.forEach(userCourse => {
+            if (this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
+                return userCourse['שם קורס'].includes(courseCode);
+            }) && this.isCourseCompleted(userCourse)) {
+                mandatoryCredits += parseFloat(userCourse['נ"ז']);
+            }
+        });
+
+        return mandatoryCredits;
+    }
+
+    @computed
+    get electiveCreditsCompleted() {
+        let electiveCredits = 0;
+        this.userCoursesStore.userCourses.forEach(userCourse => {
+            if (this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
+                return userCourse['שם קורס'].includes(courseCode);
+            }) && this.isCourseCompleted(userCourse)) {
+                electiveCredits += parseFloat(userCourse['נ"ז']);
+            }
+        });
+
+        return electiveCredits;
+    }
+
+    // helper functions:
+
     isCourseCompleted(userCourse) {
         const courseGrade = parseInt(userCourse['ציון']);
         return !isNaN(courseGrade) && courseGrade >= 60 || userCourse['ציון'] === 'פטור';
     }
+
+    // isUserCourseMandatory(userCourse) {
+    //     console.log(this.userCoursesStore.mandatoryCoursesCodes);
+    //     return this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
+    //         userCourse['שם קורס'].includes(courseCode);
+    //     });
+    // }
+
+    // isUserCourseElective(userCourse) {
+    //     return this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
+    //         userCourse['שם קורס'].includes(courseCode);
+    //     });
+    // }
 }
