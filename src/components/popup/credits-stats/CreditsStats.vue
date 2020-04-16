@@ -1,17 +1,13 @@
 <template>
-    <p>{{ firstCreditsStat }}/{{ totalRequiredCredits }}</p>
+    <p>{{ completedCredits }}/{{ requiredCredits }}</p>
 </template>
 
 <script>
     export default {
         name: "CreditsStats",
-        data: function() {
-            return {
-                totalRequiredCredits: 124
-            }
-        },
         props: {
-            firstCreditsStat: Number
+            completedCredits: Number,
+            requiredCredits: Number
         }
     }
 </script>

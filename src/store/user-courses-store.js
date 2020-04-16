@@ -7,6 +7,10 @@ export default class UserCoursesStore {
     @observable userCourses = [];
     @observable electiveCoursesCodes = [];
     @observable mandatoryCoursesCodes = [];
+    @observable totalRequiredCredits = 124;
+    @observable electiveRequiredCredits = 30;
+    @observable mandatoryRequiredCredits = 84;
+    @observable mathRequiredCredits = 4;
     @inject(UserCoursesLoader) loader;
 
     @action.bound

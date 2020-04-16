@@ -3,16 +3,20 @@
     <div v-if="vm.hasUserCoursesData">
       <p>נק״ז שהושלמו:</p>
       <CreditsStats
-              :firstCreditsStat="vm.creditsCompleted"/>
+              :completedCredits="vm.creditsCompleted"
+              :requiredCredits="vm.totalRequiredCredits"/>
       <p>צפי לנק״ז שיושלמו עד סוף השנה:</p>
       <CreditsStats
-              :firstCreditsStat="vm.creditsToBeCompletedByYearEnd"/>
+              :completedCredits="vm.creditsToBeCompletedByYearEnd"
+              :requiredCredits="vm.totalRequiredCredits"/>
       <p>נק״ז בחירה שהושלמו:</p>
       <CreditsStats
-              :firstCreditsStat="vm.electiveCreditsCompleted"/>
+              :completedCredits="vm.electiveCreditsCompleted"
+              :requiredCredits="vm.electiveRequiredCredits"/>
       <p>נק״ז חובה שהושלמו:</p>
       <CreditsStats
-              :firstCreditsStat="vm.mandatoryCreditsCompleted"/>
+              :completedCredits="vm.mandatoryCreditsCompleted"
+              :requiredCredits="vm.mandatoryRequiredCredits"/>
     </div>
     <p v-else> Couldn't find courses data </p>
 

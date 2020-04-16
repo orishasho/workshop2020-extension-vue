@@ -71,23 +71,30 @@ export default class AppVm {
         return electiveCredits;
     }
 
+    @computed
+    get totalRequiredCredits() {
+        return this.userCoursesStore.totalRequiredCredits;
+    }
+
+    @computed
+    get electiveRequiredCredits() {
+        return this.userCoursesStore.electiveRequiredCredits;
+    }
+
+    @computed
+    get mandatoryRequiredCredits() {
+        return this.userCoursesStore.mandatoryRequiredCredits;
+    }
+
+    @computed
+    get mathRequiredCredits() {
+        return this.userCoursesStore.mathRequiredCredits;
+    }
+
     // helper functions:
 
     isCourseCompleted(userCourse) {
         const courseGrade = parseInt(userCourse['ציון']);
         return !isNaN(courseGrade) && courseGrade >= 60 || userCourse['ציון'] === 'פטור';
     }
-
-    // isUserCourseMandatory(userCourse) {
-    //     console.log(this.userCoursesStore.mandatoryCoursesCodes);
-    //     return this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
-    //         userCourse['שם קורס'].includes(courseCode);
-    //     });
-    // }
-
-    // isUserCourseElective(userCourse) {
-    //     return this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
-    //         userCourse['שם קורס'].includes(courseCode);
-    //     });
-    // }
 }
