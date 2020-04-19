@@ -77,4 +77,15 @@ export default class UserCoursesLoader {
             '131116'
         ];
     }
+
+    getMathCoursesCodes() {
+        return [
+            '141144',
+            '142123',
+            '142171',
+            '142180',
+            '142183',
+            '192114'
+        ]
+    }
 }

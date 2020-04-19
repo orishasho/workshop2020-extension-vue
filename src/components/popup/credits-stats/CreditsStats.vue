@@ -6,7 +6,6 @@
             </b-progress-bar>
         </b-progress>
     </div>
-
 </template>
 
 <script>

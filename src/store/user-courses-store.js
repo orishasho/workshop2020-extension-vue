@@ -1,4 +1,4 @@
-import {action, observable, when} from "mobx"
+import {action, observable} from "mobx"
 import {inject, postConstruct, Store} from "mmlpx"
 import UserCoursesLoader from "../loaders/user-courses-loader";
 
@@ -7,6 +7,7 @@ export default class UserCoursesStore {
     @observable userCourses = [];
     @observable electiveCoursesCodes = [];
     @observable mandatoryCoursesCodes = [];
+    @observable mathCoursesCodes = [];
     @observable totalRequiredCredits = 124;
     @observable electiveRequiredCredits = 30;
     @observable mandatoryRequiredCredits = 84;
@@ -26,6 +27,11 @@ export default class UserCoursesStore {
     @action.bound
     loadMandatoryCoursesCodes() {
         this.mandatoryCoursesCodes = this.loader.getMandatoryCoursesCodes();
+    }
+
+    @action.bound
+    loadMathCoursesCode() {
+        this.mathCoursesCodes = this.loader.getMathCoursesCodes();
     }
 
     @postConstruct
