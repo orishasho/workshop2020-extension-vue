@@ -22,7 +22,7 @@ export default class AppVm {
     get creditsCompleted() {
         let credits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.isCourseCompleted(userCourse)) {
+            if (this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
                 credits += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -35,7 +35,7 @@ export default class AppVm {
         const creditsCompleted = this.creditsCompleted;
         let creditsToBeCompleted = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (userCourse['ציון'] === 'טרם') {
+            if (userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
                 creditsToBeCompleted += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -49,7 +49,7 @@ export default class AppVm {
         this.userCoursesStore.userCourses.forEach(userCourse => {
             if (this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
                 return userCourse['שם קורס'].includes(courseCode);
-            }) && this.isCourseCompleted(userCourse)) {
+            }) && this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
                 mandatoryCredits += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -64,7 +64,7 @@ export default class AppVm {
         this.userCoursesStore.userCourses.forEach(userCourse => {
             if (this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
                 return userCourse['שם קורס'].includes(courseCode);
-            }) && userCourse['ציון'] === 'טרם') {
+            }) && userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
                 mandatoryCreditsToBeCompleted += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -78,7 +78,7 @@ export default class AppVm {
         this.userCoursesStore.userCourses.forEach(userCourse => {
             if (this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
                 return userCourse['שם קורס'].includes(courseCode);
-            }) && this.isCourseCompleted(userCourse)) {
+            }) && this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
                 electiveCredits += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -93,7 +93,7 @@ export default class AppVm {
         this.userCoursesStore.userCourses.forEach(userCourse => {
             if (this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
                 return userCourse['שם קורס'].includes(courseCode);
-            }) && userCourse['ציון'] === 'טרם') {
+            }) && userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
                 electiveCreditsToBeCompleted += parseFloat(userCourse['נ"ז']);
             }
         });
@@ -108,7 +108,8 @@ export default class AppVm {
 
     @computed
     get isWorkshopCompletedByYearEnd() {
-        return this.userCoursesStore.userCourses.some(userCourse => userCourse['שם קורס'].includes('סדנה') && userCourse['ציון'] === 'טרם');
+        return this.isWorkshopCompleted
+            || this.userCoursesStore.userCourses.some(userCourse => userCourse['שם קורס'].includes('סדנה') && userCourse['ציון'] === 'טרם');
     }
 
     @computed
@@ -118,7 +119,8 @@ export default class AppVm {
 
     @computed
     get isMathClassCompletedByYearEnd() {
-        return this.userCoursesStore.userCourses.some(userCourse => userCourse['ציון'] === 'טרם' && this.isMathCourse(userCourse));
+        return this.isMathClassCompleted
+            || this.userCoursesStore.userCourses.some(userCourse => userCourse['ציון'] === 'טרם' && this.isMathCourse(userCourse));
     }
 
     @computed

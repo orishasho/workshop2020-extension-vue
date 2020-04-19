@@ -39,5 +39,6 @@ export default class UserCoursesStore {
         this.loadUserCourses();
         this.loadMandatoryCoursesCodes();
         this.loadElectiveCoursesCodes();
+        this.loadMathCoursesCode();
     }
 }
