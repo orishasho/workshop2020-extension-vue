@@ -11,7 +11,7 @@ const config = {
   context: __dirname + '/src',
   entry: {
     'background': './background.js',
-    'popup/popup': './popup/popup.js',
+    'popup/popup': './components/popup/popup.js',
     'content': './content/content.js',
     'courses-coloring': './content/modules/courses-coloring.js',
     'viewing-states': './content/modules/viewing-states.js',

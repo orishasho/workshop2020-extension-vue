@@ -26,6 +26,7 @@
     "activeTab",
     "tabs",
     "https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*",
-    "https://api.punkapi.com/v2/beers"
+    "https://api.punkapi.com/v2/beers",
+    "storage"
   ]
 }
