@@ -23,6 +23,7 @@
     "jquery": "^3.4.1",
     "mmlpx": "^4.0.2",
     "mobx-vue": "^2.0.10",
+    "portal-vue": "^2.1.7",
     "vue": "^2.6.10",
     "webextension-polyfill": "^0.3.1"
   },

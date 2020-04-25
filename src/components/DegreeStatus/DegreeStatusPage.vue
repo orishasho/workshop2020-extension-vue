@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <portal to="page-content-portal">
         <div v-if="vm.hasUserCoursesData">
 
             <h5 class="rtl">מצב נוכחי:</h5>
@@ -59,14 +59,15 @@
 
         </div>
         <p v-else> Couldn't find courses data </p>
-    </div>
+    </portal>
+
 </template>
 
 <script>
     import AppVm from "../../view-model/app-vm";
     import { instantiate } from "mmlpx"
     import { observer } from "mobx-vue";
-    import CreditsStats from "./credits-stats/CreditsStats";
+    import CreditsStats from "./CreditsStats";
     import { BIconCheckCircle, BIconXCircle } from "bootstrap-vue"
 
     export default observer({
