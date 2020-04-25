@@ -1,6 +1,6 @@
 <template>
     <li>
-        <a href="#" @click="ExtensionBtnClick">{{ linkText }}</a>
+        <a href="#" @click="ExtensionDropdownLinkClick">{{ linkText }}</a>
         <div v-if="showStats">
             <DegreeStatusPage/>
         </div>
@@ -10,7 +10,7 @@
 <script>
     import DegreeStatusPage from "../DegreeStatus/DegreeStatusPage";
     export default {
-        name: "ExtensionTabBtn",
+        name: "ExtensionDropdownLink",
         props: {
             linkText: String
         },
@@ -23,7 +23,7 @@
             }
         },
         methods: {
-            ExtensionBtnClick() {
+            ExtensionDropdownLinkClick() {
                 this.showStats = true;
                 let contentContainer = document.querySelectorAll(".container.content");
                 contentContainer.forEach(e => {
