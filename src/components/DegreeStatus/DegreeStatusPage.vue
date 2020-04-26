@@ -1,5 +1,5 @@
 <template>
-    <portal to="page-content-portal">
+    <MountingPortal mountTo="#content-app" name="source" append>
         <div v-if="vm.hasUserCoursesData">
 
             <h5 class="rtl">מצב נוכחי:</h5>
@@ -59,7 +59,7 @@
 
         </div>
         <p v-else> Couldn't find courses data </p>
-    </portal>
+    </MountingPortal>
 
 </template>
 
@@ -68,7 +68,8 @@
     import { instantiate } from "mmlpx"
     import { observer } from "mobx-vue";
     import CreditsStats from "./CreditsStats";
-    import { BIconCheckCircle, BIconXCircle } from "bootstrap-vue"
+    import { BIconCheckCircle, BIconXCircle } from "bootstrap-vue";
+    import { MountingPortal} from "portal-vue";
 
     export default observer({
         data: function () {
@@ -79,7 +80,11 @@
         components: {
             CreditsStats,
             BIconCheckCircle,
-            BIconXCircle
+            BIconXCircle,
+            MountingPortal
+        },
+        created() {
+            console.log('created')
         }
     })
 </script>

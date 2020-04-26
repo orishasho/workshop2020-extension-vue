@@ -4,9 +4,8 @@ import * as viewingStatesModule from "./modules/viewing-states";
 import * as fetchUserCoursesModule from "./modules/fetch-user-courses";
 import Vue from 'vue';
 import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
-import ContentPortal from "../components/ExtensionTab/ContentPortal";
 import PortalVue from 'portal-vue';
-// import { BootstrapVue } from 'bootstrap-vue';
+import { BootstrapVue } from 'bootstrap-vue';
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 
@@ -50,12 +49,13 @@ navMenu.appendChild(appEntry);
 let contentEntryPointReference = document.querySelector(".breadcrumbs.no-print");
 let contentEntry = document.createElement("div");
 contentEntry.setAttribute("id", "content-app");
+contentEntry.classList.add('container', 'content');
 contentEntryPointReference.parentNode.insertBefore(contentEntry, contentEntryPointReference.nextSibling);
 
 global.browser = require('webextension-polyfill');
 Vue.prototype.$browser = global.browser;
 Vue.use(PortalVue);
-// Vue.use(BootstrapVue);
+Vue.use(BootstrapVue);
 
 //Extension tab
 new Vue({
@@ -63,12 +63,4 @@ new Vue({
 
 
     render: h => h(ExtensionDropdown)
-});
-
-// Content
-new Vue({
-    el: '#content-app',
-
-
-    render: h => h(ContentPortal)
 });

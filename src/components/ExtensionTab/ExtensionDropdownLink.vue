@@ -27,7 +27,7 @@
                 this.showStats = true;
                 let contentContainer = document.querySelectorAll(".container.content");
                 contentContainer.forEach(e => {
-                    if (e.getAttribute("id") !== "vue-content-container") {
+                    if (e.getAttribute("id") !== "content-app") {
                         e.parentNode.removeChild(e);
                     }
                 })
