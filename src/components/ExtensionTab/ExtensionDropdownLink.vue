@@ -27,8 +27,15 @@
                 this.showStats = true;
                 let contentContainer = document.querySelectorAll(".container.content");
                 contentContainer.forEach(e => {
+                    console.log(e);
                     if (e.getAttribute("id") !== "content-app") {
+                        if (e.getAttribute("role") === "main") {
+                            e.setAttribute("id", "main-content-container-id")
+                            e.innerHTML = "";
+                        }
+                        else {
                         e.parentNode.removeChild(e);
+                        }
                     }
                 })
             }

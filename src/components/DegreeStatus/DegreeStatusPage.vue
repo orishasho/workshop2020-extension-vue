@@ -1,5 +1,5 @@
 <template>
-    <MountingPortal mountTo="#content-app" name="source" append>
+    <MountingPortal mountTo="#main-content-container-id" name="source" append>
         <div v-if="vm.hasUserCoursesData">
 
             <h5 class="rtl">מצב נוכחי:</h5>
