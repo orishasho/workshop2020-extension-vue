@@ -6,8 +6,8 @@ import Vue from 'vue';
 import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
 import PortalVue from 'portal-vue';
 import { BootstrapVue } from 'bootstrap-vue';
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap-vue/dist/bootstrap-vue.css';
+//import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 if (viewingStatesModule.isViewingCoursesTable()) {
     coursesColoringModule.handleCoursesTableColoring();

@@ -10,6 +10,47 @@ function getRandomBgColor() {
     return backgroundColors[keys[(keys.length * Math.random()) << 0]];
 };
 
+async function readGrades(currentCourseNumber, userId) {
+    let grade = -1;
+    try {
+        const url = "http://localhost:8080/users_courses?course_number=" + currentCourseNumber +
+            "&user_id=" + userId;
+        const result = await fetch(url);
+        //console.log(result);
+
+        /*
+        const jsonRequest = {}
+        jsonRequest.course_number = currentCourseNumber;
+
+        console.log(JSON.stringify(jsonRequest));
+
+        /*
+        const result = fetch("http://localhost:8080/users_courses", {
+            method: "GET",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ "course_number": "111111" })
+        })
+            
+
+        console.log("here are results");
+        console.log(result);
+
+        */
+
+        const grades = await result.json();
+        if (grades[0]) {
+            grade = grades[0].course_grade;
+        }
+
+        //console.log(grades);
+
+        //grades.forEach(g => { console.log(g.course_grade) })
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    return grade;
+}
+
 export function handleCoursesTableColoring() {
 
     const defaultCoursesTableRows = document.getElementsByTagName("tr");
@@ -23,7 +64,7 @@ export function handleCoursesTableColoring() {
 }
 
 
-function handleTrColoring(currentCoursesTr) {
+async function handleTrColoring(currentCoursesTr) {
 
     currentCoursesTr.style.backgroundColor = getRandomBgColor();
 
@@ -40,7 +81,24 @@ function handleTrColoring(currentCoursesTr) {
     let gradeIconContainerBar = document.createElement("div");
     let gradeIconContainerFill = document.createElement("div");
 
-    let grade = Math.floor(Math.random() * 100) + 1;
+    let currentCourseNumber = currentTrCells[0].innerText;
+    let userId = '1';
+
+    let grade = await readGrades(currentCourseNumber, userId);
+    /*
+    let differentGrade = readGrades(currentCourseNumber, userId).then(function(result) {
+        return result;
+    });
+    
+    let differentGrade = async() => {
+        let result = await readGrades(currentCourseNumber, userId);
+        return result;
+    }
+    */
+
+    //console.log(differentGrade);
+
+    //let grade = Math.floor(Math.random() * 100) + 1;
     const gradeClass = "p" + grade.toString();
     let gardeColorClass;
     if (grade < 60) {
@@ -62,7 +120,10 @@ function handleTrColoring(currentCoursesTr) {
     gradeIconContainerSlice.appendChild(gradeIconContainerFill);
     mainGradeIconContainer.appendChild(gradeIconContainerSlice);
 
-    if (currentTrCells[1] && !currentTrCells[1].querySelector("div")) {
-        currentTrCells[1].appendChild(mainGradeIconContainer);
+    if (grade !== -1) //course grade  was found in the db
+    {
+        if (currentTrCells[1] && !currentTrCells[1].querySelector("div")) {
+            currentTrCells[1].appendChild(mainGradeIconContainer);
+        }
     }
 }
