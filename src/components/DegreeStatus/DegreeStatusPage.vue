@@ -82,23 +82,7 @@
             BIconCheckCircle,
             BIconXCircle,
             MountingPortal
-        },
-        created() {
-            console.log('created')
         }
     })
 </script>
 
-<style lang="scss">
-    /*p {*/
-    /*    font-size: 20px;*/
-    /*}*/
-    body{
-        width: 450px !important;
-        height:450px !important;
-    }
-    .rtl {
-        direction: rtl;
-        text-align: right;
-    }
-</style>
