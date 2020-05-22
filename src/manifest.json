@@ -8,8 +8,7 @@
     "128": "icons/icon_128.png"
   },
   "browser_action": {
-    "default_title": "workshop2020-extension-vue",
-    "default_popup": "popup/popup.html"
+    "default_title": "workshop2020-extension-vue"
   },
   "content_scripts": [{
     "matches": ["https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*"],
