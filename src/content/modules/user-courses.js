@@ -1,6 +1,6 @@
 const HtmlTableToJson = require('html-table-to-json');
 
-export function fetchUserCoursesInfo() {
+export function sendUserCoursesDataToApi() {
     const coursesInfoHtmlTable = document.getElementById("myTable0");
     const userCourses = HtmlTableToJson.parse(coursesInfoHtmlTable.outerHTML).results[0];
     console.log('all data: ');

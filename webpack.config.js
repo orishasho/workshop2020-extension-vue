@@ -14,7 +14,7 @@ const config = {
     'content': './content/content.js',
     'courses-coloring': './content/modules/courses-coloring.js',
     'viewing-states': './content/modules/viewing-states.js',
-    'fetch-user-courses': './content/modules/fetch-user-courses.js'
+    'user-courses': './content/modules/user-courses.js'
   },
   output: {
     path: __dirname + '/dist',
