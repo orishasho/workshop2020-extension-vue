@@ -1,9 +1,11 @@
 import $ from 'jquery'
 
-export function isViewingGrades() {
-    // return true if user is viewing grades from all years and all semesters
-    return $("h2.panel-title:contains('רשימת ציונים כל השנים')").length > 0
-    && $("span.select2-selection__rendered[title='הכל']").length > 0;
+export function isViewingGradesAllYears() {
+    return $("h2.panel-title:contains('רשימת ציונים כל השנים')").length > 0;
+}
+
+export function isViewingAllTableEntries() {
+    return $("span.select2-selection__rendered[title='הכל']").length > 0;
 }
 
 export function isViewingCoursesTable() {
