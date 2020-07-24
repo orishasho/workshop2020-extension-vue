@@ -2,7 +2,11 @@
     <li class="dropdown">
         <a href="#" class="dropdown-toggle menu-item-has-children DDLocal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">לשונית תוסף</a>
         <ul class="dropdown-menu">
-            <ExtensionDropdownLinkClick :linkText="linkText"/>
+            <ExtensionDropdownLinkClick 
+            v-for="(linkText, i) in linkTexts" 
+            :key="linkText" 
+            :linkText="linkText"
+            :componentName="compnentsNames[i]"/>
         </ul>
     </li>
 </template>
@@ -16,7 +20,8 @@
         },
         data: function () {
             return {
-                linkText: 'ניהול תואר'
+                linkTexts: ['ניהול תואר', 'בניית מערכת שעות'],
+                compnentsNames: ['DegreeStatusPage', 'Schedule']
             }
         }
     }

@@ -1,30 +1,33 @@
 <template>
     <li>
         <a href="#" @click="ExtensionDropdownLinkClick">{{ linkText }}</a>
-        <div v-if="showStats">
-            <DegreeStatusPage/>
+        <div v-if="showComponents">
+            <component :is="componentName"/>
         </div>
     </li>
 </template>
 
 <script>
     import DegreeStatusPage from "../DegreeStatus/DegreeStatusPage";
+    import Schedule from "../Schedule";
     export default {
         name: "ExtensionDropdownLink",
         props: {
-            linkText: String
+            linkText: String,
+            componentName: String
         },
         components: {
-            DegreeStatusPage
+            DegreeStatusPage, 
+            Schedule
         },
         data: function () {
             return {
-                showStats: false
+                showComponents: false
             }
         },
         methods: {
             ExtensionDropdownLinkClick() {
-                this.showStats = true;
+                this.showComponents = true;
                 let contentContainer = document.querySelectorAll(".container.content");
                 contentContainer.forEach(e => {
                     console.log(e);
