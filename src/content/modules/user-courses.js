@@ -11,7 +11,7 @@ export async function sendUserCoursesDataToApi() {
     console.dir(userCourses);
     try {
         await handleUserCourses(userCourses);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
@@ -25,7 +25,7 @@ async function handleUserCourses(userCourses) {
     // 2. send data to API
     try {
         await storeUserCourses(filteredUserCourses);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
@@ -70,8 +70,9 @@ async function storeUserCourses(userCourses) {
         let apiUserCourse = {};
         const courseGrade = isNaN(userCourse['ציון']) ? -1 : userCourse['ציון'];
 
+        apiUserCourse.userId = 2;
         apiUserCourse.courseGrade = courseGrade;
-        apiUserCourse.courseStatus = courseGrade >= 60 ? 'passed' : 'failed';
+        apiUserCourse.courseStatus = courseGrade >= 60 || courseGrade == -1 ? 'passed' : 'failed';
         apiUserCourse.courseNumber = userCourse['שם קורס'].match(/(\d+)/)[0];
 
         apiUserCourses.push(apiUserCourse);
@@ -85,7 +86,7 @@ async function storeUserCourses(userCourses) {
         );
         //TODO: handle response properly
         console.log(response);
-    } catch(error) {
+    } catch (error) {
         //TODO: handle errors properly
         console.log(error);
     }
