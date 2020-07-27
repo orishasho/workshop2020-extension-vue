@@ -1,14 +1,12 @@
 const HtmlTableToJson = require('html-table-to-json');
 const axios = require('axios');
-const userCoursesApiUrl = 'http://localhost:8080/user_courses';
+const userCourseApiUrl = 'http://localhost:8080/user_course';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export async function sendUserCoursesDataToApi() {
     const coursesInfoHtmlTable = document.getElementById("myTable0");
     const userCourses = HtmlTableToJson.parse(coursesInfoHtmlTable.outerHTML).results[0];
-    console.log('raw courses data: ');
-    console.dir(userCourses);
     try {
         await handleUserCourses(userCourses);
     } catch (error) {
@@ -19,8 +17,6 @@ export async function sendUserCoursesDataToApi() {
 async function handleUserCourses(userCourses) {
     // 1. filter out any non final and irrelevant entries
     const filteredUserCourses = filterCourses(userCourses);
-    console.log('filtered courses data:');
-    console.dir(filteredUserCourses);
 
     // 2. send data to API
     try {
@@ -46,8 +42,10 @@ function filterCourses(userCourses) {
             }
         }
 
-        if (duplicates.length > 0 && isNaN(filteredUserCourses[i]['ציון'])) {
-            // 2.2. Course without grade and there are duplicates - remove
+        if (duplicates.length > 0 &&
+            isNaN(filteredUserCourses[i]['ציון']) &&
+            filteredUserCourses[i]['ציון'] !== 'טרם') {
+            // 2.2. Course without grade, student is not enrolled to it again and there are duplicates - remove
             filteredUserCourses.splice(i, 1);
         } else if (duplicates.length > 0) {
             // 2.3. Course with grade and there are duplicates - remove if it's not highest
@@ -72,7 +70,7 @@ async function storeUserCourses(userCourses) {
 
         apiUserCourse.userId = 2;
         apiUserCourse.courseGrade = courseGrade;
-        apiUserCourse.courseStatus = courseGrade >= 60 || courseGrade == -1 ? 'passed' : 'failed';
+        apiUserCourse.courseStatus = determineCourseStatus(userCourse, courseGrade);
         apiUserCourse.courseNumber = userCourse['שם קורס'].match(/(\d+)/)[0];
 
         apiUserCourses.push(apiUserCourse);
@@ -81,7 +79,7 @@ async function storeUserCourses(userCourses) {
     // 2. Send user courses array to API
     try {
         const response = await axios.post(
-            userCoursesApiUrl,
+            `${userCourseApiUrl}/bulk`,
             apiUserCourses
         );
         //TODO: handle response properly
@@ -89,5 +87,18 @@ async function storeUserCourses(userCourses) {
     } catch (error) {
         //TODO: handle errors properly
         console.log(error);
+    }
+}
+
+function determineCourseStatus(userCourse, courseGrade) {
+    if (courseGrade >= 60 ||
+        userCourse['ציון'] === 'עבר' ||
+        userCourse['ציון'].includes('פטור')) {
+        return 'passed';
+    } else if (courseGrade !== -1 ||
+        userCourse['ציון'] === 'לא נבחן') {
+        return 'failed';
+    } else {
+        return 'signed';
     }
 }
