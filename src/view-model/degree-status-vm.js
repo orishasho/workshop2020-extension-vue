@@ -3,7 +3,7 @@ import { ViewModel, inject } from 'mmlpx';
 import UserCoursesStore from "../store/user-courses-store";
 
 @ViewModel
-export default class AppVm {
+export default class DegreeStatusVm {
     @inject(UserCoursesStore) userCoursesStore;
 
     // computed properties:
@@ -22,8 +22,8 @@ export default class AppVm {
     get creditsCompleted() {
         let credits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
-                credits += parseFloat(userCourse['נ"ז']);
+            if (userCourse['course_status'] === 'passed' && userCourse['course_points'] !== "") {
+                credits += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -35,8 +35,8 @@ export default class AppVm {
         const creditsCompleted = this.creditsCompleted;
         let creditsToBeCompleted = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
-                creditsToBeCompleted += parseFloat(userCourse['נ"ז']);
+            if (userCourse['course_status'] === 'signed' && userCourse['course_points'] !== "") {
+                creditsToBeCompleted += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -47,10 +47,10 @@ export default class AppVm {
     get mandatoryCreditsCompleted() {
         let mandatoryCredits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
-                return userCourse['שם קורס'].includes(courseCode);
-            }) && this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
-                mandatoryCredits += parseFloat(userCourse['נ"ז']);
+            if (this.userCoursesStore.mandatoryCoursesNumbers.some(courseNumber => {
+                return userCourse['course_number'] === courseNumber;
+            }) && userCourse['course_status'] === 'passed' && userCourse['course_points'] !== "") {
+                mandatoryCredits += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -62,10 +62,10 @@ export default class AppVm {
         const mandatoryCreditsCompleted = this.mandatoryCreditsCompleted;
         let mandatoryCreditsToBeCompleted = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.userCoursesStore.mandatoryCoursesCodes.some(courseCode => {
-                return userCourse['שם קורס'].includes(courseCode);
-            }) && userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
-                mandatoryCreditsToBeCompleted += parseFloat(userCourse['נ"ז']);
+            if (this.userCoursesStore.mandatoryCoursesNumbers.some(courseNumber => {
+                return userCourse['course_number'] === courseNumber;
+            }) && userCourse['course_status'] === 'signed' && userCourse['course_points'] !== "") {
+                mandatoryCreditsToBeCompleted += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -76,10 +76,10 @@ export default class AppVm {
     get electiveCreditsCompleted() {
         let electiveCredits = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
-                return userCourse['שם קורס'].includes(courseCode);
-            }) && this.isCourseCompleted(userCourse) && userCourse['נ"ז'] !== "") {
-                electiveCredits += parseFloat(userCourse['נ"ז']);
+            if (this.userCoursesStore.electiveCoursesNumbers.some(courseNumber => {
+                return userCourse['course_number'] === courseNumber;
+            }) && userCourse['course_status'] === 'passed' && userCourse['course_points'] !== "") {
+                electiveCredits += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -91,10 +91,10 @@ export default class AppVm {
         const electiveCreditsCompleted = this.electiveCreditsCompleted;
         let electiveCreditsToBeCompleted = 0;
         this.userCoursesStore.userCourses.forEach(userCourse => {
-            if (this.userCoursesStore.electiveCoursesCodes.some(courseCode => {
-                return userCourse['שם קורס'].includes(courseCode);
-            }) && userCourse['ציון'] === 'טרם' && userCourse['נ"ז'] !== "") {
-                electiveCreditsToBeCompleted += parseFloat(userCourse['נ"ז']);
+            if (this.userCoursesStore.electiveCoursesNumbers.some(courseNumber => {
+                return userCourse['course_number'] === courseNumber;
+            }) && userCourse['course_status'] === 'signed' && userCourse['course_points'] !== "") {
+                electiveCreditsToBeCompleted += parseFloat(userCourse['course_points']);
             }
         });
 
@@ -103,24 +103,32 @@ export default class AppVm {
 
     @computed
     get isWorkshopCompleted() {
-        return this.userCoursesStore.userCourses.some(userCourse => userCourse['שם קורס'].includes('סדנה') && this.isCourseCompleted(userCourse));
+        return this.userCoursesStore.userCourses.some(userCourse =>
+            userCourse['course_type'] === 'workshop' &&
+            userCourse['course_status'] === 'passed');
     }
 
     @computed
     get isWorkshopCompletedByYearEnd() {
         return this.isWorkshopCompleted
-            || this.userCoursesStore.userCourses.some(userCourse => userCourse['שם קורס'].includes('סדנה') && userCourse['ציון'] === 'טרם');
+            || this.userCoursesStore.userCourses.some(userCourse =>
+                userCourse['course_type'] === 'workshop' &&
+                userCourse['course_status'] === 'signed');
     }
 
     @computed
     get isMathClassCompleted() {
-        return this.userCoursesStore.userCourses.some(userCourse => this.isCourseCompleted(userCourse) && this.isMathCourse(userCourse));
+        return this.userCoursesStore.userCourses.some(userCourse =>
+            userCourse['course_status'] === 'passed' &&
+            userCourse['course_type'] === 'math');
     }
 
     @computed
     get isMathClassCompletedByYearEnd() {
         return this.isMathClassCompleted
-            || this.userCoursesStore.userCourses.some(userCourse => userCourse['ציון'] === 'טרם' && this.isMathCourse(userCourse));
+            || this.userCoursesStore.userCourses.some(userCourse =>
+                userCourse['course_status'] === 'signed' &&
+                userCourse['course_type'] === 'math');
     }
 
     @computed
@@ -141,17 +149,5 @@ export default class AppVm {
     @computed
     get mathRequiredCredits() {
         return this.userCoursesStore.mathRequiredCredits;
-    }
-
-    // helper functions:
-
-    isCourseCompleted(userCourse) {
-        const courseGrade = parseInt(userCourse['ציון']);
-        return !isNaN(courseGrade) && courseGrade >= 60 || userCourse['ציון'] === 'פטור';
-    }
-
-    isMathCourse(userCourse) {
-        const currentCourseCode = userCourse['שם קורס'].match(/(\d+)/)[0];
-        return this.userCoursesStore.mathCoursesCodes.includes(currentCourseCode)
     }
 }

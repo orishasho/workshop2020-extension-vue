@@ -5,9 +5,10 @@ import UserCoursesLoader from "../loaders/user-courses-loader";
 @Store
 export default class UserCoursesStore {
     @observable userCourses = [];
-    @observable electiveCoursesCodes = [];
-    @observable mandatoryCoursesCodes = [];
-    @observable mathCoursesCodes = [];
+    @observable electiveCoursesNumbers = [];
+    @observable mandatoryCoursesNumbers = [];
+    @observable mathCoursesNumbers = [];
+    @observable workshopCoursesNumbers = [];
     @observable totalRequiredCredits = 124;
     @observable electiveRequiredCredits = 30;
     @observable mandatoryRequiredCredits = 84;
@@ -20,25 +21,31 @@ export default class UserCoursesStore {
     }
 
     @action.bound
-    loadElectiveCoursesCodes() {
-        this.electiveCoursesCodes = this.loader.getElectiveCoursesCodes();
+    async loadElectiveCoursesNumbers() {
+        this.electiveCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('elective');
     }
 
     @action.bound
-    loadMandatoryCoursesCodes() {
-        this.mandatoryCoursesCodes = this.loader.getMandatoryCoursesCodes();
+    async loadMandatoryCoursesNumbers() {
+        this.mandatoryCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('mandatory');
     }
 
     @action.bound
-    loadMathCoursesCode() {
-        this.mathCoursesCodes = this.loader.getMathCoursesCodes();
+    async loadMathCoursesNumbers() {
+        this.mathCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('math');
+    }
+
+    @action.bound
+    async loadWorkshopCoursesNumbers() {
+        this.mathCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('workshop');
     }
 
     @postConstruct
     init() {
         this.loadUserCourses();
-        this.loadMandatoryCoursesCodes();
-        this.loadElectiveCoursesCodes();
-        this.loadMathCoursesCode();
+        this.loadMandatoryCoursesNumbers();
+        this.loadElectiveCoursesNumbers();
+        this.loadMathCoursesNumbers();
+        this.loadWorkshopCoursesNumbers();
     }
 }

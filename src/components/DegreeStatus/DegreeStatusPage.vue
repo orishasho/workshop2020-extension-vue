@@ -64,7 +64,7 @@
 </template>
 
 <script>
-    import AppVm from "../../view-model/app-vm";
+    import DegreeStatusVm from "../../view-model/degree-status-vm";
     import { instantiate } from "mmlpx"
     import { observer } from "mobx-vue";
     import DegreeProgressBar from "./DegreeProgressBar";
@@ -74,7 +74,7 @@
     export default observer({
         data: function () {
             return {
-                vm: instantiate(AppVm)
+                vm: instantiate(DegreeStatusVm)
             }
         },
         components: {
