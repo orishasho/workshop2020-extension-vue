@@ -12,7 +12,7 @@
     import { BProgress, BProgressBar } from 'bootstrap-vue'
 
     export default {
-        name: "CreditsStats",
+        name: "DegreeProgressBar",
         components: {
             BProgress,
             BProgressBar
