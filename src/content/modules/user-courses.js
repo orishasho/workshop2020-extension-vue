@@ -1,6 +1,6 @@
 const HtmlTableToJson = require('html-table-to-json');
 const axios = require('axios');
-const userCoursesApiUrl = 'http://localhost:8080/users_courses';
+const userCoursesApiUrl = 'http://localhost:8080/user_courses';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
