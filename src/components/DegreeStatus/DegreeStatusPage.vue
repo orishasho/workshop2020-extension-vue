@@ -3,17 +3,17 @@
         <div v-if="vm.hasUserCoursesData">
 
             <h5 class="rtl">מצב נוכחי:</h5>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.creditsCompleted"
                     :requiredCredits="vm.totalRequiredCredits"
                     :creditsType="'נקז כללי'"/>
             <br>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.mandatoryCreditsCompleted"
                     :requiredCredits="vm.mandatoryRequiredCredits"
                     :creditsType="'נקז קורסי חובה'"/>
             <br>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.electiveCreditsCompleted"
                     :requiredCredits="vm.electiveRequiredCredits"
                     :creditsType="'נקז קורסי בחירה'"/>
@@ -31,17 +31,17 @@
             <br>
 
             <h5 class="rtl">צפי לסוף השנה:</h5>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.creditsToBeCompletedByYearEnd"
                     :requiredCredits="vm.totalRequiredCredits"
                     :creditsType="'נקז כללי'"/>
             <br>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.mandatoryCreditsToBeCompletedByYearEnd"
                     :requiredCredits="vm.mandatoryRequiredCredits"
                     :creditsType="'נקז קורסי חובה'"/>
             <br>
-            <CreditsStats
+            <DegreeProgressBar
                     :completedCredits="vm.electiveCreditsToBeCompletedByYearEnd"
                     :requiredCredits="vm.electiveRequiredCredits"
                     :creditsType="'נקז קורסי בחירה'"/>
@@ -67,7 +67,7 @@
     import AppVm from "../../view-model/app-vm";
     import { instantiate } from "mmlpx"
     import { observer } from "mobx-vue";
-    import CreditsStats from "./CreditsStats";
+    import DegreeProgressBar from "./DegreeProgressBar";
     import { BIconCheckCircle, BIconXCircle } from "bootstrap-vue";
     import { MountingPortal} from "portal-vue";
 
@@ -78,7 +78,7 @@
             }
         },
         components: {
-            CreditsStats,
+            DegreeProgressBar,
             BIconCheckCircle,
             BIconXCircle,
             MountingPortal
