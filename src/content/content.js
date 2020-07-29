@@ -9,31 +9,62 @@ import PortalVue from 'portal-vue';
 import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-//Extension tab entry point
-let navMenu = document.querySelector(".navbar-nav");
-let appEntry = document.createElement("div");
-appEntry.setAttribute("id", "app");
-navMenu.appendChild(appEntry);
-
-global.browser = require('webextension-polyfill');
-Vue.prototype.$browser = global.browser;
-Vue.use(PortalVue);
-Vue.use(BootstrapVue);
-
-//Extension tab Vue instance
-new Vue({
-    el: '#app',
-    render: h => h(ExtensionDropdown)
+let loggedInEmail = "";
+chrome.storage.sync.get('loggedEmail', function(data) {
+    loggedInEmail = data.loggedEmail;
+    init(loggedInEmail); // All your code is contained here, or executes later that this
 });
 
-//Content script logic
+function init(loggedInEmail) {
+    if (loggedInEmail != "") {
+        //Extension tab entry point
+        let navMenu = document.querySelector(".navbar-nav");
+        let appEntry = document.createElement("div");
+        appEntry.setAttribute("id", "app");
+        navMenu.appendChild(appEntry);
 
-if (viewingStatesModule.isViewingCoursesTable()) {
-    coursesColoringModule.handleCoursesTableColoring();
-} else if (viewingStatesModule.isViewingGradesAllYears()) {
-    let sendDataToApiButton = createSendDataToApiButton();
-    sendDataToApiButton.addEventListener('click', handleSendDataToApiClick);
-    document.querySelector(".textAboveTable").appendChild(sendDataToApiButton);
+        global.browser = require('webextension-polyfill');
+        Vue.prototype.$browser = global.browser;
+        Vue.use(PortalVue);
+        Vue.use(BootstrapVue);
+
+        //Extension tab Vue instance
+        new Vue({
+            el: '#app',
+            render: h => h(ExtensionDropdown)
+        });
+
+        //Content script logic
+        if (viewingStatesModule.isViewingCoursesTable()) {
+            coursesColoringModule.handleCoursesTableColoring();
+        } else if (viewingStatesModule.isViewingGradesAllYears()) {
+            let sendDataToApiButton = createSendDataToApiButton();
+            sendDataToApiButton.addEventListener('click', handleSendDataToApiClick);
+            document.querySelector(".textAboveTable").appendChild(sendDataToApiButton);
+        }
+
+        if (viewingStatesModule.isInsideMeidaNet()) {
+            //alert("inside meida net");
+            const topToolbar = document.getElementsByClassName("loginbar pull-right");
+            let logeedInEmailInToolbar = document.createElement("li");
+            logeedInEmailInToolbar.setAttribute("class", "topbar-devider");
+            logeedInEmailInToolbar.innerHTML = "מחובר לתוסף בתור: " + loggedInEmail;
+            topToolbar[0].appendChild(logeedInEmailInToolbar);
+        }
+    } else {
+        if (viewingStatesModule.isInsideHomePage()) {
+            const pleaseLoginMessageLocator = document.getElementsByClassName("col-md-12");
+            let pleaseLoginMessageDiv = document.createElement("div");
+            let pleaseLoginMessageHeader = document.createElement("h2");
+            pleaseLoginMessageHeader.setAttribute("style", "color:red");
+            pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
+            pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
+
+            console.log(pleaseLoginMessageLocator[0]);
+
+            pleaseLoginMessageLocator[1].appendChild(pleaseLoginMessageDiv);
+        }
+    }
 }
 
 function createSendDataToApiButton() {
