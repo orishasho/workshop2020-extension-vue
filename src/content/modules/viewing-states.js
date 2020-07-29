@@ -17,3 +17,18 @@ export function isViewingCoursesTable() {
         return false;
     }
 }
+
+export function isInsideMeidaNet() {
+    // return true if user is viewing any page inside the Meida-Net
+    return $(".loginbar.pull-right").length > 0;
+}
+
+export function isInsideHomePage() {
+    // return true if user is viewing the home page
+    const firstHeadingElements = $("h2.panel-title:contains('מערכת שעות')");
+    if (firstHeadingElements.length > 0) {
+        return $("h2.panel-title:contains('הודעות')").length > 0;
+    } else {
+        return false;
+    }
+}
