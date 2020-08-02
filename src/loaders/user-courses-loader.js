@@ -4,14 +4,27 @@ const courseApiUrl = 'http://localhost:8080/course';
 
 export default class UserCoursesLoader {
 
+    async getLoggedInUserIdFromChromeStorage() {
+        return new Promise((resolve, reject) => {
+            try {
+                chrome.storage.sync.get('loggedUserId', function(value) {
+                    resolve(value.loggedUserId);
+                })
+            } catch (ex) {
+                reject(ex);
+            }
+        });
+    }
+
     async getUserCourses() {
         //TODO: dynamic user_id
         try {
-            const response = await axios.get(`${userCourseApiUrl}/detailed?user_id=2`);
+            const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
+            const response = await axios.get(`${userCourseApiUrl}/detailed?user_id=${loggedUserId}`);
             const userCoursesArray = response.data;
             console.dir(userCoursesArray);
             return userCoursesArray;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -23,7 +36,7 @@ export default class UserCoursesLoader {
             const electiveCoursesArray = response.data;
             const electiveCoursesNumbers = electiveCoursesArray.map(electiveCourse => electiveCourse['course_number']);
             return electiveCoursesNumbers;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }

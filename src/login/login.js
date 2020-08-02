@@ -1,17 +1,22 @@
 import '../content/css/login.css';
 //import { propagateChangeConfirmed } from 'mobx/lib/internal';
 const axios = require('axios');
-const usersDetailsApi = 'http://localhost:8080/users';
+const usersDetailsApi = 'http://localhost:8080/user';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
+const backBtn = document.getElementById('go-back');
 
 const loginSubmitBtn = document.getElementById('login-submit-btn');
 const signupSubmitBtn = document.getElementById('signup-submit-btn');
 
 const signoutSubmitBtn = document.getElementById('signout-submit-btn');
+
+backBtn.addEventListener('click', function() {
+    window.location = "../popupMenu/popupMenu.html";
+})
 
 signupSubmitBtn.addEventListener('click', async(e) => {
     let emailAddVal = document.getElementById('signup-email-field').value;
@@ -23,7 +28,8 @@ signupSubmitBtn.addEventListener('click', async(e) => {
             alert("המשתמש כבר קיים במערכת");
         } else {
             await storeUserDetails(emailAddVal, pwVal);
-            chrome.storage.sync.set({ 'loggedEmail': emailAddVal }, function() {
+            let response = await readUserDetails(emailAddVal);
+            chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
                 alert("הרשמה בוצעה הצלחה");
                 refreshMeidaNet();
                 window.close();
@@ -35,14 +41,15 @@ signupSubmitBtn.addEventListener('click', async(e) => {
 loginSubmitBtn.addEventListener('click', async(e) => {
     let emailAddVal = document.getElementById('login-email-field').value;
     let pwVal = document.getElementById('login-pw-field').value;
-    let pwFromDb = await readUserDetails(emailAddVal);
+    let response = await readUserDetails(emailAddVal);
 
-    if (pwFromDb === "") {
+    if (response.password === "") {
         alert("כתובת המייל שהוכנסה אינה קיימת במערכת");
-    } else if (pwFromDb !== pwVal) {
+    } else if (response.password !== pwVal) {
         alert("הסיסמה שהוכנסה אינה נכונה");
     } else {
-        chrome.storage.sync.set({ 'loggedEmail': emailAddVal }, function() {
+        console.log("after login, going to save user id: " + response.user_id);
+        chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
             alert(emailAddVal + " ברוכ/ה הבא/ה!");
             refreshMeidaNet();
             window.close();
@@ -50,13 +57,18 @@ loginSubmitBtn.addEventListener('click', async(e) => {
     }
 });
 
+/*
 signoutSubmitBtn.addEventListener('click', (e) => {
-    chrome.storage.sync.set({ 'loggedEmail': "" }, function() {
+    chrome.storage.sync.set({ 'loggedEmail': "", 'loggedUserId': "" }, function() {
         alert("התנתקת מהתוסף");
+        refreshMeidaNet();
+        window.close();
     })
 });
+*/
 
 loginBtn.addEventListener('click', (e) => {
+    console.log("isideee");
     let parent = e.target.parentNode.parentNode;
     Array.from(e.target.parentNode.parentNode.classList).find((element) => {
         if (element !== "slide-up") {
@@ -100,10 +112,11 @@ function validatePassword(inputText) {
     }
 }
 
+/*
 async function readUserDetails(emailAddress) {
     let pw = "";
     try {
-        const url = "http://localhost:8080/users?user_email=" + emailAddress;
+        const url = "http://localhost:8080/user?user_email=" + emailAddress;
         const result = await fetch(url);
 
         const user_details = await result.json();
@@ -115,6 +128,26 @@ async function readUserDetails(emailAddress) {
         console.log("Error reading the data . " + e)
     }
     return pw;
+}
+*/
+
+async function readUserDetails(emailAddress) {
+    let pw = "";
+    let userId = "";
+    try {
+        const response = await axios.get(
+            usersDetailsApi, { params: { user_email: emailAddress } }
+        )
+        console.log("login get response");
+        console.log(response);
+        if (response.data[0]) {
+            pw = response.data[0].password;
+            userId = response.data[0].user_id;
+        }
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    return { user_id: userId, password: pw };
 }
 
 
@@ -138,7 +171,8 @@ function refreshMeidaNet() {
         tabs.forEach((tab) => {
             if (tab.url.match(/mtamn\.mta\.ac\.il/)) {
                 console.log(tab.url);
-                chrome.tabs.update(tab.id, { url: tab.url });
+                //chrome.tabs.update(tab.id, { url: tab.url });
+                chrome.tabs.reload(tab.id);
             }
         });
     });
