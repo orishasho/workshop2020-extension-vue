@@ -16,6 +16,7 @@ const config = {
         'courses-coloring': './content/modules/courses-coloring.js',
         'viewing-states': './content/modules/viewing-states.js',
         'user-courses': './content/modules/user-courses.js',
+        'popupMenu/popupMenu': './popupMenu/popupMenu.js',
         'login/login': './login/login.js'
     },
     output: {
@@ -77,6 +78,7 @@ const config = {
         }),
         new CopyPlugin([
             { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
+            { from: 'popupMenu/popupMenu.html', to: 'popupMenu/popupMenu.html', transform: transformHtml },
             { from: 'login/login.html', to: 'login/login.html', transform: transformHtml },
             {
                 from: 'manifest.json',

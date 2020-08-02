@@ -4,6 +4,38 @@ const userCourseApiUrl = 'http://localhost:8080/user_course';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+/*
+function getLoggedInUserId(userId) {
+    if (typeof userId === "undefined") {
+        return "";
+    } else {
+        return userId;
+    }
+}
+
+function getLoggedInUserIdFromChromeStorage(callback) {
+    let userId = "";
+    chrome.storage.sync.get(['loggedUserId'], function(result) {
+        userId = result.loggedUserId;
+        callback(userId);
+    });
+}
+*/
+
+async function getLoggedInUserIdFromChromeStorage() {
+    return new Promise((resolve, reject) => {
+        try {
+            chrome.storage.sync.get('loggedUserId', function(value) {
+                resolve(value.loggedUserId);
+            })
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
+
+
+
 export async function sendUserCoursesDataToApi() {
     const coursesInfoHtmlTable = document.getElementById("myTable0");
     const userCourses = HtmlTableToJson.parse(coursesInfoHtmlTable.outerHTML).results[0];
@@ -60,21 +92,30 @@ function filterCourses(userCourses) {
     return filteredUserCourses;
 }
 
+
+
 async function storeUserCourses(userCourses) {
     // 1. Build user courses array to send to API
     const apiUserCourses = [];
+    const userId = await getLoggedInUserIdFromChromeStorage();
 
     userCourses.forEach(userCourse => {
         let apiUserCourse = {};
         const courseGrade = isNaN(userCourse['ציון']) ? -1 : userCourse['ציון'];
 
-        apiUserCourse.userId = 2;
+
+        apiUserCourse.userId = userId;
+        //console.log("in api, user id: " + apiUserCourse.userId);
+
         apiUserCourse.courseGrade = courseGrade;
         apiUserCourse.courseStatus = determineCourseStatus(userCourse, courseGrade);
         apiUserCourse.courseNumber = userCourse['שם קורס'].match(/(\d+)/)[0];
 
         apiUserCourses.push(apiUserCourse);
     });
+
+
+
 
     // 2. Send user courses array to API
     try {
@@ -83,6 +124,7 @@ async function storeUserCourses(userCourses) {
             apiUserCourses
         );
         //TODO: handle response properly
+        console.log("going to send this...");
         console.log(response);
     } catch (error) {
         //TODO: handle errors properly
