@@ -13,7 +13,7 @@ body {
 
 .search-select {
     /*margin: 30px auto;*/
-    margin: 0px 0px 25px;
+    /*margin: 0px 0px 25px;*/
     /*width: 200px;*/
 }
 
@@ -32,7 +32,6 @@ body {
     background-image: -webkit-linear-gradient(#fafafa, #fdfbfa);
     background-image: linear-gradient(#fafafa, #fdfbfa);
     border-radius: 4px;
-    cursor: pointer;
 }
 
 .search-select .icon:after {
@@ -166,7 +165,7 @@ body {
     background-color: #19d4a0;
     color: white;
     border-top: 1px solid #19d4a0;
-    border-bottom: 1px solid #19d4a0;
+    /*border-bottom: 1px solid #19d4a0;*/
 }
 
 .search-select ul.select li:not(.icon):hover i:after {
@@ -182,7 +181,6 @@ body {
 }
 
 .search-select label {
-    cursor: pointer;
     height: 20px;
     width: 300px;
     line-height: 20px;
@@ -193,6 +191,16 @@ body {
     font-weight: normal;
     font-style: normal;
     font-size: 18px;
+}
+
+.connected-as {
+    margin-top: 30px;
+    text-align: center;
+    font-size: x-small;
+}
+
+.fa-circle {
+    color: #00bd32;
 }
 
 @font-face {

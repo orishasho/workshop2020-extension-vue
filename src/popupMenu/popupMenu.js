@@ -8,17 +8,21 @@ function resize() {
 }
 
 function setMenu(loggedInEmail) {
-    if (loggedInEmail != "") {
+    const loggedInUserLabel = document.getElementById("connected-as-label")
+    if (loggedInEmail != "") { //user is connected
         //remove option of login
-        const loginMenuItem = document.getElementById("login-li")
+        const loginMenuItem = document.getElementById("login-li");
         if (loginMenuItem) {
             loginMenuItem.parentNode.removeChild(loginMenuItem);
+            loggedInUserLabel.innerText = loggedInUserLabel.innerText + " " + loggedInEmail + " ";
+            loggedInUserLabel.innerHTML = "<i class=\"fa fa-circle\"></i> " + loggedInUserLabel.innerHTML;
         }
     } else {
         //remove option of logout
-        const logoutMenuItem = document.getElementById("logout-li")
+        const logoutMenuItem = document.getElementById("logout-li");
         if (logoutMenuItem) {
             logoutMenuItem.parentNode.removeChild(logoutMenuItem);
+            loggedInUserLabel.parentNode.removeChild(loggedInUserLabel);
         }
     }
 }
