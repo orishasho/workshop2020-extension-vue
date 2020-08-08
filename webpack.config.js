@@ -17,7 +17,8 @@ const config = {
         'viewing-states': './content/modules/viewing-states.js',
         'user-courses': './content/modules/user-courses.js',
         'popupMenu/popupMenu': './popupMenu/popupMenu.js',
-        'login/login': './login/login.js'
+        'login/login': './login/login.js',
+        'CoursesSchedulesLoader': './loaders/courses-schedules-loader.js'
     },
     output: {
         path: __dirname + '/dist',

@@ -23,6 +23,7 @@
         "express": "^4.17.1",
         "html-table-to-json": "^1.0.0",
         "jquery": "^3.4.1",
+        "lodash": "^4.17.19",
         "mmlpx": "^4.0.2",
         "mobx": "^5.15.4",
         "mobx-vue": "^2.0.10",
