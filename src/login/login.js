@@ -23,8 +23,8 @@ signupSubmitBtn.addEventListener('click', async(e) => {
     let pwVal = document.getElementById('signup-pw-field').value;
 
     if (validateEmail(emailAddVal) && validatePassword(pwVal)) {
-        let pwFromDb = await readUserDetails(emailAddVal);
-        if (pwFromDb !== "") { //user exists already
+        let response = await readUserDetails(emailAddVal);
+        if (response.password !== "") { //user exists already
             alert("המשתמש כבר קיים במערכת");
         } else {
             await storeUserDetails(emailAddVal, pwVal);
@@ -147,6 +147,7 @@ async function readUserDetails(emailAddress) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
+    console.log("in read user details, pw: " + pw);
     return { user_id: userId, password: pw };
 }
 
