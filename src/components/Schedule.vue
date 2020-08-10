@@ -6,7 +6,7 @@
 	    <ul class="tabs">
 		    <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
 		    <li id="semester2"><a href="#">סמסטר ב'</a></li>
-		    <li id="semester3"><a href="#">סמסטר ג'</a></li>
+		    <li id="semester3"><a href="#">סמסטר קיץ</a></li>
 	    </ul>
     </div>
 
@@ -594,7 +594,7 @@
   }
 
   .scheduleContainer  .dropdown-content a:hover {
-    background: #e6f6ff;
+    background: #f0fffb;
   }
 
   .scheduleContainer  .show {
