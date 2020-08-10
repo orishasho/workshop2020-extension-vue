@@ -2,12 +2,37 @@
   <MountingPortal mountTo="#main-content-container-id" name="source" append>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <div class="tab">
-	    <ul class="tabs">
-		    <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
-		    <li id="semester2"><a href="#">סמסטר ב'</a></li>
-		    <li id="semester3"><a href="#">סמסטר קיץ</a></li>
-	    </ul>
+    <div class="tabs-drafts-container">
+
+      <div class="drafts-dropdown-container">
+        <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
+          בחר טיוטת מערכת...
+          &emsp;
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown-drafts"></div>
+      </div>
+
+      <div class="save-btn-1">
+        <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
+      </div>
+
+      <div class="save-btn-2">
+        <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
+      </div>
+
+      <div class="tab">
+        <ul class="tabs">
+          <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
+          <li id="semester2"><a href="#">סמסטר ב'</a></li>
+          <li id="semester3"><a href="#">סמסטר קיץ</a></li>
+        </ul>
+      </div>
+
+      <div class="reset-layout-btn">
+        <div class="reset-layout-btn-cls" id="reset-layout-btn-id" @click="clearSchedule()">נקה לוח</div>
+      </div>
+
     </div>
 
     <div class = "scheduleContainer">
@@ -39,6 +64,10 @@
         <tbody ref="mytbody"></tbody>
       </table>
     </div>
+
+
+
+
     <div class="rightcolumn">
       <button class="dropbtn" id="coursesDropdownBtn"  v-on:click="myFunction()" >
         אנא בחר קורס...
@@ -56,6 +85,7 @@
 <script>
   import { MountingPortal} from "portal-vue";
   import CoursesSchedulesLoader from "../loaders/courses-schedules-loader";
+  import UserScheduleDraftsLoader from "../loaders/user-schedule-drafts-loader";
   import _ from "lodash";
   export default {
     name: "Schedule",
@@ -66,10 +96,12 @@
     data: function () {
       return {
         coursesSchedules: [],
-        coursesListForDropDown: [],
         currentSemester: 1,
+        currentDraftName: "",
         coursesSchedulesLoader: {},
+        draftsLoader: {},
         draftBySemesterMap: {1:[], 2:[], 3:[]},
+        allUserDraftNames: [],
 
         dayName: {
           1: "יום א'",
@@ -96,10 +128,12 @@
     mounted:  function () {
       this.$nextTick(() => {
             this.coursesSchedulesLoader = new CoursesSchedulesLoader();
+            this.draftsLoader = new UserScheduleDraftsLoader();
             this.changePageTitle();
             this.createClickEventsForSemesterButtons();
             this.generateTableCells();
             this.fillCoursesDropdown();
+            this.fillDraftsDropdown();
           });
     },
 
@@ -112,22 +146,41 @@
                   myDropdown.classList.remove('show');
                 }
               }
+              if (!e.target.matches('.dropbtn-drafts')) {
+                let myDropdown = document.getElementById("myDropdown-drafts");
+                if (myDropdown.classList.contains('show')) {
+                  myDropdown.classList.remove('show');
+                }
+              }
             }
       },
 
 
     methods: {
       fillCoursesDropdown() {
-        this.coursesListForDropDown = this.coursesSchedulesLoader
+        this.coursesSchedulesLoader
         .getPossibleCourses(this.currentSemester)
         .then(possibleCourses => {
           possibleCourses.forEach(course => this.addCourseToDropdown(course));
           return possibleCourses;
         })
         .then(async possibleCourses => {
+          // const possibleCoursesNumbers = [];
           const possibleCoursesNumbers = possibleCourses.map(possibleCourse => possibleCourse.course_number_res);
+          console.log("showing possible");
+          console.dir(possibleCoursesNumbers);
           this.coursesSchedules = await this.coursesSchedulesLoader.getCoursesSchedules(possibleCoursesNumbers, this.currentSemester);
         })
+      },
+
+      fillDraftsDropdown() {
+        this.draftsLoader.getUserScheduleDraftNames()
+        .then(draftNamesArray => {
+          draftNamesArray.forEach(draftName => {
+            this.addDraftToDropdown(draftName);
+            this.allUserDraftNames.push(draftName.draft_name);
+            });
+        });
       },
 
       createCourseTableItem(evt) {
@@ -260,8 +313,8 @@
         }
         evt.target.parentNode.classList.add("current");
         this.handleSemesterSwitch();
-        this.fillCoursesDropdown();
         this.currentSemester = evt.target.parentNode.id.slice(-1);
+        this.fillCoursesDropdown();
         this.loadCurrentSemesterDraft();
       },
 
@@ -269,13 +322,7 @@
           document.getElementById("myDropdown").innerHTML = "";
           document.getElementById("courses-details").innerHTML = "";    //empty course containers
           document.getElementById("coursesDropdownBtn").innerHTML = "אנא בחר קורס...&emsp;<i class=\"fa fa-caret-down\"></i>";
-          const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
-          this.draftBySemesterMap[this.currentSemester] = [];
-          for (let i = 0; i < currentCoursesInTable.length; i++) {
-            this.draftBySemesterMap[this.currentSemester].push(currentCoursesInTable[i].courseDetails);
-            currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
-          }
-          console.dir(this.draftBySemesterMap);
+          this.saveCurrentSemesterCoursesToMap(true);
       },
 
       loadCurrentSemesterDraft() {
@@ -422,6 +469,16 @@
         dropdown.appendChild(newCourseInDropdown);
       },
 
+      addDraftToDropdown(scheduleDraft) {
+        const dropdown = document.getElementById('myDropdown-drafts');
+        let newDraftInDropdown = document.createElement("a");
+        newDraftInDropdown.setAttribute("href", "#");
+        newDraftInDropdown.innerText = scheduleDraft.draft_name;
+        newDraftInDropdown.draft_name = scheduleDraft.draft_name;
+        newDraftInDropdown.addEventListener("click", this.draftDropDownOnClick);
+        dropdown.appendChild(newDraftInDropdown);
+      },
+
       courseDropDownOnClick(evt) {
         const dropdownBtn = document.getElementById("coursesDropdownBtn");
         dropdownBtn.innerHTML = evt.target.innerText + "&emsp;" + "<i class=\"fa fa-caret-down\"></i>";
@@ -430,9 +487,73 @@
         this.generateCourseDiv(evt.target.course_number, evt.target.course_name);     
       },
 
+      async draftDropDownOnClick(evt) {
+        const dropdownBtn = document.getElementById("coursesDropdownBtn-drafts");
+        const draftName = evt.target.innerText;
+        dropdownBtn.innerHTML = draftName + "&emsp;" + "<i class=\"fa fa-caret-down\"></i>";
+        if (this.currentDraftName === "") {
+            const overwriteDraftBtn = document.getElementById("overwrite-draft-btn");
+            overwriteDraftBtn.classList.remove("disabled");
+        }
+        this.currentDraftName = draftName;
+        this.clearSchedule();
+        //call api to bring draft
+        this.draftBySemesterMap = await this.draftsLoader.getUserScheduleDraftByName(draftName);
+        this.loadCurrentSemesterDraft();
+      },
+
       myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
+      },
+
+      openDraftsDropdown() {
+        document.getElementById("myDropdown-drafts").classList.toggle("show");
+      },
+
+      async saveDraftAs() {
+        const draftName = window.prompt("אנא בחר שם לטיוטת המערכת");
+        if (!draftName || draftName.length === 0) {
+          alert("לא הוזן שם לטיוטה");
+        } else if (this.allUserDraftNames.includes(draftName)) {
+          alert("שם הטיוטה קיים במערכת, אנא בחר שם אחר");
+        } else {
+          this.saveCurrentSemesterCoursesToMap(false);
+          await this.draftsLoader.storeDraft(draftName, this.draftBySemesterMap);
+          alert("הטיוטה נשמרה בהצלחה");
+          document.getElementById("myDropdown-drafts").innerHTML = "";
+          document.getElementById("coursesDropdownBtn-drafts").innerHTML = "בחר  טיוטת מערכת...&emsp;<i class=\"fa fa-caret-down\"></i>";
+          this.fillDraftsDropdown();
+        }
+      },
+
+      async updateDraft() {
+          this.saveCurrentSemesterCoursesToMap(false);
+          await this.draftsLoader.updateDraft(this.currentDraftName, this.draftBySemesterMap);
+          alert("הטיוטה נשמרה בהצלחה"); 
+      },
+
+      saveCurrentSemesterCoursesToMap(removeFromTable) {
+        const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
+          this.draftBySemesterMap[this.currentSemester] = [];
+          for (let i = 0; i < currentCoursesInTable.length; i++) {
+            this.draftBySemesterMap[this.currentSemester].push(currentCoursesInTable[i].courseDetails);
+            if(removeFromTable) {
+                currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
+            }
+          }
+      },
+
+      clearSchedule() {
+        this.draftBySemesterMap = {1:[], 2:[], 3:[]};
+        document.getElementById("myDropdown").innerHTML = "";
+        document.getElementById("courses-details").innerHTML = "";    //empty course containers
+        document.getElementById("coursesDropdownBtn").innerHTML = "אנא בחר קורס...&emsp;<i class=\"fa fa-caret-down\"></i>";
+        this.fillCoursesDropdown();
+        const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
+        for (let i = 0; i < currentCoursesInTable.length; i++) {
+          currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
       }
+     }
     }
   }
 
@@ -555,7 +676,19 @@
     height: 10px;
   }
 
-  .scheduleContainer  .dropbtn {
+  .dropbtn-drafts {
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 0.4em 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #67b897;
+    color: #fff !important;
+    font-weight: bold;
+  }
+
+    .scheduleContainer  .dropbtn{
     cursor: pointer;
     font-size: 16px;
     border: none;
@@ -597,7 +730,41 @@
     background: #f0fffb;
   }
 
+
+  .drafts-dropdown-container  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    font-family: Arial;
+    font-size: smaller;
+    overflow: auto;
+    max-height: 50%;
+  }
+
+  .drafts-dropdown-container .dropdown-content a {
+    /*float: none;*/
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: right;
+  }
+
+  .drafts-dropdown-container  .dropdown-content a:hover {
+    background: #f0fffb;
+  }
+
+
+
+
   .scheduleContainer  .show {
+    display: block;
+  }
+
+  .drafts-dropdown-container  .show {
     display: block;
   }
 
@@ -605,7 +772,7 @@
     line-height: 150%;
     position: absolute;
     z-index: 1;
-    background: linear-gradient(135deg, #8ebcee, #a08eee);
+    background: linear-gradient(135deg, #8eeecc, #8ebbee);
     /*height: 94.05px;*/
     /*height: 120px;
       33 * NUMBER*/
@@ -838,4 +1005,56 @@
 	color: #fff;
 	background: #67b897;
 }
+
+.tabs-drafts-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.reset-layout-btn-cls {
+  background-color:gray;
+	border-radius:28px !important;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff !important;
+	font-family:Arial;
+	font-size:17px;
+	padding:0.4em 1em;
+	text-decoration:rtl;
+}
+
+.reset-layout-btn-cls:hover {
+  background-color:#696969;
+	border-radius:28px !important;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff !important;
+	font-family:Arial;
+	font-size:17px;
+	padding:0.4em 1em;
+	text-decoration:rtl;
+}
+
+.save-draft-btn {
+	background-color:#67b897;
+	border-radius:28px !important;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff !important;
+	font-family:Arial;
+	font-size:17px;
+	padding:0.4em 1em;
+	text-decoration:rtl;
+	text-shadow:0px 1px 0px #2f6627;
+
+
+}
+.save-draft-btn:hover {
+	background-color:#49856c;
+}
+
+.save-draft-btn.disabled {
+  visibility: hidden;
+}
+
 </style> 

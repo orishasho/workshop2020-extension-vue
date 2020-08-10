@@ -43,10 +43,23 @@ export default class UserScheduleDraftsLoader {
         try {
             const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
             const response = await axios.post(
-                `${userScheduleDraftBaseApiUrll}/all`, { user_id: loggedUserId, draft_name: draft_name, draft: draft }
+                `${userScheduleDraftBaseApiUrl}/all`, { user_id: loggedUserId, draft_name: draft_name, draft: draft }
             );
             //TODO: handle response properly
-            console.log("going to send this...");
+            console.log(response);
+        } catch (error) {
+            //TODO: handle errors properly
+            console.log(error);
+        }
+    }
+
+    async updateDraft(draft_name, draft) {
+        try {
+            const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
+            const response = await axios.put(
+                `${userScheduleDraftBaseApiUrl}/byName`, { user_id: loggedUserId, draft_name: draft_name, draft: draft }
+            );
+            //TODO: handle response properly
             console.log(response);
         } catch (error) {
             //TODO: handle errors properly
