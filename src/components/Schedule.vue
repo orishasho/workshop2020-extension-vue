@@ -102,6 +102,7 @@
         draftsLoader: {},
         draftBySemesterMap: {1:[], 2:[], 3:[]},
         allUserDraftNames: [],
+        needToRemoveOverlaps: 0,
 
         dayName: {
           1: "יום א'",
@@ -193,8 +194,9 @@
         let courseType = course.type;
 
         if (this.isCourseOverlap(course)) {
-          //alert("courses overlap");
-          return;
+          console.log("going to remove: ");
+          console.dir(course);
+          //this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
         } else {
           const startHourParts = (courseStartHour + "").split(".");
           let startHourD = new Date(2018, 4, courseDay, startHourParts[0], startHourParts[1]);
@@ -205,8 +207,6 @@
 
           let divItem = document.createElement("div");
           let tdHeight = (document.getElementsByTagName("td")[0]).clientHeight;
-          //console.log(document.getElementsByTagName("td")[0]);
-          //divItem.setAttribute("height", 33 * hoursDur);
           divItem.style.height = (tdHeight * hoursDur * 2) + "px";
 
           let divTopRatio = startHourParts[1];
@@ -216,33 +216,35 @@
           divItem.style.top = ((divTopRatio / 30) * 100) + "%";
           divItem.setAttribute("class", "courseTableDiv");
           divItem.setAttribute("ref", "courseTableDiv");
-          //let pItem = document.createElement("p");
-          //======divItem.innerHTML = courseTitle + "<br>" + this.dayName[courseDay] + "<br>" + courseStartHour + " - " + courseEndHour;
           divItem.innerHTML = evt.target.innerHTML;
-          //divItem.appendChild(pItem);
-          //console.log(divItem);
           divItem.courseDetails = course;
           divItem.buttonRef = evt.target;
           divItem.addEventListener('click', this.removeCourseFromTimeTable);
 
           this.placeCourseInTable(divItem, course);
+          //this.remove
           
-          if (evt.target.parentNode) {
+           if (evt.target.parentNode) {
                 const evtTargetContainer = evt.target.parentNode;
 
                 evt.target.parentNode.removeChild(evt.target);
 
                 const evtTargetContainerChildren = evtTargetContainer.children;
 
+                
                 if (course.type === "lecture") {
                     for (let i = 0; i < evtTargetContainerChildren.length; i++) {
                         if (evtTargetContainerChildren[i].className === "courseDetails" && 
                             evtTargetContainerChildren[i].courseParam.type === "lecture") {
+                            console.dir(evtTargetContainerChildren[i]);
                             evtTargetContainerChildren[i].click();
                         }
                     }
+                  if (this.needToRemoveOverlaps === 1) {
+                    this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
+                  }
                 }
-          }
+          } 
         }
       },
 
@@ -262,6 +264,10 @@
 
         evt.target.parentNode.removeChild(evt.target);
 
+        this.removeLecturesFromSchedule(course_number, course_group, type);
+      },
+
+      removeLecturesFromSchedule(course_number, course_group, type) {
         let currentDivsInTable = document.getElementsByClassName("courseTableDiv");
         if (type === "lecture") {
           for (let i = 0; i < currentDivsInTable.length; i++) {
@@ -356,11 +362,13 @@
 
             if ((startHourDtCourseInTable <= endHourDtInput) && (startHourDtInput <= endHourDtCourseInTable)) {
               alert("לא ניתן לשבץ במערכת השעות \n הקורס מתנגש עם הקורס המשובץ: " + courseInTable.courseDetails.course_name);
+              this.needToRemoveOverlaps = 1;
               return true;
             }
 
           }
         }
+        this.needToRemoveOverlaps = 0;
         return false;
       },
 
