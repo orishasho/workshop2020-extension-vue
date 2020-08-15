@@ -8,6 +8,10 @@ import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
 import PortalVue from 'portal-vue';
 import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faMedal } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import vSelect from 'vue-select'
 
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
@@ -27,6 +31,11 @@ function init(loggedInEmail) {
         Vue.prototype.$browser = global.browser;
         Vue.use(PortalVue);
         Vue.use(BootstrapVue);
+
+        //External components
+        library.add(faMedal);
+        Vue.component('font-awesome-icon', FontAwesomeIcon);
+        Vue.component('v-select', vSelect);
 
         //Extension tab Vue instance
         new Vue({

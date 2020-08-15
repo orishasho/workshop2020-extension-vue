@@ -20,8 +20,8 @@
         },
         data: function () {
             return {
-                linkTexts: ['ניהול תואר', 'בניית מערכת שעות'],
-                compnentsNames: ['DegreeStatusPage', 'Schedule']
+                linkTexts: ['ניהול תואר', 'בניית מערכת שעות', 'Gradd Together'],
+                compnentsNames: ['DegreeStatusPage', 'Schedule', 'GraddTogetherContainer']
             }
         }
     }

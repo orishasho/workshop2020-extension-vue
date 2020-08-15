@@ -10,6 +10,7 @@
 <script>
     import DegreeStatusPage from "../DegreeStatus/DegreeStatusPage";
     import Schedule from "../Schedule";
+    import GraddTogetherContainer from "../GraddTogether/GraddTogetherContainer";
     export default {
         name: "ExtensionDropdownLink",
         props: {
@@ -18,7 +19,8 @@
         },
         components: {
             DegreeStatusPage, 
-            Schedule
+            Schedule,
+            GraddTogetherContainer
         },
         data: function () {
             return {
