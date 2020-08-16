@@ -36,6 +36,8 @@ export default {
 
   .origin-top-right {
     transform-origin: top right !important;
+    height: 200px;
+    overflow: auto;
   }
 
   .right-0 {

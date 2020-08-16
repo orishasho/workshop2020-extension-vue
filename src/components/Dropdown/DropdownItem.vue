@@ -1,5 +1,5 @@
 <template>
-  <a href="#" class="block my-1 px-4 py-1 font-medium text-gray-800" @click="onClickChild">
+  <a href='javascript:void();' class="block my-1 px-4 py-1 font-medium text-gray-800" @click="onClickChild">
     <slot/>
   </a>
 </template>
