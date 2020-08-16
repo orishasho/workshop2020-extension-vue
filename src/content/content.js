@@ -10,8 +10,8 @@ import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import vSelect from 'vue-select'
 
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
@@ -34,9 +34,8 @@ function init(loggedInEmail) {
 
         //External components
         library.add(faMedal);
+        library.add(faAngleDown);
         Vue.component('font-awesome-icon', FontAwesomeIcon);
-        Vue.component('v-select', vSelect);
-
         //Extension tab Vue instance
         new Vue({
             el: '#app',
