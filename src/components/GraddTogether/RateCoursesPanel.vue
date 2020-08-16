@@ -1,7 +1,9 @@
 <template>
     <div class="rate-courses-container">
         <h4>דרג את הקורסים שביצעת:</h4>
-        <DropdownWrapper :userCoursesToRate="userCoursesToRate"/>
+        <DropdownWrapper
+                :userCoursesToRate="userCoursesToRate"
+                :buttonText="dropdownButtonText"/>
     </div>
 </template>
 
@@ -15,7 +17,8 @@
         },
         data: function() {
             return {
-                userCoursesToRate: []
+                userCoursesToRate: [],
+                dropdownButtonText: 'בחר קורס...'
             }
         },
         created: async function() {
@@ -50,5 +53,11 @@
 <style scoped lang="scss">
     .rate-courses-container {
         display: flex;
+        margin-top: 5%;
+        margin-right: 10%;
+
+        h4 {
+            flex-basis: 28% !important;
+        }
     }
 </style>
