@@ -1,5 +1,10 @@
 <template>
     <MountingPortal mountTo="#main-content-container-id" name="source" append>
+
+        <div v-if="vm.isLoading" class="spinner-container">
+            <pulse-loader :loading="vm.isLoading"></pulse-loader>
+        </div>
+
         <div v-if="vm.hasUserCoursesData">
 
             <h5 class="rtl">מצב נוכחי:</h5>
@@ -58,7 +63,12 @@
             </p>
 
         </div>
-        <p v-else> Couldn't find courses data </p>
+
+        <div v-if="vm.showNoCoursesFound" class="no-courses-found">
+            <h2>לא נמצאו נתונים עבור המשתמש בשרת</h2>
+            <h3>כדי לשלוח נתוני קורסים לשרת, גש ל ״בחינות וציונים״ > ״רשימת ציונים״ > כל השנים וכל הסמסטרים</h3>
+        </div>
+
     </MountingPortal>
 
 </template>
@@ -70,6 +80,7 @@
     import DegreeProgressBar from "./DegreeProgressBar";
     import { BIconCheckCircle, BIconXCircle } from "bootstrap-vue";
     import { MountingPortal} from "portal-vue";
+    import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
     export default observer({
         data: function () {
@@ -81,8 +92,24 @@
             DegreeProgressBar,
             BIconCheckCircle,
             BIconXCircle,
-            MountingPortal
+            MountingPortal,
+            PulseLoader
         }
     })
 </script>
+
+<style scoped lang="scss">
+    .spinner-container {
+        margin-top: 20% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .no-courses-found {
+        margin-top: 20% !important;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important;
+    }
+</style>
 

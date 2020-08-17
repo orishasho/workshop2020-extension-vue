@@ -13,11 +13,13 @@ export default class UserCoursesStore {
     @observable electiveRequiredCredits = 30;
     @observable mandatoryRequiredCredits = 84;
     @observable mathRequiredCredits = 4;
+    @observable isLoading = true;
     @inject(UserCoursesLoader) loader;
 
     @action.bound
     async loadUserCourses() {
         this.userCourses = await this.loader.getUserCourses();
+        this.isLoading = false;
     }
 
     @action.bound
