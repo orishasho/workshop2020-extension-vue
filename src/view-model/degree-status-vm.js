@@ -9,8 +9,18 @@ export default class DegreeStatusVm {
     // computed properties:
 
     @computed
+    get isLoading() {
+        return this.userCoursesStore.isLoading;
+    }
+
+    @computed
     get hasUserCoursesData() {
-        return this.userCoursesStore.userCourses.length > 0;
+        return !this.userCoursesStore.isLoading && this.userCoursesStore.userCourses.length > 0;
+    }
+
+    @computed
+    get showNoCoursesFound() {
+        return !this.userCoursesStore.isLoading && this.userCoursesStore.userCourses.length === 0;
     }
 
     @computed
