@@ -2,7 +2,7 @@
  <Dropdown>
     <template slot="toggler">
         <button class ="gradd-dropdown-btn">
-        {{ buttonText }} &nbsp;
+        {{ selectButtonText }} &nbsp;
             <font-awesome-icon icon="angle-down" size="1x" class ="dropdown-angle-down"/>
         </button>
     </template>
@@ -26,13 +26,20 @@ export default {
     DropdownContent,
     DropdownItem
     },
+    data: function () {
+        return {
+            selectButtonText: this.buttonText
+        }
+    },
     props: [
       'userCoursesToRate',
       'buttonText'
     ],
     methods: {
         dropdownBtnClick(clickedCourseName) {
-            alert(clickedCourseName);
+            this.selectButtonText = clickedCourseName;
+            const currentCourseToRate = this.userCoursesToRate.find(course => course.course_name === clickedCourseName).course_number;
+            this.$emit('show-stars', currentCourseToRate);         
         }
     }
 };
@@ -43,10 +50,10 @@ export default {
         display: flex !important;
         border: none !important;
         border-radius: 0.4em !important;
-        margin-top: 3%;
+        margin-top: 3% !important;
 
         .dropdown-angle-down {
-            margin-top: 5% !important;
+            align-self: center !important;
         }
     }
 </style>

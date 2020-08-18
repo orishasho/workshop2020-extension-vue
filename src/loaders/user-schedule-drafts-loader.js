@@ -67,4 +67,18 @@ export default class UserScheduleDraftsLoader {
         }
     }
 
+    async finalizeDraft(draft_name) {
+        try {
+            const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
+            const response = await axios.put(
+                `${userScheduleDraftBaseApiUrl}/finalizeByName`, { user_id: loggedUserId, draft_name: draft_name }
+            );
+            //TODO: handle response properly
+            console.log(response);
+        } catch (error) {
+            //TODO: handle errors properly
+            console.log(error);
+        }
+    }
+
 }
