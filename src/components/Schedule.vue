@@ -17,6 +17,10 @@
         <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
       </div>
 
+      <div class="save-btn-1">
+        <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
+      </div>
+
       <div class="save-btn-2">
         <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
       </div>
@@ -177,6 +181,7 @@
       fillDraftsDropdown() {
         this.draftsLoader.getUserScheduleDraftNames()
         .then(draftNamesArray => {
+          console.dir(draftNamesArray);
           draftNamesArray.forEach(draftName => {
             this.addDraftToDropdown(draftName);
             this.allUserDraftNames.push(draftName.draft_name);
@@ -483,6 +488,10 @@
         newDraftInDropdown.setAttribute("href", "#");
         newDraftInDropdown.innerText = scheduleDraft.draft_name;
         newDraftInDropdown.draft_name = scheduleDraft.draft_name;
+        if (scheduleDraft.is_final === 1) {
+          newDraftInDropdown.style.fontWeight = "bold";
+          newDraftInDropdown.innerText += " (טיוטה ראשית)";
+        }
         newDraftInDropdown.addEventListener("click", this.draftDropDownOnClick);
         dropdown.appendChild(newDraftInDropdown);
       },
@@ -497,11 +506,17 @@
 
       async draftDropDownOnClick(evt) {
         const dropdownBtn = document.getElementById("coursesDropdownBtn-drafts");
-        const draftName = evt.target.innerText;
+        let draftName = evt.target.innerText;
         dropdownBtn.innerHTML = draftName + "&emsp;" + "<i class=\"fa fa-caret-down\"></i>";
         if (this.currentDraftName === "") {
             const overwriteDraftBtn = document.getElementById("overwrite-draft-btn");
             overwriteDraftBtn.classList.remove("disabled");
+            const finalizeDraftBtn = document.getElementById("finalize-draft-btn");
+            finalizeDraftBtn.classList.remove("disabled");
+        }
+        if (draftName.includes(" (טיוטה ראשית)")) {
+          draftName = draftName.slice(0, draftName.length - " (טיוטה ראשית)".length + 1);
+          console.log(`draftName: ${draftName}`);
         }
         this.currentDraftName = draftName;
         this.clearSchedule();
@@ -538,6 +553,14 @@
           this.saveCurrentSemesterCoursesToMap(false);
           await this.draftsLoader.updateDraft(this.currentDraftName, this.draftBySemesterMap);
           alert("הטיוטה נשמרה בהצלחה"); 
+      },
+
+      async finalizeDraft() {
+          await this.draftsLoader.finalizeDraft(this.currentDraftName);
+          alert("הטיוטה סומנה כראשית"); 
+          document.getElementById("myDropdown-drafts").innerHTML = "";
+          document.getElementById("coursesDropdownBtn-drafts").innerHTML = "בחר  טיוטת מערכת...&emsp;<i class=\"fa fa-caret-down\"></i>";
+          this.fillDraftsDropdown();
       },
 
       saveCurrentSemesterCoursesToMap(removeFromTable) {
