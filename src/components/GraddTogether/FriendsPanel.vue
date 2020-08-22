@@ -5,11 +5,8 @@
         :name="friend.name"
         :user_email="friend.user_email"
         :img="friend.img"
-        :final_draft="friend.final_draft"/>
+        :final_draft="friend.draft"/>
     </div>
-    <modal name="friendSchedule" :adaptive="true" :resizable="true" :scrollable="true" :width="'1000px'" :height="auto" :shiftX="1.0">
-        <ScheduleReadOnly/>
-    </modal>
 </div>
 </template>
 
@@ -25,8 +22,12 @@
         props: ['friendsArray'],
         methods: {
           showModal(finalDraft) {
-            this.$modal.show('friendSchedule')
+            this.$emit('show-schedule-modal', finalDraft);
           }
+        },
+        created() {
+            console.log('FriendsPanel Created: ');
+            console.dir(this.friendsArray);
         }
     }
 </script>

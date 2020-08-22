@@ -12,7 +12,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import VModal from 'vue-js-modal';
 
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
@@ -32,7 +31,6 @@ function init(loggedInEmail) {
         Vue.prototype.$browser = global.browser;
         Vue.use(PortalVue);
         Vue.use(BootstrapVue);
-        Vue.use(VModal);
 
         //External components
         library.add(faMedal);
