@@ -9,16 +9,28 @@
                       :final_draft="friend.draft"/>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-    import UserCard from "./UserCard"
+    import UserCard from "./UserCard";
+    import ScheduleReadOnly from "../ScheduleReadOnly";
     export default {
         name: "FriendsPanel",
         components: {
-            UserCard
+            UserCard,
+            ScheduleReadOnly
         },
-        props: ['friendsArray']
+        props: ['friendsArray'],
+        methods: {
+          showModal(finalDraft) {
+            this.$emit('show-schedule-modal', finalDraft);
+          }
+        },
+        created() {
+            console.log('FriendsPanel Created: ');
+            console.dir(this.friendsArray);
+        }
     }
 </script>
 

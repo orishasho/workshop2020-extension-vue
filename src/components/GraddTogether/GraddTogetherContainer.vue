@@ -3,17 +3,23 @@
         <div class="main-container">
             <TopPanel/>
             <GenericRatingPanel
-                :heading="'הקורסים הפופולריים ביותר:'"
-                :places="popularCourses"/>
+                    :heading="'הקורסים הפופולריים ביותר:'"
+                    :places="popularCourses"/>
             <GenericRatingPanel
-                :heading="'הקורסים המעניינים ביותר:'"
-                :places="interestingCourses"/>
+                    :heading="'הקורסים המעניינים ביותר:'"
+                    :places="interestingCourses"/>
             <GenericRatingPanel
-                :heading="'הקורסים הקשים ביותר:'"
-                :places="hardCourses"/>
+                    :heading="'הקורסים הקשים ביותר:'"
+                    :places="hardCourses"/>
             <RateCoursesPanel/>
             <FriendsPanel
-                :friendsArray="userFriends"/>
+                    v-if="userFriends && userFriends.length > 0"
+                    :friendsArray="userFriends"
+                    @show-schedule-modal="showScheduleModal"/>
+            <ScheduleModal
+                    v-if="modalSchedule && showModal"
+                    :draft="modalSchedule"
+                    @close-modal="closeScheduleModal"/>
         </div>
     </MountingPortal>
 </template>
@@ -24,6 +30,7 @@
     import GenericRatingPanel from "./GenericRatingPanel";
     import RateCoursesPanel from "./RateCoursesPanel";
     import FriendsPanel from "./FriendsPanel";
+    import ScheduleModal from "./ScheduleModal";
     const axios = require('axios');
 
     export default {
@@ -33,14 +40,17 @@
             GenericRatingPanel,
             RateCoursesPanel,
             FriendsPanel,
-            MountingPortal
+            MountingPortal,
+            ScheduleModal
         },
         data: function() {
             return {
                 popularCourses: [],
                 interestingCourses: [],
                 hardCourses: [],
-                userFriends: []
+                userFriends: [],
+                showModal: false,
+                modalSchedule: null
             }
         },
         created: async function() {
@@ -69,6 +79,14 @@
                         reject(ex);
                     }
                 });
+            },
+            showScheduleModal(finalDraft) {
+                this.showModal = true;
+                this.modalSchedule = finalDraft;
+            },
+            closeScheduleModal() {
+                this.showModal = false;
+                this.modalSchedule = null;
             }
         }
     }

@@ -1,5 +1,5 @@
 <template>
-<div class="gradd-user-card">
+<div class="gradd-user-card" @click="userCardClick">
 
   <div class="gradd-user-card-image-container">
     <img :src="img" alt="Avatar" class="gradd-user-card-image-container-profile-img">
@@ -19,7 +19,12 @@
 <script>
     export default {
         name: "UserCard",
-        props: ['name', 'user_email', 'img', 'final_draft']
+        props: ['name', 'user_email', 'img', 'final_draft'],
+        methods: {
+          userCardClick() {
+            this.$emit('user-card-click', this.final_draft);
+          }
+        }
     }
 </script>
 
