@@ -1,6 +1,11 @@
 <template>
     <MountingPortal mountTo="#main-content-container-id" name="source" append>
-        <div class="main-container">
+
+        <div class="spinner-container" v-if="isLoading">
+            <pulse-loader :loading="isLoading"></pulse-loader>
+        </div>
+
+        <div class="main-container" v-if="!isLoading">
             <TopPanel/>
             <GenericRatingPanel
                     :heading="'הקורסים הפופולריים ביותר:'"
@@ -11,7 +16,8 @@
             <GenericRatingPanel
                     :heading="'הקורסים הקשים ביותר:'"
                     :places="hardCourses"/>
-            <RateCoursesPanel/>
+            <RateCoursesPanel
+                    :userCoursesToRate="userCoursesToRate"/>
             <FriendsPanel
                     v-if="userFriends && userFriends.length > 0"
                     :friendsArray="userFriends"
@@ -21,6 +27,7 @@
                     :draft="modalSchedule"
                     @close-modal="closeScheduleModal"/>
         </div>
+
     </MountingPortal>
 </template>
 
@@ -31,6 +38,8 @@
     import RateCoursesPanel from "./RateCoursesPanel";
     import FriendsPanel from "./FriendsPanel";
     import ScheduleModal from "./ScheduleModal";
+    import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+
     const axios = require('axios');
 
     export default {
@@ -41,7 +50,8 @@
             RateCoursesPanel,
             FriendsPanel,
             MountingPortal,
-            ScheduleModal
+            ScheduleModal,
+            PulseLoader
         },
         data: function() {
             return {
@@ -50,10 +60,22 @@
                 hardCourses: [],
                 userFriends: [],
                 showModal: false,
-                modalSchedule: null
+                modalSchedule: null,
+                userCoursesToRate: [],
+                userId: '',
+                isLoading: true
             }
         },
         created: async function() {
+            this.userId = await this.getLoggedInUserIdFromChromeStorage();
+
+            const userCoursesToRateFromDb = await axios.get(`http://localhost:8080/user_course/detailed?user_id=${this.userId}`);
+
+            this.userCoursesToRate = userCoursesToRateFromDb.data.map(elem => ({
+                course_name: elem.course_name,
+                course_number: elem.course_number
+            }));
+
             const popularResponse = await axios.get(`http://localhost:8080/user_course/topPopular`);
             this.popularCourses = popularResponse.data;
 
@@ -63,10 +85,10 @@
             const hardResponse = await axios.get(`http://localhost:8080/user_rating/topHard`);
             this.hardCourses = hardResponse.data;
 
-            const user_id = await this.getLoggedInUserIdFromChromeStorage();
-            console.log(user_id);
-            const friendsResponse = await axios.get(`http://localhost:8080/user_friend//friendsByUser?user_id=${user_id}`);
+            const friendsResponse = await axios.get(`http://localhost:8080/user_friend//friendsByUser?user_id=${this.userId}`);
             this.userFriends = friendsResponse.data;
+
+            this.isLoading = false;
         },
         methods: {
             async getLoggedInUserIdFromChromeStorage() {
@@ -99,5 +121,10 @@
         margin-right: 6.5%;
         background-color: #f7fffd;
         box-shadow: 1px 3px 14px -2px rgba(0,0,0,0.51);
+    }
+    .spinner-container {
+        margin-top: 20% !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 </style>
