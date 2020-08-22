@@ -94,6 +94,9 @@
             BIconXCircle,
             MountingPortal,
             PulseLoader
+        },
+        mounted() {
+            this.$nextTick(() => document.querySelector("h1.pull-right").innerText = "ניהול תואר");
         }
     })
 </script>

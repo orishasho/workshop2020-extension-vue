@@ -1,6 +1,6 @@
 <template>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle menu-item-has-children DDLocal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">לשונית תוסף</a>
+        <a href="#" class="dropdown-toggle menu-item-has-children DDLocal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gradd</a>
         <ul class="dropdown-menu">
             <ExtensionDropdownLinkClick 
             v-for="(linkText, i) in linkTexts" 
@@ -20,7 +20,7 @@
         },
         data: function () {
             return {
-                linkTexts: ['ניהול תואר', 'בניית מערכת שעות', 'Gradd Together'],
+                linkTexts: ['ניהול תואר', 'תכנון מערכת שעות', 'Gradd Together'],
                 compnentsNames: ['DegreeStatusPage', 'Schedule', 'GraddTogetherContainer']
             }
         }
