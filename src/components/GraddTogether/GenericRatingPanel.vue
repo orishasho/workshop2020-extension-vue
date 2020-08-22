@@ -1,20 +1,20 @@
 <template>
-    <div class="rating-container">
+    <div v-if="places && places.length > 2" class="rating-container">
         <h3> {{heading}} </h3>
         <div class="medals-container">
             <div class="first-place-container">
                 <font-awesome-icon icon="medal" size="7x" class="first-place-medal"/>
-                <h1>{{places[0]}}</h1>
+                <h1>{{places[0].course_name + " " + places[0].cnt}}</h1>
             </div>
 
             <div class="second-place-container">
                 <font-awesome-icon icon="medal" size="5x" class="second-place-medal"/>
-                <h2>{{places[1]}}</h2>
+                <h2>{{places[1].course_name + " " + places[1].cnt}}</h2>
             </div>
 
             <div class="third-place-container">
                 <font-awesome-icon icon="medal" size="3x" class="third-place-medal"/>
-                <h4>{{places[2]}}</h4>
+                <h4>{{places[2].course_name + " " + places[2].cnt}}</h4>
             </div>
             
         </div>
@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: "GenericRatingPanelr",
+        name: "GenericRatingPanel",
         props: ['heading', 'places'],
         methods: {
             mounted: function() {

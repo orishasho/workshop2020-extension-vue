@@ -12,7 +12,8 @@
                 :heading="'הקורסים הקשים ביותר:'"
                 :places="hardCourses"/>
             <RateCoursesPanel/>
-            <FriendsPanel/>
+            <FriendsPanel
+                :friendsArray="userFriends"/>
         </div>
     </MountingPortal>
 </template>
@@ -22,6 +23,7 @@
     import TopPanel from "./TopPanel";
     import GenericRatingPanel from "./GenericRatingPanel";
     import RateCoursesPanel from "./RateCoursesPanel";
+    import FriendsPanel from "./FriendsPanel";
     const axios = require('axios');
 
     export default {
@@ -29,24 +31,44 @@
         components: {
             TopPanel,
             GenericRatingPanel,
-            RateCoursesPanel
+            RateCoursesPanel,
+            FriendsPanel
         },
         data: function() {
             return {
                 popularCourses: [],
                 interestingCourses: [],
-                hardCourses: []
+                hardCourses: [],
+                userFriends: []
             }
         },
         created: async function() {
             const popularResponse = await axios.get(`http://localhost:8080/user_course/topPopular`);
-            this.popularCourses = popularResponse.data.map(elem => elem.course_name);
+            this.popularCourses = popularResponse.data;
 
             const interestingResponse = await axios.get(`http://localhost:8080/user_rating/topInteresting`);
-            this.interestingCourses = interestingResponse.data.map(elem => elem.course_name);
+            this.interestingCourses = interestingResponse.data;
             
             const hardResponse = await axios.get(`http://localhost:8080/user_rating/topHard`);
-            this.hardCourses = hardResponse.data.map(elem => elem.course_name);
+            this.hardCourses = hardResponse.data;
+
+            const user_id = await this.getLoggedInUserIdFromChromeStorage();
+            console.log(user_id);
+            const friendsResponse = await axios.get(`http://localhost:8080/user_friend//friendsByUser?user_id=${user_id}`);
+            this.userFriends = friendsResponse.data;
+        },
+        methods: {
+            async getLoggedInUserIdFromChromeStorage() {
+                return new Promise((resolve, reject) => {
+                    try {
+                        chrome.storage.sync.get('loggedUserId', function(value) {
+                            resolve(value.loggedUserId);
+                        })
+                    } catch (ex) {
+                        reject(ex);
+                    }
+                });
+            }
         }
     }
 </script>
