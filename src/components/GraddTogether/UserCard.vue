@@ -1,5 +1,5 @@
 <template>
-<div class="user-card">
+<div class="user-card" @click="userCardClick">
   <img :src="img" alt="Avatar" class="profile-img">
   <div class="cards-container">
     <h4><b>{{name}}</b></h4> 
@@ -11,7 +11,12 @@
 <script>
     export default {
         name: "UserCard",
-        props: ['name', 'user_email', 'img', 'final_draft']
+        props: ['name', 'user_email', 'img', 'final_draft'],
+        methods: {
+          userCardClick() {
+            this.$emit('user-card-click', this.final_draft);
+          }
+        }
     }
 </script>
 
