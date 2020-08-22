@@ -3,7 +3,8 @@
         <transition name="gradd-modal">
             <div class="gradd-overlay" @click.self="closeModal">
                 <div class="gradd-modal">
-                    <ScheduleReadOnly/>
+                    <ScheduleReadOnly
+                    :draft_json="draft"/>
                 </div>
             </div>
         </transition>
@@ -42,6 +43,8 @@
         box-shadow: 0 2px 8px 3px !important;
         transition: all 0.2s ease-in !important;
         font-family: Helvetica, Arial, sans-serif !important;
+        display: flex;
+        overflow-y: auto !important;
     }
     .fadeIn-enter {
         opacity: 0 !important;

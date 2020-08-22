@@ -54,9 +54,6 @@
       return {
         coursesSchedules: [],
         currentSemester: 1,
-        currentDraftName: "",
-        coursesSchedulesLoader: {},
-        draftsLoader: {},
         draftBySemesterMap: {1:[], 2:[], 3:[]},
 
         dayName: {
@@ -75,15 +72,18 @@
       }
     },
 
+    props: ['draft_json'],
+
     mounted:  function () {
       this.$nextTick(() => {
-            this.coursesSchedulesLoader = new CoursesSchedulesLoader();
-            this.draftsLoader = new UserScheduleDraftsLoader();
+            this.createClickEventsForSemesterButtons();
             this.generateTableCells();
+            this.draftBySemesterMap = JSON.parse(this.draft_json);
+            this.loadCurrentSemesterDraft();
           });
     },
 
-    created:  async function () {
+    created:  function () {
             // Close the dropdown if the user clicks outside of it
       },
 
@@ -98,37 +98,31 @@
         let courseTeacher = course.teacher;
         let courseType = course.type;
 
-        if (this.isCourseOverlap(course)) {
-          console.log("going to remove: ");
-          console.dir(course);
-          //this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
-        } else {
-          const startHourParts = (courseStartHour + "").split(".");
-          let startHourD = new Date(2018, 4, courseDay, startHourParts[0], startHourParts[1]);
-          const endHourParts = (courseEndHour + "").split(".");
-          let endHourD = new Date(2018, 4, courseDay, endHourParts[0], endHourParts[1]);
-          const millisecondsDur = Math.abs(endHourD - startHourD);
-          const hoursDur = millisecondsDur / 36e5;
+        const startHourParts = (courseStartHour + "").split(".");
+        let startHourD = new Date(2018, 4, courseDay, startHourParts[0], startHourParts[1]);
+        const endHourParts = (courseEndHour + "").split(".");
+        let endHourD = new Date(2018, 4, courseDay, endHourParts[0], endHourParts[1]);
+        const millisecondsDur = Math.abs(endHourD - startHourD);
+        const hoursDur = millisecondsDur / 36e5;
 
-          let divItem = document.createElement("div");
-          let tdHeight = (document.getElementsByTagName("td")[0]).clientHeight;
-          divItem.style.height = (tdHeight * hoursDur * 2) + "px";
+        let divItem = document.createElement("div");
+        let tdHeight = (document.getElementsByTagName("td")[0]).clientHeight;
+        divItem.style.height = (tdHeight * hoursDur * 2) + "px";
 
-          let divTopRatio = startHourParts[1];
-          if (startHourParts[1] >= 30) {
-            divTopRatio -= 30;
-          }
-          divItem.style.top = ((divTopRatio / 30) * 100) + "%";
-          divItem.setAttribute("class", "courseTableDiv");
-          divItem.setAttribute("ref", "courseTableDiv");
-          divItem.innerHTML = evt.target.innerHTML;
-          divItem.courseDetails = course;
-          divItem.buttonRef = evt.target;
-          //divItem.addEventListener('click', this.removeCourseFromTimeTable);
-
-          this.placeCourseInTable(divItem, course);
-          //this.remove
+        let divTopRatio = startHourParts[1];
+        if (startHourParts[1] >= 30) {
+          divTopRatio -= 30;
         }
+        divItem.style.top = ((divTopRatio / 30) * 100) + "%";
+        divItem.setAttribute("class", "courseTableDiv");
+        divItem.setAttribute("ref", "courseTableDiv");
+        divItem.innerHTML = evt.target.innerHTML;
+        divItem.courseDetails = course;
+        divItem.buttonRef = evt.target;
+        //divItem.addEventListener('click', this.removeCourseFromTimeTable);
+
+        this.placeCourseInTable(divItem, course);
+        //this.remove
       },
 
       placeCourseInTable(divItem, course) {
@@ -167,17 +161,14 @@
           allSemestersButtons[i].classList.remove("current");
         }
         evt.target.parentNode.classList.add("current");
-        this.handleSemesterSwitch();
         this.currentSemester = evt.target.parentNode.id.slice(-1);
-        this.fillCoursesDropdown();
+        this.clearSchedule();
         this.loadCurrentSemesterDraft();
       },
 
-      handleSemesterSwitch() {
-          this.saveCurrentSemesterCoursesToMap(true);
-      },
-
       loadCurrentSemesterDraft() {
+        console.log("in problem");
+        console.dir(this.draftBySemesterMap[this.currentSemester]);
         this.draftBySemesterMap[this.currentSemester].forEach (courseToPlaceInTable => {
             const fakeCoursePlacementButton = this.generateCoursePlacementButton(courseToPlaceInTable);
             fakeCoursePlacementButton.click();
@@ -231,7 +222,6 @@
       },
 
       clearSchedule() {
-        this.draftBySemesterMap = {1:[], 2:[], 3:[]};
         const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
         for (let i = 0; i < currentCoursesInTable.length; i++) {
           currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
@@ -360,7 +350,6 @@
   }
 
   .dropbtn-drafts {
-    cursor: pointer !important;
     font-size: 16px !important;
     border: none !important;
     outline: none !important;
@@ -372,7 +361,6 @@
   }
 
     .scheduleContainer  .dropbtn{
-    cursor: pointer !important;
     font-size: 16px !important;
     border: none !important;
     outline: none !important;
@@ -482,7 +470,7 @@
     box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3) !important;
     -webkit-transform: scale(1.05) !important;
     transform: scale(1.05) !important;
-    cursor: pointer !important;
+    cursor: default !important;
   }
 
   .scheduleContainer  .courseTableDiv p {
@@ -540,7 +528,6 @@
 	  border-radius:6px !important;
 	  border:1px solid #566963 !important;
 	  display:inline-block !important;
-	  cursor:pointer !important;
 	  color:#ffffff !important;
 	  font-family:Arial !important;
 	  font-size:15px !important;
@@ -698,7 +685,6 @@
   background-color:gray !important;
 	border-radius:28px !important;
 	display:inline-block !important;
-	cursor:pointer !important;
 	color:#ffffff !important;
 	font-family:Arial !important;
 	font-size:17px !important;
@@ -710,7 +696,6 @@
   background-color:#696969 !important;
 	border-radius:28px !important;
 	display:inline-block !important;
-	cursor:pointer !important;
 	color:#ffffff !important;
 	font-family:Arial !important;
 	font-size:17px !important;
@@ -722,7 +707,6 @@
 	background-color:#67b897 !important;
 	border-radius:28px !important;
 	display:inline-block !important;
-	cursor:pointer !important;
 	color:#ffffff !important;
 	font-family:Arial !important;
 	font-size:17px !important;
