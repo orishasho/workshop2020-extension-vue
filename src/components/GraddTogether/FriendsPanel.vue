@@ -2,9 +2,9 @@
     <div class="user-cards-container">
         <UserCard v-for="friend in friendsArray" :key="friend.user_email"
         :name="friend.name"
-        :user_email="friend.user_name"
+        :user_email="friend.user_email"
         :img="friend.img"
-        :final_draft="friend.final_draft">
+        :final_draft="friend.final_draft"/>
     </div>
 </template>
 
@@ -21,7 +21,6 @@
 
 <style scoped>
     .user-cards-container {
-        display: flex;
-        justify-content: space-between;
+        display: flex !important;
     }
 </style>

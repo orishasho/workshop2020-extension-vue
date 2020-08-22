@@ -1,7 +1,7 @@
 <template>
-<div class="card">
-  <img :src="img" alt="Avatar" style="width:100%">
-  <div class="container">
+<div class="user-card">
+  <img :src="img" alt="Avatar" class="profile-img">
+  <div class="cards-container">
     <h4><b>{{name}}</b></h4> 
     <p>{{user_email}}</p> 
   </div>
@@ -16,21 +16,26 @@
 </script>
 
 <style scoped>
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  flex-basis: 25%;
-  border-radius: 5px;
+.user-card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2) !important;
+  transition: 0.3s !important;
+  flex-basis: 25% !important;
+  border-radius: 5px !important;
 }
 
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  transform: scale(1.03);
-  transition: 0.3s;
-  cursor: pointer;
+.user-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+  transform: scale(1.03) !important;
+  transition: 0.3s !important;
+  cursor: pointer !important;
 }
 
-.container {
-  padding: 2px 16px;
+.cards-container {
+  padding: 2px 16px !important;
+}
+
+.profile-img {
+  width: 100px !important;
+  height: 100px !important;
 }
 </style>
