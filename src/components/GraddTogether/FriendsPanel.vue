@@ -2,14 +2,13 @@
     <div class="friends-panel-container">
         <h3>החברים שלי:</h3>
         <div class="user-cards-container">
-            <UserCard v-for="friend in friendsArray" :key="friend.user_email"
+            <UserCard @user-card-click="showModal" v-for="friend in friendsArray" :key="friend.user_email"
                       :name="friend.name"
                       :user_email="friend.user_email"
                       :img="friend.img"
                       :final_draft="friend.draft"/>
         </div>
     </div>
-</div>
 </template>
 
 <script>
