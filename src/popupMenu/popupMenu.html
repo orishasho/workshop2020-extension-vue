@@ -11,7 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <div class="search-select" id="main-dropdown">
-        <span class="field"><label class="seltext" for="opened">שם התוסף!</label></span>
+        <!-- <span class="field"><label class="seltext" for="opened"> -->
+        <img src="https://i.imgur.com/18gs2LN.png" style="height: 90px; width: 300px; margin-right: 10px;">
+        <!-- </label></span> -->
         <ul class="select">
             <li class="icon arrow"></li>
             <li id="login-li">
@@ -19,14 +21,25 @@
                     <i class="fa fa-sign-in"></i> &nbsp;&nbsp;&nbsp;&nbsp; התחברות/הרשמה
                 </a>
             </li>
-            <li class="sel">
-                <i class="fa fa-comment"></i> &nbsp;&nbsp;&nbsp;&nbsp; Add-On-Name Shared
+            <li class="sel" id="profile-pic-li">
+                <i class="fa fa-id-card"></i> &nbsp;&nbsp;&nbsp;&nbsp; שינוי תמונת פרופיל
+            </li>
+
+            <li class="sel" id="friend-requests-li">
+                <i class="fa fa-users"></i> &nbsp;&nbsp;&nbsp;&nbsp; בקשות חברות
+            </li>
+
+            <li class="sel" id="manual-li">
+                <i class="fa fa-question-circle"></i> &nbsp;&nbsp;&nbsp;&nbsp; מדריך למשתמש
             </li>
 
             <li id="logout-li">
                 <i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;&nbsp; התנתקות
             </li>
         </ul>
+        <div class="logo-container">
+            <img src="https://i.imgur.com/dGRXLm8.png">
+        </div>
         <div class="connected-as">
             <p id="connected-as-label">מחובר בתור: </p>
         </div>
