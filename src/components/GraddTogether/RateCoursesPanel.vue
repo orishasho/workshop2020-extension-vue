@@ -38,27 +38,16 @@
             DropdownWrapper,
             StarRating
         },
+        props: [
+            'userCoursesToRate'
+        ],
         data: function() {
             return {
-                userCoursesToRate: [],
                 dropdownButtonText: 'בחר קורס...',
                 toggleShowStars: false,
                 currentCourseToRate: '',
                 currentCourseToRateInterestingRating: 0,
                 currentCourseToRateHardRating: 0
-            }
-        },
-        created: async function() {
-            try {
-                console.log('getting data')
-                const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
-                const response = await axios.get(`http://localhost:8080/user_course/detailed?user_id=${loggedUserId}`);
-                this.userCoursesToRate = response.data.map(elem => ({
-                    course_name: elem.course_name,
-                    course_number: elem.course_number
-                }));
-            } catch(e) {
-                console.log(e)
             }
         },
         methods: {

@@ -25,10 +25,6 @@
           showModal(finalDraft) {
             this.$emit('show-schedule-modal', finalDraft);
           }
-        },
-        created() {
-            console.log('FriendsPanel Created: ');
-            console.dir(this.friendsArray);
         }
     }
 </script>

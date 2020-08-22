@@ -25,11 +25,6 @@
     export default {
         name: "GenericRatingPanel",
         props: ['heading', 'places'],
-        methods: {
-            mounted: function() {
-                console.dir(places);
-            }
-        }
     }
 </script>
 
