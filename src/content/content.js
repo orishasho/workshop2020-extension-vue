@@ -13,15 +13,25 @@ import { faMedal } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+const axios = require('axios');
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+const userApiUrl = 'http://localhost:8080/user';
+
+let isUserNameUpdated = false;
+
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
     loggedInEmail = data.loggedEmail;
     init(loggedInEmail); // All your code is contained here, or executes later that this
 });
 
-function init(loggedInEmail) {
+async function init(loggedInEmail) {
     if (loggedInEmail != "") {
         //Extension tab entry point
+        if (!isUserNameUpdated) {
+            await saveUserName(loggedInEmail);
+            isUserNameUpdated = true;
+        }
         let navMenu = document.querySelector(".navbar-nav");
         let appEntry = document.createElement("div");
         appEntry.setAttribute("id", "app");
@@ -52,7 +62,6 @@ function init(loggedInEmail) {
         }
 
         if (viewingStatesModule.isInsideMeidaNet()) {
-            //alert("inside meida net");
             const topToolbar = document.getElementsByClassName("loginbar pull-right");
             let logeedInEmailInToolbar = document.createElement("li");
             logeedInEmailInToolbar.setAttribute("class", "topbar-devider");
@@ -105,4 +114,12 @@ function handleSendDataToApiClick(event) {
     if (!isErrorMessageOnDom) {
         document.querySelector(".textAboveTable").appendChild(errorOrSuccessMessage);
     }
+}
+
+async function saveUserName(userEmail) {
+    const userName = document.querySelector(".loginbar.pull-right").children[2].innerText.trim();
+    await axios.put(`${userApiUrl}/updateUserNameByEmail`, {
+        user_email: userEmail,
+        name: userName
+    });
 }
