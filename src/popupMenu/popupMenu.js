@@ -1,4 +1,6 @@
 import '../content/css/popupMenu.css';
+const axios = require('axios');
+const userFriendApiUrl = 'http://localhost:8080/user_friend';
 
 const logoutMenuItem = document.getElementById('logout-li');
 
@@ -18,11 +20,20 @@ function setMenu(loggedInEmail) {
             loggedInUserLabel.innerHTML = "<i class=\"fa fa-circle\"></i> " + loggedInUserLabel.innerHTML;
         }
     } else {
-        //remove option of logout
+        //remove options of logout and profile edit
         const logoutMenuItem = document.getElementById("logout-li");
         if (logoutMenuItem) {
             logoutMenuItem.parentNode.removeChild(logoutMenuItem);
             loggedInUserLabel.parentNode.removeChild(loggedInUserLabel);
+        }
+        const profilePicMenuItem = document.getElementById("profile-pic-li");
+        if (profilePicMenuItem) {
+            profilePicMenuItem.parentNode.removeChild(profilePicMenuItem);
+        }
+        const friendRequestsMenuItem = document.getElementById("friend-requests-li");
+        if (logoutMenuItem) {
+            friendRequestsMenuItem.parentNode.removeChild(friendRequestsMenuItem);
+
         }
     }
 }
@@ -38,8 +49,51 @@ function refreshMeidaNet() {
     });
 }
 
+async function getLoggedInUserIdFromChromeStorage() {
+    return new Promise((resolve, reject) => {
+        try {
+            chrome.storage.sync.get('loggedUserId', function(value) {
+                resolve(value.loggedUserId);
+            })
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
+
+async function readNumberOfFriendRequests(userId) {
+    let friendRequestsCount = -1;
+    try {
+        const response = await axios.get(
+            `${userFriendApiUrl}/friendRequestsByUserCount`, {
+                params: {
+                    user_id: userId
+                }
+            });
+
+        const count = response.data;
+        if (count[0]) {
+            friendRequestsCount = count[0].count;
+        }
+
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    return friendRequestsCount;
+}
+
+async function updateFriendRequestsMenuItem() {
+    const user_id = await getLoggedInUserIdFromChromeStorage();
+    const numberOfFriendRequests = await readNumberOfFriendRequests(user_id);
+    const friendRequestsMenuItem = document.querySelector("#friend-requests-li");
+    if (friendRequestsMenuItem) {
+        friendRequestsMenuItem.innerHTML = friendRequestsMenuItem.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
+    }
+}
+
 
 addEventListener('DOMContentLoaded', resize);
+updateFriendRequestsMenuItem();
 
 logoutMenuItem.addEventListener('click', (e) => {
     chrome.storage.sync.set({ 'loggedEmail': "", 'loggedUserId': "" }, function() {
@@ -53,5 +107,5 @@ logoutMenuItem.addEventListener('click', (e) => {
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
     loggedInEmail = data.loggedEmail;
-    setMenu(loggedInEmail); // All your code is contained here, or executes later that this
+    setMenu(loggedInEmail);
 });
