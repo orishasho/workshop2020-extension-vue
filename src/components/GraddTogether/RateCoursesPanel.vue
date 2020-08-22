@@ -110,7 +110,7 @@
         margin-right: 10%;
 
         h4 {
-            flex-basis: 28% !important;
+            margin-left: 20px !important;
         }
     }
     .stars-container {

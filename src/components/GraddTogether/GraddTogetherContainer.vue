@@ -32,7 +32,8 @@
             TopPanel,
             GenericRatingPanel,
             RateCoursesPanel,
-            FriendsPanel
+            FriendsPanel,
+            MountingPortal
         },
         data: function() {
             return {
