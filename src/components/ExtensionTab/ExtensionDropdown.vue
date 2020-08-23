@@ -6,7 +6,7 @@
             v-for="(linkText, i) in linkTexts" 
             :key="linkText" 
             :linkText="linkText"
-            :componentName="compnentsNames[i]"
+            :componentName="componentNames[i]"
             :componentsRendered="componentsRendered"
             @component-rendered="handleComponentRendered"/>
         </ul>
@@ -23,7 +23,7 @@
         data: function () {
             return {
                 linkTexts: ['תכנון מערכת שעות', 'Gradd Insights', 'Gradd Together'],
-                compnentsNames: ['Schedule', 'DegreeStatusPage', 'GraddTogetherContainer'],
+                componentNames: ['Schedule', 'DegreeStatusPage', 'GraddTogetherContainer'],
                 componentsRendered: []
             }
         },

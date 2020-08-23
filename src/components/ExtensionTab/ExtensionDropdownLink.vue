@@ -46,14 +46,10 @@
             handleVisibilityToggling(contentContainer) {
                 if (this.componentsRendered.length === 0) {
                     // This is the first component to be rendered
-                    contentContainer.children[0].style.display = "none";
+                    contentContainer.removeChild(contentContainer.children[0]);
                 } else if (this.componentsRendered.length === 1) {
                     if (this.componentName !== this.componentsRendered[0]) {
                         // Rendered one component in the past, now rendering a second one
-                        contentContainer.children[0].style.display = "none";
-                        contentContainer.children[1].style.display = "none";
-                    } else {
-                        // Rendered one component in the past and now rendering it again
                         contentContainer.children[0].style.display = "none";
                     }
                 } else if (this.componentsRendered.length === 2) {
@@ -61,7 +57,6 @@
                         // Rendered two components in the past, now rendering the final one
                         contentContainer.children[0].style.display = "none";
                         contentContainer.children[1].style.display = "none";
-                        contentContainer.children[2].style.display = "none";
                     } else {
                         // Rendered two components in the past, now rendering one that exists
                         this.toggleCorrectComponentVisibility(this.componentName, this.componentsRendered, contentContainer);
@@ -73,7 +68,7 @@
             },
 
             toggleCorrectComponentVisibility(componentName, componentsRendered, contentContainer) {
-                const indexToToggleVisibility = componentsRendered.indexOf(componentName) + 1;
+                const indexToToggleVisibility = componentsRendered.indexOf(componentName);
                 for (let i = 0; i < contentContainer.children.length; i++) {
                     // Toggle visibility only for the current component to render
                     if (i === indexToToggleVisibility) {
