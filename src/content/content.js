@@ -6,12 +6,10 @@ import * as userCoursesModule from "./modules/user-courses";
 import Vue from 'vue';
 import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
 import PortalVue from 'portal-vue';
-import { BootstrapVue } from 'bootstrap-vue';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faMedal } from '@fortawesome/free-solid-svg-icons';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import {faMedal, faAngleDown, faCheckSquare, faTimes} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VueEllipseProgress from 'vue-ellipse-progress';
 
 const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -39,12 +37,14 @@ async function init(loggedInEmail) {
 
         global.browser = require('webextension-polyfill');
         Vue.prototype.$browser = global.browser;
-        Vue.use(PortalVue);
-        Vue.use(BootstrapVue);
 
         //External components
+        Vue.use(PortalVue);
+        Vue.use(VueEllipseProgress);
         library.add(faMedal);
         library.add(faAngleDown);
+        library.add(faCheckSquare);
+        library.add(faTimes);
         Vue.component('font-awesome-icon', FontAwesomeIcon);
         //Extension tab Vue instance
         new Vue({
