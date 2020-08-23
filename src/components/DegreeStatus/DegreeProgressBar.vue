@@ -1,26 +1,21 @@
 <template>
-    <div>
-        <b-progress :max="requiredCredits" height="2rem" striped>
-            <b-progress-bar :value="completedCredits">
-                {{ creditsType }} <strong>{{ completedCredits }} / {{ requiredCredits }}</strong>
-            </b-progress-bar>
-        </b-progress>
-    </div>
+    <vue-ellipse-progress
+            :progress="(creditsCompleted/requiredCredits) * 100"
+            :legend-value="creditsCompleted"
+            color="#007090">
+
+        <span slot="legend-value">/{{ requiredCredits }}</span>
+        <p slot="legend-caption">{{ description }}</p>
+    </vue-ellipse-progress>
 </template>
 
 <script>
-    import { BProgress, BProgressBar } from 'bootstrap-vue'
-
     export default {
         name: "DegreeProgressBar",
-        components: {
-            BProgress,
-            BProgressBar
-        },
-        props: {
-            completedCredits: Number,
-            requiredCredits: Number,
-            creditsType: String
-        }
+        props: [
+            'creditsCompleted',
+            'requiredCredits',
+            'description'
+        ]
     }
 </script>
