@@ -69,6 +69,14 @@
             <h3>כדי לשלוח נתוני קורסים לשרת, גש ל ״בחינות וציונים״ > ״רשימת ציונים״ > כל השנים וכל הסמסטרים</h3>
         </div>
 
+        <div class="file-upload">
+            <input
+                    type="file"
+                    id="imgur-upload"
+                    accept="image/*"
+                    @change="uploadImgToImgur">
+        </div>
+
     </MountingPortal>
 
 </template>
@@ -82,10 +90,13 @@
     import { MountingPortal} from "portal-vue";
     import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
+    const axios = require('axios');
+
     export default observer({
         data: function () {
             return {
-                vm: instantiate(DegreeStatusVm)
+                vm: instantiate(DegreeStatusVm),
+                imgurApiUrl: 'https://api.imgur.com/3/image'
             }
         },
         components: {
@@ -97,6 +108,28 @@
         },
         mounted() {
             this.$nextTick(() => document.querySelector("h1.pull-right").innerText = "ניהול תואר");
+        },
+        methods: {
+            async uploadImgToImgur(event) {
+                const authHeader = {
+                    'Authorization': 'Client-ID b0fd2fb1b5098c9'
+                };
+
+                const imgFile = event.target.files[0];
+
+                const requestFormData = new FormData();
+                requestFormData.append('image', imgFile);
+                try {
+                    const imgurResponse = await axios.post(
+                        this.imgurApiUrl,
+                        requestFormData,
+                        {headers: authHeader});
+                    // THIS IS THE IMAGE URL:
+                    console.log(imgurResponse.data.data.link);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         }
     })
 </script>
@@ -113,6 +146,12 @@
         display: flex !important;
         flex-direction: column;
         align-items: center !important;
+    }
+
+    .file-upload {
+        margin-top: 20% !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 </style>
 
