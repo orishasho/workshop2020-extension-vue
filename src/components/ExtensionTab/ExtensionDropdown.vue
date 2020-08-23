@@ -20,8 +20,8 @@
         },
         data: function () {
             return {
-                linkTexts: ['ניהול תואר', 'תכנון מערכת שעות', 'Gradd Together'],
-                compnentsNames: ['DegreeStatusPage', 'Schedule', 'GraddTogetherContainer']
+                linkTexts: ['תכנון מערכת שעות', 'Gradd Insights', 'Gradd Together'],
+                compnentsNames: ['Schedule', 'DegreeStatusPage', 'GraddTogetherContainer']
             }
         }
     }

@@ -88,7 +88,7 @@
             PulseLoader
         },
         mounted() {
-            this.$nextTick(() => document.querySelector("h1.pull-right").innerText = "ניהול תואר");
+            this.$nextTick(() => document.querySelector("h1.pull-right").innerText = "Gradd Insights");
         }
     })
 </script>
