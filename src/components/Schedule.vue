@@ -123,18 +123,10 @@
 
       }
     },
-/*
-    mounted:  function () {
-        this.$nextTick(() => {
-          console.log(this.$refs.mytbody);
-        });
-    },*/
-
     mounted:  function () {
       this.$nextTick(() => {
             this.coursesSchedulesLoader = new CoursesSchedulesLoader();
             this.draftsLoader = new UserScheduleDraftsLoader();
-            this.changePageTitle();
             this.createClickEventsForSemesterButtons();
             this.generateTableCells();
             this.fillCoursesDropdown();
@@ -410,11 +402,6 @@
         }
       },
 
-      changePageTitle() {
-        const title = document.querySelector("h1.pull-right");
-        title.innerText = "תכנון מערכת שעות";
-      },
-
       generateCoursePlacementButton(course) {
         let divItem = document.createElement("button");
         /*divItem.style.backgroundColor = 'yellow';
@@ -432,7 +419,6 @@
         const filteredCoursesSchedules = this.coursesSchedules.filter(courseSchedule => courseSchedule.course_number === course_number);
         const filteredCoursesSchedulesGrouped = _.groupBy(filteredCoursesSchedules, courseSchedule => courseSchedule.course_group);
         let place = document.getElementById("courses-details");
-
 
         Object.entries(filteredCoursesSchedulesGrouped).forEach(([courseGroupName,courseGroupClasses]) => {
           let courseGroupContainer = this.generateCourseGroupContainer(course_name + " " + courseGroupName);
