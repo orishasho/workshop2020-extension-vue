@@ -6,6 +6,8 @@ import UserCoursesStore from "../store/user-courses-store";
 export default class DegreeStatusVm {
     @inject(UserCoursesStore) userCoursesStore;
 
+    isManagementCollege = window.location.href.includes('colman');
+
     // computed properties:
 
     @computed
@@ -143,21 +145,28 @@ export default class DegreeStatusVm {
 
     @computed
     get totalRequiredCredits() {
-        return this.userCoursesStore.totalRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.totalRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.totalRequiredCredits;
+        }
     }
 
     @computed
     get electiveRequiredCredits() {
-        return this.userCoursesStore.electiveRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.electiveRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.electiveRequiredCredits;
+        }
     }
 
     @computed
     get mandatoryRequiredCredits() {
-        return this.userCoursesStore.mandatoryRequiredCredits;
-    }
-
-    @computed
-    get mathRequiredCredits() {
-        return this.userCoursesStore.mathRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.mandatoryRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.mandatoryRequiredCredits;
+        }
     }
 }

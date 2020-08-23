@@ -23,7 +23,7 @@
                     :requiredCredits="vm.electiveRequiredCredits"
                     :creditsType="'נקז קורסי בחירה'"/>
             <br>
-            <p class="rtl">
+            <p class="rtl" v-if="!vm.isManagementCollege">
                 קורס מתמטי:
                 <b-icon-check-circle v-if="vm.isMathClassCompleted" variant="primary"/>
                 <b-icon-x-circle v-else variant="primary" />
@@ -51,7 +51,7 @@
                     :requiredCredits="vm.electiveRequiredCredits"
                     :creditsType="'נקז קורסי בחירה'"/>
             <br>
-            <p class="rtl">
+            <p class="rtl" v-if="!vm.isManagementCollege">
                 קורס מתמטי:
                 <b-icon-check-circle v-if="vm.isMathClassCompletedByYearEnd" variant="primary"/>
                 <b-icon-x-circle v-else variant="primary" />

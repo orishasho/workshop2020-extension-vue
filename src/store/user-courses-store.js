@@ -13,6 +13,9 @@ export default class UserCoursesStore {
     @observable electiveRequiredCredits = 30;
     @observable mandatoryRequiredCredits = 84;
     @observable mathRequiredCredits = 4;
+    @observable totalRequiredCreditsManagementCollege = 120;
+    @observable electiveRequiredCreditsManagementCollege = 14;
+    @observable mandatoryRequiredCreditsManagementCollege = 100;
     @observable isLoading = true;
     @inject(UserCoursesLoader) loader;
 

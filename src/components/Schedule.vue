@@ -2,86 +2,89 @@
   <MountingPortal mountTo="#main-content-container-id" name="source" append>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <div class="tabs-drafts-container">
-
-      <div class="drafts-dropdown-container">
-        <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
-          בחר טיוטת מערכת...
-          &emsp;
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content" id="myDropdown-drafts"></div>
-      </div>
-
-      <div class="save-btn-1">
-        <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
-      </div>
-
-      <div class="save-btn-1">
-        <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
-      </div>
-
-      <div class="save-btn-2">
-        <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
-      </div>
-
-      <div class="tab">
-        <ul class="tabs">
-          <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
-          <li id="semester2"><a href="#">סמסטר ב'</a></li>
-          <li id="semester3"><a href="#">סמסטר קיץ</a></li>
-        </ul>
-      </div>
-
-      <div class="reset-layout-btn">
-        <div class="reset-layout-btn-cls" id="reset-layout-btn-id" @click="clearSchedule()">נקה לוח</div>
-      </div>
-
+    <div v-if="isInManagementCollege()" class="not-available">
+      <h1>אפשרות זו אינה זמינה עדיין באתר המכללה למנהל</h1>
     </div>
 
-    <div class = "scheduleContainer">
-    <div class="leftcolumn">
-      <table id="coursesTimetable">
-        <thead>
-        <tr>
-          <th></th>
-          <th>
-            <span class="long">ראשון</span>
-          </th>
-          <th>
-            <span class="long">שני</span>
-          </th>
-          <th>
-            <span class="long">שלישי</span>
-          </th>
-          <th>
-            <span class="long">רביעי</span>
-          </th>
-          <th>
-            <span class="long">חמישי</span>
-          </th>
-          <th>
-            <span class="long">שישי</span>
-          </th>
-        </tr>
-        </thead>
-        <tbody ref="mytbody"></tbody>
-      </table>
-    </div>
+    <div v-else>
+      <div class="tabs-drafts-container">
 
+        <div class="drafts-dropdown-container">
+          <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
+            בחר טיוטת מערכת...
+            &emsp;
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="myDropdown-drafts"></div>
+        </div>
 
+        <div class="save-btn-1">
+          <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
+        </div>
 
+        <div class="save-btn-1">
+          <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
+        </div>
 
-    <div class="rightcolumn">
-      <button class="dropbtn" id="coursesDropdownBtn"  v-on:click="myFunction()" >
-        אנא בחר קורס...
-        &emsp;
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content" id="myDropdown"></div>
+        <div class="save-btn-2">
+          <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
+        </div>
 
-      <div class="card" id="courses-details" style="visibility: hidden;"></div>
-    </div>
+        <div class="tab">
+          <ul class="tabs">
+            <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
+            <li id="semester2"><a href="#">סמסטר ב'</a></li>
+            <li id="semester3"><a href="#">סמסטר קיץ</a></li>
+          </ul>
+        </div>
+
+        <div class="reset-layout-btn">
+          <div class="reset-layout-btn-cls" id="reset-layout-btn-id" @click="clearSchedule()">נקה לוח</div>
+        </div>
+
+      </div>
+
+      <div class = "scheduleContainer">
+        <div class="leftcolumn">
+          <table id="coursesTimetable">
+            <thead>
+            <tr>
+              <th></th>
+              <th>
+                <span class="long">ראשון</span>
+              </th>
+              <th>
+                <span class="long">שני</span>
+              </th>
+              <th>
+                <span class="long">שלישי</span>
+              </th>
+              <th>
+                <span class="long">רביעי</span>
+              </th>
+              <th>
+                <span class="long">חמישי</span>
+              </th>
+              <th>
+                <span class="long">שישי</span>
+              </th>
+            </tr>
+            </thead>
+            <tbody ref="mytbody"></tbody>
+          </table>
+        </div>
+
+        <div class="rightcolumn">
+          <button class="dropbtn" id="coursesDropdownBtn"  v-on:click="myFunction()" >
+            אנא בחר קורס...
+            &emsp;
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="myDropdown"></div>
+
+          <div class="card" id="courses-details" style="visibility: hidden;"></div>
+        </div>
+      </div>
     </div>
   </MountingPortal>
 </template>
@@ -162,6 +165,10 @@
 
 
     methods: {
+      isInManagementCollege() {
+        return window.location.href.includes('colman');
+      },
+
       fillCoursesDropdown() {
         this.coursesSchedulesLoader
         .getPossibleCourses(this.currentSemester)
@@ -1087,5 +1094,10 @@
 .save-draft-btn.disabled {
   visibility: hidden;
 }
+
+  .not-available {
+    display: flex !important;
+    justify-content: center !important;
+  }
 
 </style> 

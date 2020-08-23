@@ -1,6 +1,15 @@
 const axios = require('axios');
+
 const userCourseApiUrl = 'http://localhost:8080/user_course';
 const courseApiUrl = 'http://localhost:8080/course';
+
+const userCourseApiUrlManagement = 'http://localhost:8080/management_college/user_course';
+const courseApiUrlManagement = 'http://localhost:8080/management_college/course';
+
+const isManagementCollege = window.location.href.includes('colman');
+
+const actualCourseApiUrl = isManagementCollege ? courseApiUrlManagement : courseApiUrl;
+const actualUserCourseApiUrl = isManagementCollege ? userCourseApiUrlManagement : userCourseApiUrl;
 
 export default class UserCoursesLoader {
 
@@ -17,10 +26,9 @@ export default class UserCoursesLoader {
     }
 
     async getUserCourses() {
-        //TODO: dynamic user_id
         try {
             const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
-            const response = await axios.get(`${userCourseApiUrl}/detailed?user_id=${loggedUserId}`);
+            const response = await axios.get(`${actualUserCourseApiUrl}/detailed?user_id=${loggedUserId}`);
             const userCoursesArray = response.data;
             console.dir(userCoursesArray);
             return userCoursesArray;
@@ -31,11 +39,16 @@ export default class UserCoursesLoader {
 
     //courseType = 'mandatory' / 'elective' / 'math' / 'workshop'
     async getSpecificCourseTypeNumbers(courseType) {
+        // Management College doesn't have math courses
+        if (isManagementCollege && courseType === 'math') {
+            return;
+        }
+
         try {
-            const response = await axios.get(`${courseApiUrl}/${courseType}`);
-            const electiveCoursesArray = response.data;
-            const electiveCoursesNumbers = electiveCoursesArray.map(electiveCourse => electiveCourse['course_number']);
-            return electiveCoursesNumbers;
+            const response = await axios.get(`${actualCourseApiUrl}/${courseType}`);
+            const specificTypeCoursesArray = response.data;
+            const specificTypeCoursesNumbers = specificTypeCoursesArray.map(electiveCourse => electiveCourse['course_number']);
+            return specificTypeCoursesNumbers;
         } catch (e) {
             console.log(e);
         }
