@@ -1,31 +1,39 @@
 <template>
     <MountingPortal mountTo="#main-content-container-id" name="source" append>
 
-        <div class="spinner-container" v-if="isLoading">
-            <pulse-loader :loading="isLoading"></pulse-loader>
+        <div v-if="isInManagementCollege()" class="not-available">
+            <h1>אפשרות זו אינה זמינה עדיין באתר המכללה למנהל</h1>
         </div>
 
-        <div class="main-container" v-if="!isLoading">
-            <TopPanel/>
-            <GenericRatingPanel
-                    :heading="'הקורסים הפופולריים ביותר:'"
-                    :places="popularCourses"/>
-            <GenericRatingPanel
-                    :heading="'הקורסים המעניינים ביותר:'"
-                    :places="interestingCourses"/>
-            <GenericRatingPanel
-                    :heading="'הקורסים הקשים ביותר:'"
-                    :places="hardCourses"/>
-            <RateCoursesPanel
-                    :userCoursesToRate="userCoursesToRate"/>
-            <FriendsPanel
-                    v-if="userFriends && userFriends.length > 0"
-                    :friendsArray="userFriends"
-                    @show-schedule-modal="showScheduleModal"/>
-            <ScheduleModal
-                    v-if="modalSchedule && showModal"
-                    :draft="modalSchedule"
-                    @close-modal="closeScheduleModal"/>
+        <div v-else>
+
+            <div class="spinner-container" v-if="isLoading">
+                <pulse-loader :loading="isLoading"></pulse-loader>
+            </div>
+
+            <div class="main-container" v-if="!isLoading">
+                <TopPanel/>
+                <GenericRatingPanel
+                        :heading="'הקורסים הפופולריים ביותר:'"
+                        :places="popularCourses"/>
+                <GenericRatingPanel
+                        :heading="'הקורסים המעניינים ביותר:'"
+                        :places="interestingCourses"/>
+                <GenericRatingPanel
+                        :heading="'הקורסים הקשים ביותר:'"
+                        :places="hardCourses"/>
+                <RateCoursesPanel
+                        :userCoursesToRate="userCoursesToRate"/>
+                <FriendsPanel
+                        v-if="userFriends && userFriends.length > 0"
+                        :friendsArray="userFriends"
+                        @show-schedule-modal="showScheduleModal"/>
+                <ScheduleModal
+                        v-if="modalSchedule && showModal"
+                        :draft="modalSchedule"
+                        @close-modal="closeScheduleModal"/>
+            </div>
+
         </div>
 
     </MountingPortal>
@@ -109,6 +117,9 @@
             closeScheduleModal() {
                 this.showModal = false;
                 this.modalSchedule = null;
+            },
+            isInManagementCollege() {
+                return window.location.href.includes('colman');
             }
         }
     }
@@ -124,6 +135,11 @@
     }
     .spinner-container {
         margin-top: 20% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .not-available {
         display: flex !important;
         justify-content: center !important;
     }

@@ -32,3 +32,7 @@ export function isInsideHomePage() {
         return false;
     }
 }
+
+export function isManagementCollege() {
+    return window.location.href.includes('colman');
+}

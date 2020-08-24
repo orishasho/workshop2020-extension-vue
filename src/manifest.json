@@ -12,7 +12,10 @@
 
     },
     "content_scripts": [{
-        "matches": ["https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*"],
+        "matches": [
+            "https://mtamn.mta.ac.il/yedion/fireflyweb.aspx*",
+            "https://wwwi.colman.ac.il/yedion/fireflyweb.aspx*"
+        ],
         "all_frames": true,
         "js": ["content.js"],
         "css": ["content.css"]

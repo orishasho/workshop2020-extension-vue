@@ -6,6 +6,8 @@ import UserCoursesStore from "../store/user-courses-store";
 export default class DegreeStatusVm {
     @inject(UserCoursesStore) userCoursesStore;
 
+    isManagementCollege = window.location.href.includes('colman');
+
     // computed properties:
 
     @computed
@@ -119,10 +121,25 @@ export default class DegreeStatusVm {
     }
 
     @computed
+    get isSeminarionCompleted() {
+        return this.userCoursesStore.userCourses.some(userCourse =>
+            userCourse['course_type'] === 'seminarion' &&
+            userCourse['course_status'] === 'passed');
+    }
+
+    @computed
     get isWorkshopCompletedByYearEnd() {
         return this.isWorkshopCompleted
             || this.userCoursesStore.userCourses.some(userCourse =>
                 userCourse['course_type'] === 'workshop' &&
+                userCourse['course_status'] === 'signed');
+    }
+
+    @computed
+    get isSeminarionCompletedByYearEnd() {
+        return this.isSeminarionCompleted
+            || this.userCoursesStore.userCourses.some(userCourse =>
+                userCourse['course_type'] === 'seminarion' &&
                 userCourse['course_status'] === 'signed');
     }
 
@@ -143,21 +160,28 @@ export default class DegreeStatusVm {
 
     @computed
     get totalRequiredCredits() {
-        return this.userCoursesStore.totalRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.totalRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.totalRequiredCredits;
+        }
     }
 
     @computed
     get electiveRequiredCredits() {
-        return this.userCoursesStore.electiveRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.electiveRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.electiveRequiredCredits;
+        }
     }
 
     @computed
     get mandatoryRequiredCredits() {
-        return this.userCoursesStore.mandatoryRequiredCredits;
-    }
-
-    @computed
-    get mathRequiredCredits() {
-        return this.userCoursesStore.mathRequiredCredits;
+        if (this.isManagementCollege) {
+            return this.userCoursesStore.mandatoryRequiredCreditsManagementCollege;
+        } else {
+            return this.userCoursesStore.mandatoryRequiredCredits;
+        }
     }
 }
