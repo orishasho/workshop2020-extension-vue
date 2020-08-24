@@ -830,7 +830,7 @@
     box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3);
     -webkit-transform: scale(1.05);
     transform: scale(1.05);
-    cursor: pointer;
+    cursor: pointer !important;
   }
 
   .scheduleContainer  .courseTableDiv p {
@@ -874,7 +874,7 @@
     border-right: 1px solid #626e7e;
     border-collapse: separate;
     min-width: 100px;
-    cursor: default;
+    /*cursor: default;*/
   }
 
   .scheduleContainer  table tbody tr td.hour span {
