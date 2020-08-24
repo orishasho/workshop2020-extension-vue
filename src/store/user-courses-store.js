@@ -9,6 +9,7 @@ export default class UserCoursesStore {
     @observable mandatoryCoursesNumbers = [];
     @observable mathCoursesNumbers = [];
     @observable workshopCoursesNumbers = [];
+    @observable seminarionCoursesNumbers = [];
     @observable totalRequiredCredits = 124;
     @observable electiveRequiredCredits = 30;
     @observable mandatoryRequiredCredits = 84;
@@ -37,12 +38,19 @@ export default class UserCoursesStore {
 
     @action.bound
     async loadMathCoursesNumbers() {
+        // MTA Only!
         this.mathCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('math');
     }
 
     @action.bound
     async loadWorkshopCoursesNumbers() {
-        this.mathCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('workshop');
+        this.workshopCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('workshop');
+    }
+
+    @action.bound
+    async loadSeminarionCoursesNumbers() {
+        // Management college only!
+        this.seminarionCoursesNumbers = await this.loader.getSpecificCourseTypeNumbers('seminarion');
     }
 
     @postConstruct
@@ -52,5 +60,6 @@ export default class UserCoursesStore {
         this.loadElectiveCoursesNumbers();
         this.loadMathCoursesNumbers();
         this.loadWorkshopCoursesNumbers();
+        this.loadSeminarionCoursesNumbers();
     }
 }

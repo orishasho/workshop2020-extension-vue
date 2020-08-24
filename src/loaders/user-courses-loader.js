@@ -30,7 +30,6 @@ export default class UserCoursesLoader {
             const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
             const response = await axios.get(`${actualUserCourseApiUrl}/detailed?user_id=${loggedUserId}`);
             const userCoursesArray = response.data;
-            console.dir(userCoursesArray);
             return userCoursesArray;
         } catch (e) {
             console.log(e);
@@ -44,10 +43,15 @@ export default class UserCoursesLoader {
             return;
         }
 
+        // MTA doesn't have seminarion
+        if (!isManagementCollege && courseType === 'seminarion') {
+            return;
+        }
+
         try {
             const response = await axios.get(`${actualCourseApiUrl}/${courseType}`);
             const specificTypeCoursesArray = response.data;
-            const specificTypeCoursesNumbers = specificTypeCoursesArray.map(electiveCourse => electiveCourse['course_number']);
+            const specificTypeCoursesNumbers = specificTypeCoursesArray.map(course => course['course_number']);
             return specificTypeCoursesNumbers;
         } catch (e) {
             console.log(e);

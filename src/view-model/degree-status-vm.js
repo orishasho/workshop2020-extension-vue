@@ -121,10 +121,25 @@ export default class DegreeStatusVm {
     }
 
     @computed
+    get isSeminarionCompleted() {
+        return this.userCoursesStore.userCourses.some(userCourse =>
+            userCourse['course_type'] === 'seminarion' &&
+            userCourse['course_status'] === 'passed');
+    }
+
+    @computed
     get isWorkshopCompletedByYearEnd() {
         return this.isWorkshopCompleted
             || this.userCoursesStore.userCourses.some(userCourse =>
                 userCourse['course_type'] === 'workshop' &&
+                userCourse['course_status'] === 'signed');
+    }
+
+    @computed
+    get isSeminarionCompletedByYearEnd() {
+        return this.isSeminarionCompleted
+            || this.userCoursesStore.userCourses.some(userCourse =>
+                userCourse['course_type'] === 'seminarion' &&
                 userCourse['course_status'] === 'signed');
     }
 

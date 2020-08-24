@@ -135,12 +135,7 @@ async function storeUserCourses(userCourses) {
     // 2. Send user courses array to API
 
     // 2.1. Determine which API to use - MTA or Management College
-    let actualUserCourseApiUrl;
-    if (isManagementCollege) {
-        actualUserCourseApiUrl = userCourseApiUrlManagementCollege;
-    } else {
-        actualUserCourseApiUrl = userCourseApiUrl;
-    }
+    const actualUserCourseApiUrl = getActualUserCourseApiUrl();
 
     // 2.2. Send data
     try {
@@ -153,9 +148,18 @@ async function storeUserCourses(userCourses) {
     }
 }
 
+function getActualUserCourseApiUrl() {
+    if (isManagementCollege) {
+        return userCourseApiUrlManagementCollege;
+    } else {
+        return userCourseApiUrl;
+    }
+}
+
 function determineCourseStatus(userCourse, courseGrade) {
     if (courseGrade >= 60 ||
         userCourse['ציון'] === 'עבר' ||
+        userCourse['ציון'] === 'עובר' ||
         userCourse['ציון'].includes('פטור') ||
         userCourse['ציון'].includes('זכוי')) {
         return 'passed';

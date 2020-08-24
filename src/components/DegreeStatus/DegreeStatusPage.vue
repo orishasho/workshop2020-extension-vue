@@ -24,11 +24,16 @@
                 </div>
                 <div class="math-workshop-container">
                     <MathOrWorkshopCheckbox
+                            v-if="!vm.isManagementCollege"
                             :text="'קורס מתמטי:'"
                             :isCompleted="vm.isMathClassCompleted"/>
                     <MathOrWorkshopCheckbox
                             :text="'סדנה:'"
                             :isCompleted="vm.isWorkshopCompleted"/>
+                    <MathOrWorkshopCheckbox
+                            v-if="vm.isManagementCollege"
+                            :text="'סמינריון:'"
+                            :isCompleted="vm.isSeminarionCompleted"/>
                 </div>
                 <div class="heading-container">
                     <h1>צפי לסוף השנה:</h1>
@@ -49,11 +54,16 @@
                 </div>
                 <div class="math-workshop-container">
                     <MathOrWorkshopCheckbox
-                        :text="'קורס מתמטי:'"
-                        :isCompleted="vm.isMathClassCompletedByYearEnd"/>
+                            v-if="!vm.isManagementCollege"
+                            :text="'קורס מתמטי:'"
+                            :isCompleted="vm.isMathClassCompletedByYearEnd"/>
                     <MathOrWorkshopCheckbox
-                        :text="'סדנה:'"
-                        :isCompleted="vm.isWorkshopCompletedByYearEnd"/>
+                            :text="'סדנה:'"
+                            :isCompleted="vm.isWorkshopCompletedByYearEnd"/>
+                    <MathOrWorkshopCheckbox
+                            v-if="vm.isManagementCollege"
+                            :text="'סמינריון:'"
+                            :isCompleted="vm.isSeminarionCompletedByYearEnd"/>
                 </div>
             </div>
         </div>
