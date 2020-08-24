@@ -132,6 +132,16 @@ h3 {
     background: #2181c4;
 }
 
+.friend-request-card .button.button-primary-send {
+    background: #3a9bde;
+    color: #fff;
+    width: 20%;
+}
+
+.friend-request-card .button.button-primary-send:hover {
+    background: #2181c4;
+}
+
 .friend-request-card .button.button-secondary {
     background: #6f8493;
     color: #fff;
@@ -230,4 +240,9 @@ h3 {
 input::placeholder {
     font-size: 18px;
     opacity: 0.6;
+}
+
+.send-h1 {
+    font-size: 15px !important;
+    margin-right: 2px;
 }

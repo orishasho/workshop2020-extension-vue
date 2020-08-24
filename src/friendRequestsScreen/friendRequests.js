@@ -1,6 +1,7 @@
 import '../content/css/friendRequests.css';
 const axios = require('axios');
 const usersFriendsApiUrl = 'http://localhost:8080/user_friend';
+const usersApiUrl = 'http://localhost:8080/user';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -161,11 +162,114 @@ async function generateSearchPage() {
     container.appendChild(searchContainerDiv);
 }
 
-function handleFriendSearch(evt) {
+async function handleFriendSearch(evt) {
     const friendToSearch = document.querySelector("input").value;
-    const userCard = document.getElementsByClassName("friend-request-card")[0];
-    if (userCard) {
-        userCard.parentNode.removeChild(userCard);
+    const container = document.querySelector("#main-container");
+    let userCard = document.getElementsByClassName("friend-request-card")[0];
+    if (!userCard) {
+        userCard = document.createElement("div");
+        userCard.classList.add("friend-request-card");
+        container.appendChild(userCard);
+    }
+    userCard.innerHTML = "";
+    const user_id = await getLoggedInUserIdFromChromeStorage();
+    const friendToAddStatus = await readFriendToSearchStatus(user_id, friendToSearch);
+    console.dir(friendToAddStatus);
+    switch (friendToAddStatus[0].res) {
+        case "no_user":
+            const label_no_user = document.createElement("div");
+            label_no_user.style.fontSize = "15px";
+            label_no_user.innerText = "לא נמצא משתמש בכתובת זו";
+            userCard.appendChild(label_no_user);
+            break;
+        case "already_friends":
+            const label_already_friends = document.createElement("div");
+            label_already_friends.style.fontSize = "15px";
+            label_already_friends.innerText = "המשתמש כבר נמצא ברשימת החברים שלך";
+            userCard.appendChild(label_already_friends);
+            break;
+        case "pending":
+            const label_pending = document.createElement("div");
+            label_pending.style.fontSize = "15px";
+            label_pending.innerText = "בינך ובין המשתמש כבר יש בקשת חברות ממתינה";
+            userCard.appendChild(label_pending);
+            break;
+        case "able":
+            const user_details_res = await readFriendToSearchDetails(friendToSearch);
+            const user_details = user_details_res[0];
+            const profilePictureDiv = document.createElement("div");
+            profilePictureDiv.classList.add("profile-picture");
+            const profilePictureImg = document.createElement("img");
+            profilePictureImg.setAttribute("src", user_details.img);
+            profilePictureDiv.appendChild(profilePictureImg);
+            const userDetailsDiv = document.createElement("div");
+            userDetailsDiv.classList.add("user-details");
+            const userDetailsH1 = document.createElement("h1");
+            userDetailsH1.classList.add("send-h1");
+            userDetailsH1.innerText = user_details.name;
+            userDetailsDiv.appendChild(userDetailsH1);
+
+            const sendButton = document.createElement("button");
+            sendButton.sender = user_id;
+            sendButton.receiver = user_details.user_id;
+            sendButton.addEventListener("click", handleSendFriendRequestClick);
+            sendButton.classList.add("button", "button-primary-send");
+            sendButton.innerText = "שלח בקשת חברות";
+
+
+            userCard.appendChild(profilePictureDiv);
+            userCard.appendChild(userDetailsDiv);
+            userCard.appendChild(sendButton);
+    }
+}
+
+async function readFriendToSearchStatus(userId, friendToAdd) {
+    let res = {};
+    try {
+        const response = await axios.get(
+            `${usersFriendsApiUrl}/friendStatusByUser`, {
+                params: {
+                    user_id: userId,
+                    friend_to_add: friendToAdd
+                }
+            });
+        res = response.data;
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    console.dir(res);
+    return res;
+}
+
+async function readFriendToSearchDetails(email) {
+    let res = {};
+    try {
+        const response = await axios.get(
+            usersApiUrl, {
+                params: {
+                    user_email: email
+                }
+            });
+        res = response.data;
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    console.dir(res);
+    return res;
+}
+
+async function handleSendFriendRequestClick(evt) {
+    const apiDetails = { "sender": evt.target.sender, "receiver": evt.target.receiver };
+    try {
+        const response = await axios.post(
+            `${usersFriendsApiUrl}/sendFriendRequest`,
+            apiDetails
+        );
+        console.log(response);
+        alert("הבקשה נשלחה");
+        document.querySelector("#search-tabs").click();
+    } catch (error) {
+        console.log(error);
     }
 }
 

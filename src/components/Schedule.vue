@@ -790,15 +790,9 @@
   }
 
   .scheduleContainer  .courseTableDiv:hover {
-<<<<<<< HEAD
-    box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3);
-    -webkit-transform: scale(1.05);
-    transform: scale(1.05);
-=======
     box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3) !important;
     -webkit-transform: scale(1.05) !important;
     transform: scale(1.05) !important;
->>>>>>> master
     cursor: pointer !important;
   }
 
@@ -822,17 +816,6 @@
   }
 
   .scheduleContainer  table tbody tr td.hour {
-<<<<<<< HEAD
-    /*font-size: 2em;*/
-    padding: 0;
-    color: #626e7e;
-    background: #fff;
-    border-bottom: 1px solid #626e7e;
-    border-right: 1px solid #626e7e;
-    border-collapse: separate;
-    min-width: 100px;
-    /*cursor: default;*/
-=======
     padding: 0 !important;
     color: #626e7e !important;
     background: #fff !important;
@@ -841,7 +824,6 @@
     border-collapse: separate !important;
     min-width: 100px !important;
     cursor: default !important;
->>>>>>> master
   }
 
   .scheduleContainer  table tbody tr td.hour span {
