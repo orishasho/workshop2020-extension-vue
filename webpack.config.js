@@ -18,6 +18,7 @@ const config = {
         'user-courses': './content/modules/user-courses.js',
         'popupMenu/popupMenu': './popupMenu/popupMenu.js',
         'login/login': './login/login.js',
+        'friendRequestsScreen/friendRequests': './friendRequestsScreen/friendRequests',
         'CoursesSchedulesLoader': './loaders/courses-schedules-loader.js'
     },
     output: {
@@ -81,6 +82,7 @@ const config = {
             { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
             { from: 'popupMenu/popupMenu.html', to: 'popupMenu/popupMenu.html', transform: transformHtml },
             { from: 'login/login.html', to: 'login/login.html', transform: transformHtml },
+            { from: 'friendRequestsScreen/friendRequests.html', to: 'friendRequestsScreen/friendRequests.html', transform: transformHtml },
             {
                 from: 'manifest.json',
                 to: 'manifest.json',

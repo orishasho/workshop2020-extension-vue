@@ -87,7 +87,8 @@ async function updateFriendRequestsMenuItem() {
     const numberOfFriendRequests = await readNumberOfFriendRequests(user_id);
     const friendRequestsMenuItem = document.querySelector("#friend-requests-li");
     if (friendRequestsMenuItem) {
-        friendRequestsMenuItem.innerHTML = friendRequestsMenuItem.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
+        const friendRequestsLink = document.querySelector("#friend-requests-a");
+        friendRequestsLink.innerHTML = friendRequestsLink.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
     }
 }
 

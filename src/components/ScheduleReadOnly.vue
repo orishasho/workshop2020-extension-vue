@@ -2,15 +2,15 @@
   <div>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <div class="tab">
-        <ul class="tabs">
+      <div class="tabRo">
+        <ul class="tabsRo">
           <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
           <li id="semester2"><a href="#">סמסטר ב'</a></li>
           <li id="semester3"><a href="#">סמסטר קיץ</a></li>
         </ul>
       </div>
 
-    <div class = "scheduleContainer">
+    <div class = "scheduleContainerRo">
     <div>
       <table id="coursesTimetable">
         <thead>
@@ -44,8 +44,6 @@
 </template>
 
 <script>
-  import CoursesSchedulesLoader from "../loaders/courses-schedules-loader";
-  import UserScheduleDraftsLoader from "../loaders/user-schedule-drafts-loader";
   import _ from "lodash";
   export default {
     name: "ScheduleReadOnly",
@@ -83,11 +81,6 @@
           });
     },
 
-    created:  function () {
-            // Close the dropdown if the user clicks outside of it
-      },
-
-
     methods: {
       createCourseTableItem(evt) {
         let course = evt.target.courseParam;
@@ -114,8 +107,8 @@
           divTopRatio -= 30;
         }
         divItem.style.top = ((divTopRatio / 30) * 100) + "%";
-        divItem.setAttribute("class", "courseTableDiv");
-        divItem.setAttribute("ref", "courseTableDiv");
+        divItem.setAttribute("class", "courseTableDivRo");
+        divItem.setAttribute("ref", "courseTableDivRo");
         divItem.innerHTML = evt.target.innerHTML;
         divItem.courseDetails = course;
         divItem.buttonRef = evt.target;
@@ -222,7 +215,7 @@
       },
 
       clearSchedule() {
-        const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
+        const currentCoursesInTable = document.querySelectorAll(".courseTableDivRo");
         for (let i = 0; i < currentCoursesInTable.length; i++) {
           currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
       }
@@ -235,254 +228,254 @@
 
 
 <style lang="scss">
-  .scheduleContainer  {
-    direction: rtl !important;
+
+
+
+  .scheduleContainerRo  {
+    direction: rtl ;
   }
 
-  .scheduleContainer  table {
-    font-family: arial !important;
-    width: 100% !important;
-    border-spacing: 0 !important;
-    border-collapse: separate !important;
-    table-layout: fixed !important;
-    margin-bottom: 50px !important;
+  .scheduleContainerRo  table {
+    font-family: arial ;
+    width: 100% ;
+    border-spacing: 0 ;
+    border-collapse: separate ;
+    table-layout: fixed ;
+    margin-bottom: 50px ;
   }
 
-  .scheduleContainer  table td {
-    position: relative !important;
+  .scheduleContainerRo  table td {
+    position: relative ;
   }
 
-    .scheduleContainer  th {
-    text-align: center !important;
+    .scheduleContainerRo  th {
+    text-align: center ;
   }
 
-  /*
-  table td#child {
 
-  }*/
-
-  .scheduleContainer  table thead tr th {
-    background: #626e7e !important;
-    color: #d1d5db !important;
-    padding: 0.5em !important;
-    overflow: hidden !important;
+  .scheduleContainerRo  table thead tr th {
+    background: #626e7e ;
+    color: #d1d5db ;
+    padding: 0.5em ;
+    overflow: hidden ;
   }
 
-  .scheduleContainer  table thead tr th:first-child {
-    border-radius: 3px 0 0 0 !important;
+  .scheduleContainerRo  table thead tr th:first-child {
+    border-radius: 3px 0 0 0 ;
   }
 
-  .scheduleContainer  table thead tr th:last-child {
-    border-radius: 0 3px 0 0 !important;
+  .scheduleContainerRo  table thead tr th:last-child {
+    border-radius: 0 3px 0 0 ;
   }
 
-  .scheduleContainer  table thead tr th .day {
-    display: block !important;
-    font-size: 1.2em !important;
-    border-radius: 50% !important;
-    width: 30px !important;
-    height: 30px !important;
-    margin: 0 auto 5px !important;
-    padding: 5px !important;
-    line-height: 1.8 !important;
-    text-align: center !important;
+  .scheduleContainerRo  table thead tr th .day {
+    display: block ;
+    font-size: 1.2em ;
+    border-radius: 50% ;
+    width: 30px ;
+    height: 30px ;
+    margin: 0 auto 5px ;
+    padding: 5px ;
+    line-height: 1.8 ;
+    text-align: center ;
   }
 
-  .scheduleContainer  table thead tr th .day.active {
-    background: #d1d5db !important;
-    color: #626e7e !important;
+  .scheduleContainerRo  table thead tr th .day.active {
+    background: #d1d5db ;
+    color: #626e7e ;
   }
 
-  .scheduleContainer  table thead tr th .short {
-    display: none !important;
+  .scheduleContainerRo  table thead tr th .short {
+    display: none ;
   }
 
-  .scheduleContainer  table thead tr th i {
-    vertical-align: middle !important;
-    font-size: 2em !important;
+  .scheduleContainerRo  table thead tr th i {
+    vertical-align: middle ;
+    font-size: 2em ;
   }
 
-  .scheduleContainer  table tbody tr {
-    background: #d1d5db !important;
+  .scheduleContainerRo  table tbody tr {
+    background: #d1d5db ;
   }
 
-  .scheduleContainer  table tbody tr:nth-child(odd) {
-    background: #c8cdd4 !important;
+  .scheduleContainerRo  table tbody tr:nth-child(odd) {
+    background: #c8cdd4 ;
   }
 
-  .scheduleContainer  .leftcolumn {
+  .scheduleContainerRo  .leftcolumn {
     //float: left;
-    width: 75% !important;
+    width: 75% ;
   }
 
   /* Right column */
 
-  .scheduleContainer  .rightcolumn {
-    float: right !important;
-    width: 22% !important;
-    background-color: #f1f1f1 !important;
-    padding-left: 20px !important;
-    min-height: 100px !important;
-    overflow: hidden !important;
+  .scheduleContainerRo  .rightcolumn {
+    float: right ;
+    width: 22% ;
+    background-color: #f1f1f1 ;
+    padding-left: 20px ;
+    min-height: 100px ;
+    overflow: hidden ;
   }
 
-  .scheduleContainer  .card {
-    background-color: white !important;
-    padding: 20px !important;
-    margin-top: 20px !important;
-    margin-right: 20px !important;
-    margin-bottom: 20px !important;
+// /*
+//   .scheduleContainer  .card {
+//     background-color: white ;
+//     padding: 20px ;
+//     margin-top: 20px ;
+//     margin-right: 20px ;
+//     margin-bottom: 20px ;
+//   }
+
+//   .scheduleContainer  .card div {
+//     padding-bottom: 20px ;
+//   }
+
+//   .scheduleContainer  .tabbed {
+//     position: absolute ;
+//     left: 150px ;
+//   }
+
+//   .scheduleContainer  .dropdown {
+//     /*float: left;*/
+//     /*overflow: hidden;*/
+//     height: 10px ;
+//   }
+
+//   .dropbtn-drafts {
+//     font-size: 16px ;
+//     border: none ;
+//     outline: none ;
+//     padding: 0.4em 1em ;
+//     font-family: Arial, Helvetica, sans-serif ;
+//     background: #67b897 ;
+//     color: #fff ;
+//     font-weight: bold ;
+//   }
+
+//     .scheduleContainer  .dropbtn{
+//     font-size: 16px ;
+//     border: none ;
+//     outline: none ;
+//     color: black ;
+//     padding: 14px 16px ;
+//     font-family: Arial, Helvetica, sans-serif ;
+//     margin-right: 20px ;
+//     margin-top: 20px ;
+//     background: #9bdecb ;
+//     color: #fff ;
+//     font-weight: bold ;
+//   }
+
+//   .scheduleContainer  .dropdown-content {
+//     display: none ;
+//     position: absolute ;
+//     background-color: #f9f9f9 ;
+//     min-width: 160px ;
+//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) ;
+//     z-index: 1 ;
+//     margin-right: 20px ;
+//     font-family: Arial ;
+//     font-size: smaller ;
+//     overflow: auto ;
+//     max-height: 50% 
+//   }
+
+//   .scheduleContainer  .dropdown-content a {
+//     /*float: none;*/
+//     color: black ;
+//     padding: 12px 16px ;
+//     text-decoration: none ;
+//     display: block ;
+//     text-align: right ;
+//   }
+
+//   .scheduleContainer  .dropdown-content a:hover {
+//     background: #f0fffb ;
+//   }
+
+
+//   .drafts-dropdown-container  .dropdown-content {
+//     display: none ;
+//     position: absolute ;
+//     background-color: #f9f9f9 ;
+//     min-width: 160px ;
+//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) ;
+//     z-index: 1 ;
+//     font-family: Arial ;
+//     font-size: smaller ;
+//     overflow: auto ;
+//     max-height: 50% ;
+//   }
+
+//   .drafts-dropdown-container .dropdown-content a {
+//     /*float: none;*/
+//     color: black ;
+//     padding: 12px 16px ;
+//     text-decoration: none ;
+//     display: block ;
+//     text-align: right ;
+//   }
+
+//   .drafts-dropdown-container  .dropdown-content a:hover {
+//     background: #f0fffb ;
+//   }
+
+// */
+
+
+  .scheduleContainerRo  .show {
+    display: block ;
   }
 
-  .scheduleContainer  .card div {
-    padding-bottom: 20px !important;
+  .scheduleContainerRodrafts-dropdown-container-ro  .show {
+    display: block ;
   }
 
-  .scheduleContainer  .tabbed {
-    position: absolute !important;
-    left: 150px !important;
-  }
-
-  .scheduleContainer  .dropdown {
-    /*float: left;*/
-    /*overflow: hidden;*/
-    height: 10px !important;
-  }
-
-  .dropbtn-drafts {
-    font-size: 16px !important;
-    border: none !important;
-    outline: none !important;
-    padding: 0.4em 1em !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    background: #67b897 !important;
-    color: #fff !important;
-    font-weight: bold !important;
-  }
-
-    .scheduleContainer  .dropbtn{
-    font-size: 16px !important;
-    border: none !important;
-    outline: none !important;
-    color: black !important;
-    padding: 14px 16px !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    margin-right: 20px !important;
-    margin-top: 20px !important;
-    background: #9bdecb !important;
-    color: #fff !important;
-    font-weight: bold !important;
-  }
-
-  .scheduleContainer  .dropdown-content {
-    display: none !important;
-    position: absolute !important;
-    background-color: #f9f9f9 !important;
-    min-width: 160px !important;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
-    z-index: 1 !important;
-    margin-right: 20px !important;
-    font-family: Arial !important;
-    font-size: smaller !important;
-    overflow: auto !important;
-    max-height: 50% !important
-  }
-
-  .scheduleContainer  .dropdown-content a {
-    /*float: none;*/
-    color: black !important;
-    padding: 12px 16px !important;
-    text-decoration: none !important;
-    display: block !important;
-    text-align: right !important;
-  }
-
-  .scheduleContainer  .dropdown-content a:hover {
-    background: #f0fffb !important;
-  }
-
-
-  .drafts-dropdown-container  .dropdown-content {
-    display: none !important;
-    position: absolute !important;
-    background-color: #f9f9f9 !important;
-    min-width: 160px !important;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) !important;
-    z-index: 1 !important;
-    font-family: Arial !important;
-    font-size: smaller !important;
-    overflow: auto !important;
-    max-height: 50% !important;
-  }
-
-  .drafts-dropdown-container .dropdown-content a {
-    /*float: none;*/
-    color: black !important;
-    padding: 12px 16px !important;
-    text-decoration: none !important;
-    display: block !important;
-    text-align: right !important;
-  }
-
-  .drafts-dropdown-container  .dropdown-content a:hover {
-    background: #f0fffb !important;
-  }
-
-
-
-
-  .scheduleContainer  .show {
-    display: block !important;
-  }
-
-  .drafts-dropdown-container  .show {
-    display: block !important;
-  }
-
-  .scheduleContainer  .courseTableDiv {
-    line-height: 150% !important;
-    position: absolute !important;
-    z-index: 1 !important;
-    background: linear-gradient(135deg, #8eeecc, #8ebbee) !important;
+  .scheduleContainerRo  .courseTableDivRo {
+    line-height: 150% ;
+    position: absolute ;
+    z-index: 1 ;
+    background: linear-gradient(135deg, #8eeecc, #8ebbee) ;
     /*height: 94.05px;*/
     /*height: 120px;
       33 * NUMBER*/
-    text-align: center !important;
-    border: 1px outset black !important;
+    text-align: center ;
+    border: 1px outset black ;
     /*box-shadow: 10px 10px 5px -10px rgba(0, 0, 0, 0.75);*/
     /*width: 180px;*/
-    width: 99% !important;
-    font-size: small !important;
-    font-weight: bold !important;
+    width: 99% ;
+    font-size: small ;
+    font-weight: bold ;
     /*margin-left: auto;
       margin-right: auto;*/
-    justify-content: center !important;
+    justify-content: center ;
     /*margin-right: 15px;
       margin-top: -18px;*/
     /*line-height: 200px;*/
     /*white-space: pre;*/
-    display: -webkit-box !important;
-    display: flex !important;
-    transition: 0.2s ease box-shadow, 0.2s ease transform !important;
+    display: -webkit-box ;
+    display: flex ;
+    transition: 0.2s ease box-shadow, 0.2s ease transform ;
   }
 
-  .scheduleContainer  .courseTableDiv:hover {
-    box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3) !important;
-    -webkit-transform: scale(1.05) !important;
-    transform: scale(1.05) !important;
-    cursor: default !important;
+  .scheduleContainerRo  .courseTableDivRo:hover {
+    box-shadow: 0 20px 30px 0 rgba(142, 188, 238, 0.3) ;
+    -webkit-transform: scale(1.05) ;
+    transform: scale(1.05) ;
+    cursor: default ;
   }
 
-  .scheduleContainer  .courseTableDiv p {
-    margin: auto !important;
-    position: relative !important;
+  .scheduleContainerRo  .courseTableDivRo p {
+    margin: auto ;
+    position: relative ;
     /*top: 30%;*/
-    font-size: small !important;
-    font-weight: bold !important;
-    vertical-align: middle !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
+    font-size: small ;
+    font-weight: bold ;
+    vertical-align: middle ;
+    margin-left: auto ;
+    margin-right: auto ;
+    text-align: center ;
   }
 
   /*
@@ -491,12 +484,12 @@
   }
   */
 
-  .scheduleContainer  table tbody tr td {
-    text-align: center !important;
-    vertical-align: top !important;
-    border-left: 1px solid #626e7e !important;
-    position: relative !important;
-    height: 32px !important;
+  .scheduleContainerRo  table tbody tr td {
+    text-align: center ;
+    vertical-align: top ;
+    border-left: 1px solid #626e7e ;
+    position: relative ;
+    height: 32px ;
   }
 
   /*
@@ -505,86 +498,86 @@
   }
   */
 
-  .scheduleContainer  table tbody tr td.hour {
+  .scheduleContainerRo  table tbody tr td.hour {
     /*font-size: 2em;*/
-    padding: 0 !important;
-    color: #626e7e !important;
-    background: #fff !important;
-    border-bottom: 1px solid #626e7e !important;
-    border-right: 1px solid #626e7e !important;
-    border-collapse: separate !important;
-    min-width: 100px !important;
-    cursor: default !important;
+    padding: 0 ;
+    color: #626e7e ;
+    background: #fff ;
+    border-bottom: 1px solid #626e7e ;
+    border-right: 1px solid #626e7e ;
+    border-collapse: separate ;
+    min-width: 100px ;
+    cursor: default ;
   }
 
-  .scheduleContainer  table tbody tr td.hour span {
-    display: block !important;
+  .scheduleContainerRo  table tbody tr td.hour span {
+    display: block ;
   }
 
-  .scheduleContainer  .courseDetails {
-	  box-shadow:inset 0px 1px 0px 0px #91b8b3 !important;
-	  background:linear-gradient(to bottom, #85b8aa 5%, #6c7c7c 100%) !important;
-	  background-color:#85b8aa !important;
-	  border-radius:6px !important;
-	  border:1px solid #566963 !important;
-	  display:inline-block !important;
-	  color:#ffffff !important;
-	  font-family:Arial !important;
-	  font-size:15px !important;
-	  font-weight:bold !important;
-	  padding:6px 24px !important;
-	  text-decoration:none !important;
-	  text-shadow:0px 1px 0px #2b665e !important;
-    margin-bottom: 10px !important;
-    line-height: 100% !important;
-  }
+  // .scheduleContainer  .courseDetails {
+	//   box-shadow:inset 0px 1px 0px 0px #91b8b3 ;
+	//   background:linear-gradient(to bottom, #85b8aa 5%, #6c7c7c 100%) ;
+	//   background-color:#85b8aa ;
+	//   border-radius:6px ;
+	//   border:1px solid #566963 ;
+	//   display:inline-block ;
+	//   color:#ffffff ;
+	//   font-family:Arial ;
+	//   font-size:15px ;
+	//   font-weight:bold ;
+	//   padding:6px 24px ;
+	//   text-decoration:none ;
+	//   text-shadow:0px 1px 0px #2b665e ;
+  //   margin-bottom: 10px ;
+  //   line-height: 100% ;
+  // }
 
-  .scheduleContainer  .courseDetails:hover {
-	  background:linear-gradient(to bottom, #6c7c7c 5%, #85b8aa 100%) !important;
-	  background-color:#6c7c7c !important;
-  }
+  // .scheduleContainer  .courseDetails:hover {
+	//   background:linear-gradient(to bottom, #6c7c7c 5%, #85b8aa 100%) ;
+	//   background-color:#6c7c7c ;
+  // }
 
-  .scheduleContainer  .courseDetails:active {
-    position: relative !important;
-    top: 1px !important;
-  }
+  // .scheduleContainer  .courseDetails:active {
+  //   position: relative ;
+  //   top: 1px ;
+  // }
 
-  .scheduleContainer  .courseDetailsContainer {
-    border-radius: 10px 10px 10px 10px !important;
-    -moz-border-radius: 10px 10px 10px 10px !important;
-    -webkit-border-radius: 10px 10px 10px 10px !important;
-    border: 1px solid #000000 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    /*padding-bottom: 20px;*/
-    padding-right: 5px !important;
-    margin-bottom: 10px !important;
-  }
+  // .scheduleContainer  .courseDetailsContainer {
+  //   border-radius: 10px 10px 10px 10px ;
+  //   -moz-border-radius: 10px 10px 10px 10px ;
+  //   -webkit-border-radius: 10px 10px 10px 10px ;
+  //   border: 1px solid #000000 ;
+  //   font-family: Arial, Helvetica, sans-serif ;
+  //   /*padding-bottom: 20px;*/
+  //   padding-right: 5px ;
+  //   margin-bottom: 10px ;
+  // }
 
-  .scheduleContainer  .courseDetailsContainer h1 {
-    text-align: right !important;
-    margin-top: -10px !important;
-    height: 20px !important;
-    line-height: 20px !important;
-    font-size: 12px !important;
-  }
+  // .scheduleContainer  .courseDetailsContainer h1 {
+  //   text-align: right ;
+  //   margin-top: -10px ;
+  //   height: 20px ;
+  //   line-height: 20px ;
+  //   font-size: 12px ;
+  // }
 
-  .scheduleContainer  .courseDetailsContainer h1 span {
-    background-color: white !important;
-  }
+  // .scheduleContainer  .courseDetailsContainer h1 span {
+  //   background-color: white ;
+  // }
 
   
 
   @media (max-width: 60em) {
     table thead tr th .long {
-      display: none !important;
+      display: none ;
     }
     table thead tr th .short {
-      display: block !important;
+      display: block ;
     }
     table tbody tr td.hour span {
-      transform: rotate(270deg) !important;
-      -webkit-transform: rotate(270deg) !important;
-      -moz-transform: rotate(270deg) !important;
+      transform: rotate(270deg) ;
+      -webkit-transform: rotate(270deg) ;
+      -moz-transform: rotate(270deg) ;
     }
   }
   
@@ -592,136 +585,137 @@
 
     @media (max-width: 27em) {
     table thead tr th {
-      font-size: 65% !important;
+      font-size: 65% ;
     }
     table thead tr th .day {
-      display: block !important;
-      font-size: 1.2em !important;
-      border-radius: 50% !important;
-      width: 20px !important;
-      height: 20px !important;
-      margin: 0 auto 5px !important;
-      padding: 5px !important;
+      display: block ;
+      font-size: 1.2em ;
+      border-radius: 50% ;
+      width: 20px ;
+      height: 20px ;
+      margin: 0 auto 5px ;
+      padding: 5px ;
     }
     table thead tr th .day.active {
-      background: #d1d5db !important;
-      color: #626e7e !important;
+      background: #d1d5db ;
+      color: #626e7e ;
     }
     table tbody tr td.hour {
-      font-size: 1.7em !important;
+      font-size: 1.7em ;
     }
     table tbody tr td.hour span {
-      transform: translateY(16px) rotate(270deg) !important;
-      -webkit-transform: translateY(16px) rotate(270deg) !important;
-      -moz-transform: translateY(16px) rotate(270deg) !important;
+      transform: translateY(16px) rotate(270deg) ;
+      -webkit-transform: translateY(16px) rotate(270deg) ;
+      -moz-transform: translateY(16px) rotate(270deg) ;
     }
   }
 
-  .tab {
-	margin-bottom: 20px !important;
-	position: relative !important;
-	overflow: hidden !important;
-	background: #fff !important;
-	font-family: "Arial" !important;
-	line-height: 1.5 !important;
-	font-weight: 300 !important;
-	color: #888 !important;
-	-webkit-font-smoothing: antialiased !important;
-  direction: rtl !important;
-    text-align:center !important;/* Add This*/
+  .tabRo {
+	margin-bottom: 20px ;
+	position: relative ;
+	overflow: hidden ;
+	background: #fff ;
+	font-family: "Arial" ;
+	line-height: 1.5 ;
+	font-weight: 300 ;
+	color: #888 ;
+	-webkit-font-smoothing: antialiased ;
+  direction: rtl ;
+    text-align:center ;/* Add This*/
     
 }
 
-.tabs {
+.tabsRo {
 	/*display: table;
 	position: relative;*/
-	overflow: hidden !important;
-	margin: 0 !important;
-	width: 100% !important;
-  direction: rtl !important;
-    display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+	overflow: hidden ;
+	margin: 0 ;
+	width: 100% ;
+  direction: rtl ;
+    display: flex ;
+  justify-content: center ;
+  align-items: center ;
+
 
 
 	li {
-		float: left !important;
-		line-height: 38px !important;
-		overflow: hidden !important;
-		padding: 0 !important;
-		position: relative !important;
+		float: left ;
+		line-height: 38px ;
+		overflow: hidden ;
+		padding: 0 ;
+		position: relative ;
 
 
 	}
 
 	a {
-		background-color: #eff0f2 !important;
-		border-bottom: 1px solid #fff !important;
-		color: #888 !important;
-		font-weight: 500 !important;
-		display: block !important;
-		letter-spacing: 0 !important;
-		outline: none !important;
-		padding: 0 20px !important;
-		text-decoration: none !important;
-		-webkit-transition: all 0.2s ease-in-out !important;
-		-moz-transition: all 0.2s ease-in-out !important;
-		transition: all 0.2s ease-in-out !important;
-		border-bottom: 2px solid #67b897 !important;
+		background-color: #eff0f2 ;
+		border-bottom: 1px solid #fff ;
+		color: #888 ;
+		font-weight: 500 ;
+		display: block ;
+		letter-spacing: 0 ;
+		outline: none ;
+		padding: 0 20px ;
+		text-decoration: none ;
+		-webkit-transition: all 0.2s ease-in-out ;
+		-moz-transition: all 0.2s ease-in-out ;
+		transition: all 0.2s ease-in-out ;
+		border-bottom: 2px solid #67b897 ;
 	}
 }
 
 .current a{
-	color: #fff !important;
-	background: #67b897 !important;
+	color: #fff ;
+	background: #67b897 ;
 }
 
-.tabs-drafts-container {
-  display: flex !important;
-  flex-direction: row !important;
-}
+// .tabs-drafts-container {
+//   display: flex ;
+//   flex-direction: row ;
+// }
 
-.reset-layout-btn-cls {
-  background-color:gray !important;
-	border-radius:28px !important;
-	display:inline-block !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration: rtl !important;
-}
+// .reset-layout-btn-cls {
+//   background-color:gray ;
+// 	border-radius:28px ;
+// 	display:inline-block ;
+// 	color:#ffffff ;
+// 	font-family:Arial ;
+// 	font-size:17px ;
+// 	padding:0.4em 1em ;
+// 	text-decoration: rtl ;
+// }
 
-.reset-layout-btn-cls:hover {
-  background-color:#696969 !important;
-	border-radius:28px !important;
-	display:inline-block !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration:rtl !important;
-}
+// .reset-layout-btn-cls:hover {
+//   background-color:#696969 ;
+// 	border-radius:28px ;
+// 	display:inline-block ;
+// 	color:#ffffff ;
+// 	font-family:Arial ;
+// 	font-size:17px ;
+// 	padding:0.4em 1em ;
+// 	text-decoration:rtl ;
+// }
 
-.save-draft-btn {
-	background-color:#67b897 !important;
-	border-radius:28px !important;
-	display:inline-block !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration:rtl !important;
-	text-shadow:0px 1px 0px #2f6627 !important;
+// .save-draft-btn {
+// 	background-color:#67b897 ;
+// 	border-radius:28px ;
+// 	display:inline-block ;
+// 	color:#ffffff ;
+// 	font-family:Arial ;
+// 	font-size:17px ;
+// 	padding:0.4em 1em ;
+// 	text-decoration:rtl ;
+// 	text-shadow:0px 1px 0px #2f6627 ;
 
 
-}
-.save-draft-btn:hover {
-	background-color:#49856c !important;
-}
+// }
+// .save-draft-btn:hover {
+// 	background-color:#49856c ;
+// }
 
-.save-draft-btn.disabled {
-  visibility: hidden !important;
-}
+// .save-draft-btn.disabled {
+//   visibility: hidden ;
+// }
 
 </style> 
