@@ -98,9 +98,6 @@
 
             this.isLoading = false;
         },
-        mounted() {
-            this.$nextTick(() => document.querySelector("h1.pull-right").innerText = "Gradd Together");
-        },
         methods: {
             async getLoggedInUserIdFromChromeStorage() {
                 return new Promise((resolve, reject) => {
