@@ -19,6 +19,7 @@ const config = {
         'popupMenu/popupMenu': './popupMenu/popupMenu.js',
         'login/login': './login/login.js',
         'friendRequestsScreen/friendRequests': './friendRequestsScreen/friendRequests',
+        'newProfilePic/newProfilePic': './newProfilePic/newProfilePic',
         'CoursesSchedulesLoader': './loaders/courses-schedules-loader.js'
     },
     output: {
@@ -82,6 +83,7 @@ const config = {
             { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
             { from: 'popupMenu/popupMenu.html', to: 'popupMenu/popupMenu.html', transform: transformHtml },
             { from: 'login/login.html', to: 'login/login.html', transform: transformHtml },
+            { from: 'newProfilePic/newProfilePic.html', to: 'newProfilePic/newProfilePic.html', transform: transformHtml },
             { from: 'friendRequestsScreen/friendRequests.html', to: 'friendRequestsScreen/friendRequests.html', transform: transformHtml },
             {
                 from: 'manifest.json',
