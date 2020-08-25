@@ -16,7 +16,7 @@ const signoutSubmitBtn = document.getElementById('signout-submit-btn');
 
 backBtn.addEventListener('click', function() {
     window.location = "../popupMenu/popupMenu.html";
-})
+});
 
 signupSubmitBtn.addEventListener('click', async(e) => {
     let emailAddVal = document.getElementById('signup-email-field').value;

@@ -17,6 +17,7 @@ function getColor(colorCode) {
     }
 };
 
+/*
 async function readGrades(currentCourseNumber, userId) {
     let grade = -1;
     try {
@@ -60,6 +61,25 @@ async function readStatus(currentCourseNumber, userId) {
     }
     return status;
 }
+*/
+
+async function readAllStatusesAndGrades(userId) {
+    let res = [];
+    try {
+        const response = await axios.get(
+            `${userCourseApiUrl}/statusAndGrade`, {
+                params: {
+                    user_id: userId
+                }
+            });
+
+        res = response.data;
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    return res;
+}
+
 
 async function getLoggedInUserIdFromChromeStorage() {
     return new Promise((resolve, reject) => {
@@ -73,20 +93,26 @@ async function getLoggedInUserIdFromChromeStorage() {
     });
 }
 
-export function handleCoursesTableColoring() {
-
+export async function handleCoursesTableColoring() {
+    const userId = await getLoggedInUserIdFromChromeStorage();
+    const statusesAndGrades = await readAllStatusesAndGrades(userId);
+    const statusesAndGradesFormatted = statusesAndGrades.reduce(function(res, elem) {
+        res[elem.course_number_res] = { status: elem.status_res, grade: elem.grade_res };
+        return res;
+    }, {});
+    //console.dir(statusesAndGradesFormatted);
     const defaultCoursesTableRows = document.getElementsByTagName("tr");
     for (let i = 1; i < defaultCoursesTableRows.length; i++) {
-        handleTrColoring(defaultCoursesTableRows[i]);
+        handleTrColoring(defaultCoursesTableRows[i], statusesAndGradesFormatted);
     }
 
     $('body').on('DOMNodeInserted', 'tr', function(e) {
-        handleTrColoring(e.target);
+        handleTrColoring(e.target, statusesAndGradesFormatted);
     });
 }
 
 
-async function handleTrColoring(currentCoursesTr) {
+async function handleTrColoring(currentCoursesTr, statusesAndGrades) {
     let currentTrCells = currentCoursesTr.querySelectorAll("td");
 
     for (let j = 0; j < currentTrCells.length; j++) {
@@ -108,11 +134,13 @@ async function handleTrColoring(currentCoursesTr) {
     } else {
         currentCourseNumber = '';
     }
-    const userId = await getLoggedInUserIdFromChromeStorage();
+    //const userId = await getLoggedInUserIdFromChromeStorage();
 
-    const courseColorCode = await readStatus(currentCourseNumber, userId);
+    //const courseColorCode = await readStatus(currentCourseNumber, userId);
+    const courseColorCode = statusesAndGrades[currentCourseNumber].status;
 
-    const grade = await readGrades(currentCourseNumber, userId);
+    //const grade = await readGrades(currentCourseNumber, userId);
+    const grade = statusesAndGrades[currentCourseNumber].grade;
 
     const gradeClass = "p" + grade.toString();
     let gardeColorClass;
@@ -138,7 +166,10 @@ async function handleTrColoring(currentCoursesTr) {
     const courseTitleDiv = document.createElement("div");
     if (currentTrCells[1]) {
         currentTrCells[1].style.backgroundColor = getColor(courseColorCode);
+        console.log("where to change");
+        console.log(currentTrCells[1].innerText);
         courseTitleDiv.innerText = currentTrCells[1].innerText;
+        courseTitleDiv.innerHTML = courseTitleDiv.innerHTML.replace(/<br>.*$/i, "");
         currentTrCells[1].innerText = '';
         currentTrCells[1].appendChild(courseTitleDiv);
     }

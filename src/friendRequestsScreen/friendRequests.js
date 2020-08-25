@@ -7,12 +7,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const backBtn = document.getElementById('go-back');
 
-/*
-
 backBtn.addEventListener('click', function() {
     window.location = "../popupMenu/popupMenu.html";
-})
-*/
+});
+
 
 
 async function readFriendRequests(userId) {
