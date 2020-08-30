@@ -171,7 +171,7 @@ async function storeUserDetails(userEmail, userPassword, college) {
 function refreshMeidaNet() {
     chrome.tabs.query({ status: 'complete' }, (tabs) => {
         tabs.forEach((tab) => {
-            if (tab.url.match(/mtamn\.mta\.ac\.il/)) {
+            if (tab.url.match(/mtamn\.mta\.ac\.il/) || tab.url.match(/wwwi\.colman\.ac\.il/)) {
                 console.log(tab.url);
                 //chrome.tabs.update(tab.id, { url: tab.url });
                 chrome.tabs.reload(tab.id);

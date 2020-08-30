@@ -53,7 +53,8 @@ async function init(loggedInEmail) {
         });
 
         //Content script logic
-        if (viewingStatesModule.isViewingCoursesTable()) {
+        if (viewingStatesModule.isViewingCoursesTable() &&
+            !viewingStatesModule.isManagementCollege()) {
             coursesColoringModule.handleCoursesTableColoring();
         } else if (viewingStatesModule.isViewingGradesAllYears()) {
             let sendDataToApiButton = createSendDataToApiButton();
@@ -68,19 +69,19 @@ async function init(loggedInEmail) {
             logeedInEmailInToolbar.innerHTML = "מחובר לתוסף בתור: " + loggedInEmail;
             topToolbar[0].appendChild(logeedInEmailInToolbar);
         }
-    } else {
-        if (viewingStatesModule.isInsideHomePage()) {
-            const pleaseLoginMessageLocator = document.getElementsByClassName("col-md-12");
-            let pleaseLoginMessageDiv = document.createElement("div");
-            let pleaseLoginMessageHeader = document.createElement("h2");
-            pleaseLoginMessageHeader.setAttribute("style", "color:red");
-            pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף Gradd, עליך להתחבר";
-            pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
 
-            console.log(pleaseLoginMessageLocator[0]);
+    } else if (viewingStatesModule.isInsideHomePage()) {
+        const pleaseLoginMessageLocator = document.getElementsByClassName("col-md-12");
+        let pleaseLoginMessageDiv = document.createElement("div");
+        let pleaseLoginMessageHeader = document.createElement("h2");
+        pleaseLoginMessageHeader.setAttribute("style", "color:red");
+        pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
+        pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
 
-            pleaseLoginMessageLocator[1].appendChild(pleaseLoginMessageDiv);
-        }
+
+        console.log(pleaseLoginMessageLocator[0]);
+
+        pleaseLoginMessageLocator[1].appendChild(pleaseLoginMessageDiv);
     }
 }
 
