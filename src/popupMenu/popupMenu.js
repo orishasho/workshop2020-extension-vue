@@ -1,6 +1,8 @@
 import '../content/css/popupMenu.css';
+import $ from 'jquery';
 const axios = require('axios');
 const userFriendApiUrl = 'http://localhost:8080/user_friend';
+const userApiUrl = 'http://localhost:8080/user';
 
 const logoutMenuItem = document.getElementById('logout-li');
 
@@ -9,7 +11,7 @@ function resize() {
     document.getElementById('body').style.height = document.getElementById('main-dropdown').style.height;
 }
 
-function setMenu(loggedInEmail) {
+async function setMenu(loggedInEmail) {
     const loggedInUserLabel = document.getElementById("connected-as-label")
     if (loggedInEmail != "") { //user is connected
         //remove option of login
@@ -20,6 +22,7 @@ function setMenu(loggedInEmail) {
             loggedInUserLabel.innerHTML = "<i class=\"fa fa-circle\"></i> " + loggedInUserLabel.innerHTML;
         }
     } else {
+
         //remove options of logout and profile edit
         const logoutMenuItem = document.getElementById("logout-li");
         if (logoutMenuItem) {
@@ -83,13 +86,51 @@ async function readNumberOfFriendRequests(userId) {
     return friendRequestsCount;
 }
 
+async function readUserCollege(userId) {
+    let res = "";
+    try {
+        const response = await axios.get(
+            `${userApiUrl}/collegeByUserId`, {
+                params: {
+                    user_id: userId
+                }
+            });
+        res = response.data;
+    } catch (e) {
+        console.log("Error reading the data . " + e)
+    }
+    return res;
+}
+
 async function updateFriendRequestsMenuItem() {
     const user_id = await getLoggedInUserIdFromChromeStorage();
-    const numberOfFriendRequests = await readNumberOfFriendRequests(user_id);
+    const userCollege = await readUserCollege(user_id);
     const friendRequestsMenuItem = document.querySelector("#friend-requests-li");
-    if (friendRequestsMenuItem) {
-        const friendRequestsLink = document.querySelector("#friend-requests-a");
-        friendRequestsLink.innerHTML = friendRequestsLink.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
+    const profilePicMenuItem = document.querySelector("#profile-pic-li");
+    if (userCollege[0].college === "mta") {
+        const numberOfFriendRequests = await readNumberOfFriendRequests(user_id);
+        if (friendRequestsMenuItem) {
+            //friendRequestsMenuItem.classList.remove("unavilable-feature");
+            //profilePicMenuItem.classList.remove("unavilable-feature");
+            const friendRequestsLink = document.querySelector("#friend-requests-a");
+            friendRequestsLink.innerHTML = friendRequestsLink.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
+        }
+    } else { //user is from minhal college, make features unavailable
+        if (friendRequestsMenuItem) {
+            const friendRequestDiv = document.createElement("div");
+            const profilePicDiv = document.createElement("div");
+            //friendRequestDiv.classList.add("unavailable-feature-div");
+            //profilePicDiv.classList.add("unavailable-feature-div");
+            friendRequestDiv.classList.add("popup-tooltip");
+            profilePicDiv.classList.add("popup-tooltip");
+            friendRequestsMenuItem.classList.add("unavilable-feature-li");
+            profilePicMenuItem.classList.add("unavilable-feature-li");
+            friendRequestDiv.appendChild(friendRequestsMenuItem);
+            profilePicDiv.appendChild(profilePicMenuItem);
+            const parent = document.querySelector("#main-select");
+            parent.insertBefore(profilePicDiv, parent.children[1]);
+            parent.insertBefore(friendRequestDiv, parent.children[1]);
+        }
     }
 }
 

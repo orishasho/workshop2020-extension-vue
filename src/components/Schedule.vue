@@ -941,8 +941,9 @@
 	font-weight: 300 !important;
 	color: #888 !important;
 	-webkit-font-smoothing: antialiased !important;
-    direction: rtl !important;
-    text-align:center !important;
+  direction: rtl !important;
+  text-align:center !important;
+  margin-left: 250px;
 }
 
 .tabs {
@@ -984,9 +985,22 @@
 	background: #67b897 !important;
 }
 
+.top-left-container{
+  display: flex;
+}
+
 .tabs-drafts-container {
   display: flex !important;
   flex-direction: row !important;
+  justify-content: space-between;
+}
+
+.save-btn-1 {
+  margin-right: 10px;
+}
+
+.save-btn-2 {
+  margin-right: 10px;
 }
 
 .reset-layout-btn-cls {

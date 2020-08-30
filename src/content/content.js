@@ -7,7 +7,7 @@ import Vue from 'vue';
 import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
 import PortalVue from 'portal-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {faMedal, faAngleDown, faCheckSquare, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faMedal, faAngleDown, faCheckSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueEllipseProgress from 'vue-ellipse-progress';
 
@@ -69,6 +69,7 @@ async function init(loggedInEmail) {
             logeedInEmailInToolbar.innerHTML = "מחובר לתוסף בתור: " + loggedInEmail;
             topToolbar[0].appendChild(logeedInEmailInToolbar);
         }
+
     } else if (viewingStatesModule.isInsideHomePage()) {
         const pleaseLoginMessageLocator = document.getElementsByClassName("col-md-12");
         let pleaseLoginMessageDiv = document.createElement("div");
@@ -76,6 +77,7 @@ async function init(loggedInEmail) {
         pleaseLoginMessageHeader.setAttribute("style", "color:red");
         pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
         pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
+
 
         console.log(pleaseLoginMessageLocator[0]);
 
