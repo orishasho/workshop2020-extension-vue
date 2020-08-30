@@ -19,15 +19,16 @@ backBtn.addEventListener('click', function() {
 });
 
 signupSubmitBtn.addEventListener('click', async(e) => {
-    let emailAddVal = document.getElementById('signup-email-field').value;
-    let pwVal = document.getElementById('signup-pw-field').value;
+    const emailAddVal = document.getElementById('signup-email-field').value;
+    const pwVal = document.getElementById('signup-pw-field').value;
+    const college = document.querySelector('input[name="college"]:checked').value;
 
     if (validateEmail(emailAddVal) && validatePassword(pwVal)) {
         let response = await readUserDetails(emailAddVal);
         if (response.password !== "") { //user exists already
             alert("המשתמש כבר קיים במערכת");
         } else {
-            await storeUserDetails(emailAddVal, pwVal);
+            await storeUserDetails(emailAddVal, pwVal, college);
             let response = await readUserDetails(emailAddVal);
             chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
                 alert("הרשמה בוצעה הצלחה");
@@ -152,8 +153,8 @@ async function readUserDetails(emailAddress) {
 }
 
 
-async function storeUserDetails(userEmail, userPassword) {
-    const apiUserDetails = { "user_email": userEmail, "user_password": userPassword };
+async function storeUserDetails(userEmail, userPassword, college) {
+    const apiUserDetails = { "user_email": userEmail, "user_password": userPassword, "college": college };
     try {
         const response = await axios.post(
             usersDetailsApi,

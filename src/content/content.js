@@ -7,7 +7,7 @@ import Vue from 'vue';
 import ExtensionDropdown from "../components/ExtensionTab/ExtensionDropdown";
 import PortalVue from 'portal-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {faMedal, faAngleDown, faCheckSquare, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faMedal, faAngleDown, faCheckSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueEllipseProgress from 'vue-ellipse-progress';
 
@@ -74,7 +74,7 @@ async function init(loggedInEmail) {
             let pleaseLoginMessageDiv = document.createElement("div");
             let pleaseLoginMessageHeader = document.createElement("h2");
             pleaseLoginMessageHeader.setAttribute("style", "color:red");
-            pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
+            pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף Gradd, עליך להתחבר";
             pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
 
             console.log(pleaseLoginMessageLocator[0]);

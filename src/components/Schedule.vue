@@ -4,25 +4,27 @@
 
     <div class="tabs-drafts-container">
 
-      <div class="drafts-dropdown-container">
-        <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
-          בחר טיוטת מערכת...
-          &emsp;
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content" id="myDropdown-drafts"></div>
-      </div>
+      <div class="top-left-container">
+        <div class="drafts-dropdown-container">
+          <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
+            בחר טיוטת מערכת...
+            &emsp;
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="myDropdown-drafts"></div>
+        </div>
 
-      <div class="save-btn-1">
-        <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
-      </div>
+        <div class="save-btn-1">
+          <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
+        </div>
 
-      <div class="save-btn-1">
-        <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
-      </div>
+        <div class="save-btn-1">
+          <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
+        </div>
 
-      <div class="save-btn-2">
-        <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
+        <div class="save-btn-2">
+          <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
+        </div>
       </div>
 
       <div class="tab">
@@ -934,8 +936,9 @@
 	font-weight: 300 !important;
 	color: #888 !important;
 	-webkit-font-smoothing: antialiased !important;
-    direction: rtl !important;
-    text-align:center !important;
+  direction: rtl !important;
+  text-align:center !important;
+  margin-left: 250px;
 }
 
 .tabs {
@@ -977,9 +980,22 @@
 	background: #67b897 !important;
 }
 
+.top-left-container{
+  display: flex;
+}
+
 .tabs-drafts-container {
   display: flex !important;
   flex-direction: row !important;
+  justify-content: space-between;
+}
+
+.save-btn-1 {
+  margin-right: 10px;
+}
+
+.save-btn-2 {
+  margin-right: 10px;
 }
 
 .reset-layout-btn-cls {

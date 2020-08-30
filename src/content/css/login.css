@@ -291,3 +291,11 @@ button {
 .fa-arrow-circle-left:hover {
     color: #ededed;
 }
+
+.radio {
+    margin-top: 15px;
+}
+
+input[type=radio]:hover {
+    cursor: pointer;
+}
