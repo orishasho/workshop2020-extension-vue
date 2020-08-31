@@ -9,15 +9,15 @@
                     <h1>מצב נוכחי:</h1>
                 </div>
                 <div class="progress-container">
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                         :creditsCompleted="vm.creditsCompleted"
                         :requiredCredits="vm.totalRequiredCredits"
                         :description="'נק״ז כללי'"/>
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                             :creditsCompleted="vm.mandatoryCreditsCompleted"
                             :requiredCredits="vm.mandatoryRequiredCredits"
                             :description="'נק״ז קורסי חובה'"/>
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                             :creditsCompleted="vm.electiveCreditsCompleted"
                             :requiredCredits="vm.electiveRequiredCredits"
                             :description="'נק״ז קורסי בחירה'"/>
@@ -39,15 +39,15 @@
                     <h1>צפי לסוף השנה:</h1>
                 </div>
                 <div class="progress-container">
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                             :creditsCompleted="vm.creditsToBeCompletedByYearEnd"
                             :requiredCredits="vm.totalRequiredCredits"
                             :description="'נק״ז כללי'"/>
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                             :creditsCompleted="vm.mandatoryCreditsToBeCompletedByYearEnd"
                             :requiredCredits="vm.mandatoryRequiredCredits"
                             :description="'נק״ז קורסי חובה'"/>
-                    <DegreeProgressBar
+                    <GraddInsightsProgressBar
                             :creditsCompleted="vm.electiveCreditsToBeCompletedByYearEnd"
                             :requiredCredits="vm.electiveRequiredCredits"
                             :description="'נק״ז קורסי בחירה'"/>
@@ -80,7 +80,7 @@
     import graddInsightsVm from "../../viewModel/graddInsightsVm";
     import { instantiate } from "mmlpx"
     import { observer } from "mobx-vue";
-    import DegreeProgressBar from "./DegreeProgressBar";
+    import GraddInsightsProgressBar from "./GraddInsightsProgressBar";
     import MathOrWorkshopCheckbox from "./MathOrWorkshopCheckbox";
     import { MountingPortal} from "portal-vue";
     import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
@@ -92,7 +92,7 @@
             }
         },
         components: {
-            DegreeProgressBar,
+            GraddInsightsProgressBar,
             MathOrWorkshopCheckbox,
             MountingPortal,
             PulseLoader
