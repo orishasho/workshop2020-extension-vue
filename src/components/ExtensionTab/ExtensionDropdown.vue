@@ -23,7 +23,7 @@
         data: function () {
             return {
                 linkTexts: ['תכנון מערכת שעות', 'Gradd Insights', 'Gradd Together'],
-                componentNames: ['Schedule', 'DegreeStatusPage', 'GraddTogetherContainer'],
+                componentNames: ['Schedule', 'GraddInsights', 'GraddTogetherContainer'],
                 componentsRendered: []
             }
         },

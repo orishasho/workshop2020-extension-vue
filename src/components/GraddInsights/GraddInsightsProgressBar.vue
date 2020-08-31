@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        name: "DegreeProgressBar",
+        name: "GraddInsightsProgressBar",
         props: [
             'creditsCompleted',
             'requiredCredits',

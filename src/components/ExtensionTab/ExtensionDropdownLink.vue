@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import DegreeStatusPage from "../DegreeStatus/DegreeStatusPage";
+    import GraddInsights from "../GraddInsights/GraddInsights";
     import Schedule from "../Schedule";
     import GraddTogetherContainer from "../GraddTogether/GraddTogetherContainer";
     export default {
@@ -19,7 +19,7 @@
             componentsRendered: Array
         },
         components: {
-            DegreeStatusPage, 
+            GraddInsights,
             Schedule,
             GraddTogetherContainer
         },
