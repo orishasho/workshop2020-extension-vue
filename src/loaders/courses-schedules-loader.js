@@ -23,8 +23,6 @@ export default class CoursesSchedulesLoader {
             const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
             const response = await axios.get(`${possibleCoursesApiUrl}?user_id=${loggedUserId}&semester=${semester}`);
             const possibleCoursesArray = response.data;
-            console.log("showing response")
-            console.dir(response);
             return possibleCoursesArray;
         } catch (e) {
             console.log(e);
@@ -39,14 +37,6 @@ export default class CoursesSchedulesLoader {
                     semester: semester
                 }
             );
-            // const response = await axios({
-            //     method: 'get',
-            //     url: allCoursesSchedulesApiUrl,
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     params: { arr: courses_numbers, semester: semester }
-            // });
             const coursesSchedules = response.data;
             return coursesSchedules;
         } catch (e) {

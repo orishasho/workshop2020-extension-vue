@@ -169,10 +169,7 @@
           return possibleCourses;
         })
         .then(async possibleCourses => {
-          // const possibleCoursesNumbers = [];
           const possibleCoursesNumbers = possibleCourses.map(possibleCourse => possibleCourse.course_number_res);
-          console.log("showing possible");
-          console.dir(possibleCoursesNumbers);
           this.coursesSchedules = await this.coursesSchedulesLoader.getCoursesSchedules(possibleCoursesNumbers, this.currentSemester);
         })
       },
@@ -180,7 +177,6 @@
       fillDraftsDropdown() {
         this.draftsLoader.getUserScheduleDraftNames()
         .then(draftNamesArray => {
-          console.dir(draftNamesArray);
           draftNamesArray.forEach(draftName => {
             this.addDraftToDropdown(draftName);
             this.allUserDraftNames.push(draftName.draft_name);
@@ -198,9 +194,6 @@
         let courseType = course.type;
 
         if (this.isCourseOverlap(course)) {
-          console.log("going to remove: ");
-          console.dir(course);
-          //this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
         } else {
           const startHourParts = (courseStartHour + "").split(".");
           let startHourD = new Date(2018, 4, courseDay, startHourParts[0], startHourParts[1]);
@@ -226,8 +219,7 @@
           divItem.addEventListener('click', this.removeCourseFromTimeTable);
 
           this.placeCourseInTable(divItem, course);
-          //this.remove
-          
+
            if (evt.target.parentNode) {
                 const evtTargetContainer = evt.target.parentNode;
 
@@ -240,7 +232,6 @@
                     for (let i = 0; i < evtTargetContainerChildren.length; i++) {
                         if (evtTargetContainerChildren[i].className === "courseDetails" && 
                             evtTargetContainerChildren[i].courseParam.type === "lecture") {
-                            console.dir(evtTargetContainerChildren[i]);
                             evtTargetContainerChildren[i].click();
                         }
                     }
@@ -253,14 +244,11 @@
       },
 
       removeCourseFromTimeTable(evt) {
-        ////////////
         const course = evt.target.courseDetails;
         const course_number = course.course_number;
         const course_group = course.course_group;
         const type = course.type;
 
-        //evt.target.buttonRef.style.visibility = "visible";
-        //NEED TO CHANGE TO COURSE GROUP ID OR SOMETHING LIKE THAT
         let coursePlacementContainer = document.getElementById("coursePlacementContainer_" + evt.target.courseDetails.course_name + " " + evt.target.courseDetails.course_group);
         if (coursePlacementContainer) {
           coursePlacementContainer.appendChild(this.generateCoursePlacementButton(evt.target.courseDetails));
@@ -377,7 +365,6 @@
       },
 
       generateTableCells() {
-        /////////const body = document.getElementsByTagName("tbody")[0];
         const body = this.$refs.mytbody;
         for (let i = 8; i <= 20; i++) {
           for (let k = 0; k < 2; k++) {
@@ -411,11 +398,8 @@
 
       generateCoursePlacementButton(course) {
         let divItem = document.createElement("button");
-        /*divItem.style.backgroundColor = 'yellow';
-        divItem.style.display = 'inline-block';*/
         divItem.setAttribute("class", "courseDetails")
         divItem.innerHTML = course.course_name + "<br>" + course.teacher + "<br>" + this.classTypeName[course.type] + "<br>" + this.dayName[course.day] + "<br>" + course.start_time + " - " + course.end_time;
-        //divItem.onclick = createCourseTableItem(course.course_name, course.course_day, course.start_time, course.end_time);
         divItem.addEventListener('click', this.createCourseTableItem);
         divItem.courseParam = course;
 
@@ -509,7 +493,6 @@
         }
         if (draftName.includes(" (טיוטה ראשית)")) {
           draftName = draftName.slice(0, draftName.length - " (טיוטה ראשית)".length + 1);
-          console.log(`draftName: ${draftName}`);
         }
         this.currentDraftName = draftName;
         this.clearSchedule();

@@ -17,52 +17,6 @@ function getColor(colorCode) {
     }
 };
 
-/*
-async function readGrades(currentCourseNumber, userId) {
-    let grade = -1;
-    try {
-        const response = await axios.get(
-            `${userCourseApiUrl}/grade`, {
-                params: {
-                    user_id: userId,
-                    course_number: currentCourseNumber
-                }
-            });
-
-        const grades = response.data;
-        if (grades[0]) {
-            grade = grades[0].course_grade;
-        }
-
-    } catch (e) {
-        console.log("Error reading the data . " + e)
-    }
-    return grade;
-}
-
-async function readStatus(currentCourseNumber, userId) {
-    let grade = -1;
-    try {
-        const response = await axios.get(
-            `${userCourseApiUrl}/status`, {
-                params: {
-                    user_id: userId,
-                    course_number: currentCourseNumber
-                }
-            });
-
-        const statuses = response.data;
-        if (statuses[0]) {
-            status = statuses[0].status;
-        }
-
-    } catch (e) {
-        console.log("Error reading the data . " + e)
-    }
-    return status;
-}
-*/
-
 async function readAllStatusesAndGrades(userId) {
     let res = [];
     try {
@@ -100,7 +54,6 @@ export async function handleCoursesTableColoring() {
         res[elem.course_number_res] = { status: elem.status_res, grade: elem.grade_res };
         return res;
     }, {});
-    //console.dir(statusesAndGradesFormatted);
     const defaultCoursesTableRows = document.getElementsByTagName("tr");
     for (let i = 1; i < defaultCoursesTableRows.length; i++) {
         handleTrColoring(defaultCoursesTableRows[i], statusesAndGradesFormatted);
@@ -134,12 +87,8 @@ async function handleTrColoring(currentCoursesTr, statusesAndGrades) {
     } else {
         currentCourseNumber = '';
     }
-    //const userId = await getLoggedInUserIdFromChromeStorage();
 
-    //const courseColorCode = await readStatus(currentCourseNumber, userId);
     const courseColorCode = statusesAndGrades[currentCourseNumber].status;
-
-    //const grade = await readGrades(currentCourseNumber, userId);
     const grade = statusesAndGrades[currentCourseNumber].grade;
 
     const gradeClass = "p" + grade.toString();
@@ -166,8 +115,6 @@ async function handleTrColoring(currentCoursesTr, statusesAndGrades) {
     const courseTitleDiv = document.createElement("div");
     if (currentTrCells[1]) {
         currentTrCells[1].style.backgroundColor = getColor(courseColorCode);
-        console.log("where to change");
-        console.log(currentTrCells[1].innerText);
         courseTitleDiv.innerText = currentTrCells[1].innerText;
         courseTitleDiv.innerHTML = courseTitleDiv.innerHTML.replace(/<br>.*$/i, "");
         currentTrCells[1].innerText = '';

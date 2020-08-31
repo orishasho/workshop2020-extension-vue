@@ -4,7 +4,6 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 body {
     direction: rtl;
-    /*background-color: #e1dddc;*/
     background-color: #E1E8EE;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -59,12 +58,6 @@ body {
     content: "";
 }
 
-
-/*
-.search-select .icon.fa:after {
-    content: "";
-}*/
-
 .search-select .icon.sign:after {
     content: "";
 }
@@ -79,7 +72,6 @@ body {
 }
 
 .search-select input:checked+.select {
-    /*opacity: 1;*/
     top: 15px;
 }
 
@@ -96,7 +88,6 @@ body {
     -o-transition-timing-function: ease-in;
     -webkit-transition-timing-function: ease-in;
     transition-timing-function: ease-in;
-    /*opacity: 0;*/
     list-style: none;
     padding: 0;
     margin: 0;
@@ -118,8 +109,6 @@ body {
     width: 300px;
     line-height: 20px;
     padding: 15px 10px;
-    /*text-transform: uppercase;*/
-    /*color: #a79b97;*/
     color: #7e7572;
     font-family: 'Rubik', Helvetica, Arial, sans-serif;
     font-weight: normal;
@@ -151,7 +140,6 @@ body {
 .search-select ul.select li.arrow:after {
     font-size: 40px;
     color: white;
-    /*opacity: 1;*/
 }
 
 .search-select ul.select li:nth-child(2) {
@@ -167,7 +155,6 @@ body {
     background-color: #19d4a0;
     color: white;
     border-top: 1px solid #19d4a0;
-    /*border-bottom: 1px solid #19d4a0;*/
 }
 
 .search-select ul.select li:not(.icon):hover i:after {
@@ -187,7 +174,6 @@ body {
     width: 300px;
     line-height: 20px;
     padding: 15px 10px;
-    /*text-transform: uppercase;*/
     color: #7e7572;
     font-family: 'Rubik', Helvetica, Arial, sans-serif;
     font-weight: normal;
@@ -214,38 +200,6 @@ body {
     height: 100px;
     width: 100px;
 }
-
-
-/*
-.popup-tooltip {
-    display: inline !important;
-    position: relative !important;
-}
-
-.popup-tooltip:hover:after {
-    display: -webkit-flex !important;
-    display: flex !important;
-    -webkit-justify-content: center !important;
-    justify-content: center !important;
-    background: #444 !important;
-    border-radius: 8px !important;
-    color: #fff !important;
-    content: "פיצ'ר זה לא זמין עדיין במכללה למנהל" !important;
-    margin: -82px auto 0 !important;
-    font-size: 16px !important;
-    padding: 13px !important;
-    width: 220px !important;
-}
-
-.popup-tooltip:hover:before {
-    border: solid !important;
-    border-color: #444 transparent !important;
-    border-width: 12px 6px 0 6px !important;
-    content: "" !important;
-    left: 45% !important;
-    bottom: 30px !important;
-    position: absolute !important;
-}*/
 
 .popup-tooltip {
     position: relative;

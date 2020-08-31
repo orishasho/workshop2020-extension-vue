@@ -2,43 +2,43 @@
   <div>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <div class="tabRo">
-        <ul class="tabsRo">
-          <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
-          <li id="semester2"><a href="#">סמסטר ב'</a></li>
-          <li id="semester3"><a href="#">סמסטר קיץ</a></li>
-        </ul>
-      </div>
+    <div class="tabRo">
+      <ul class="tabsRo">
+        <li id="semester1"  class="current"><a href="#">סמסטר א'</a></li>
+        <li id="semester2"><a href="#">סמסטר ב'</a></li>
+        <li id="semester3"><a href="#">סמסטר קיץ</a></li>
+      </ul>
+    </div>
 
     <div class = "scheduleContainerRo">
-    <div>
-      <table id="coursesTimetable">
-        <thead>
-        <tr>
-          <th></th>
-          <th>
-            <span class="long">ראשון</span>
-          </th>
-          <th>
-            <span class="long">שני</span>
-          </th>
-          <th>
-            <span class="long">שלישי</span>
-          </th>
-          <th>
-            <span class="long">רביעי</span>
-          </th>
-          <th>
-            <span class="long">חמישי</span>
-          </th>
-          <th>
-            <span class="long">שישי</span>
-          </th>
-        </tr>
-        </thead>
-        <tbody ref="mytbody"></tbody>
-      </table>
-    </div>
+      <div>
+        <table id="coursesTimetable">
+          <thead>
+          <tr>
+            <th></th>
+            <th>
+              <span class="long">ראשון</span>
+            </th>
+            <th>
+              <span class="long">שני</span>
+            </th>
+            <th>
+              <span class="long">שלישי</span>
+            </th>
+            <th>
+              <span class="long">רביעי</span>
+            </th>
+            <th>
+              <span class="long">חמישי</span>
+            </th>
+            <th>
+              <span class="long">שישי</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody ref="mytbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -74,11 +74,11 @@
 
     mounted:  function () {
       this.$nextTick(() => {
-            this.createClickEventsForSemesterButtons();
-            this.generateTableCells();
-            this.draftBySemesterMap = JSON.parse(this.draft_json);
-            this.loadCurrentSemesterDraft();
-          });
+        this.createClickEventsForSemesterButtons();
+        this.generateTableCells();
+        this.draftBySemesterMap = JSON.parse(this.draft_json);
+        this.loadCurrentSemesterDraft();
+      });
     },
 
     methods: {
@@ -112,10 +112,8 @@
         divItem.innerHTML = evt.target.innerHTML;
         divItem.courseDetails = course;
         divItem.buttonRef = evt.target;
-        //divItem.addEventListener('click', this.removeCourseFromTimeTable);
 
         this.placeCourseInTable(divItem, course);
-        //this.remove
       },
 
       placeCourseInTable(divItem, course) {
@@ -160,16 +158,13 @@
       },
 
       loadCurrentSemesterDraft() {
-        console.log("in problem");
-        console.dir(this.draftBySemesterMap[this.currentSemester]);
         this.draftBySemesterMap[this.currentSemester].forEach (courseToPlaceInTable => {
-            const fakeCoursePlacementButton = this.generateCoursePlacementButton(courseToPlaceInTable);
-            fakeCoursePlacementButton.click();
+          const fakeCoursePlacementButton = this.generateCoursePlacementButton(courseToPlaceInTable);
+          fakeCoursePlacementButton.click();
         });
       },
 
       generateTableCells() {
-        /////////const body = document.getElementsByTagName("tbody")[0];
         const body = this.$refs.mytbody;
         for (let i = 8; i <= 20; i++) {
           for (let k = 0; k < 2; k++) {
@@ -203,11 +198,8 @@
 
       generateCoursePlacementButton(course) {
         let divItem = document.createElement("button");
-        /*divItem.style.backgroundColor = 'yellow';
-        divItem.style.display = 'inline-block';*/
         divItem.setAttribute("class", "courseDetails")
         divItem.innerHTML = course.course_name + "<br>" + course.teacher + "<br>" + this.classTypeName[course.type] + "<br>" + this.dayName[course.day] + "<br>" + course.start_time + " - " + course.end_time;
-        //divItem.onclick = createCourseTableItem(course.course_name, course.course_day, course.start_time, course.end_time);
         divItem.addEventListener('click', this.createCourseTableItem);
         divItem.courseParam = course;
 
@@ -218,8 +210,8 @@
         const currentCoursesInTable = document.querySelectorAll(".courseTableDivRo");
         for (let i = 0; i < currentCoursesInTable.length; i++) {
           currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
+        }
       }
-     }
     }
   }
 
@@ -248,7 +240,7 @@
     position: relative ;
   }
 
-    .scheduleContainerRo  th {
+  .scheduleContainerRo  th {
     text-align: center ;
   }
 
@@ -303,7 +295,6 @@
   }
 
   .scheduleContainerRo  .leftcolumn {
-    //float: left;
     width: 75% ;
   }
 
@@ -317,111 +308,6 @@
     min-height: 100px ;
     overflow: hidden ;
   }
-
-// /*
-//   .scheduleContainer  .card {
-//     background-color: white ;
-//     padding: 20px ;
-//     margin-top: 20px ;
-//     margin-right: 20px ;
-//     margin-bottom: 20px ;
-//   }
-
-//   .scheduleContainer  .card div {
-//     padding-bottom: 20px ;
-//   }
-
-//   .scheduleContainer  .tabbed {
-//     position: absolute ;
-//     left: 150px ;
-//   }
-
-//   .scheduleContainer  .dropdown {
-//     /*float: left;*/
-//     /*overflow: hidden;*/
-//     height: 10px ;
-//   }
-
-//   .dropbtn-drafts {
-//     font-size: 16px ;
-//     border: none ;
-//     outline: none ;
-//     padding: 0.4em 1em ;
-//     font-family: Arial, Helvetica, sans-serif ;
-//     background: #67b897 ;
-//     color: #fff ;
-//     font-weight: bold ;
-//   }
-
-//     .scheduleContainer  .dropbtn{
-//     font-size: 16px ;
-//     border: none ;
-//     outline: none ;
-//     color: black ;
-//     padding: 14px 16px ;
-//     font-family: Arial, Helvetica, sans-serif ;
-//     margin-right: 20px ;
-//     margin-top: 20px ;
-//     background: #9bdecb ;
-//     color: #fff ;
-//     font-weight: bold ;
-//   }
-
-//   .scheduleContainer  .dropdown-content {
-//     display: none ;
-//     position: absolute ;
-//     background-color: #f9f9f9 ;
-//     min-width: 160px ;
-//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) ;
-//     z-index: 1 ;
-//     margin-right: 20px ;
-//     font-family: Arial ;
-//     font-size: smaller ;
-//     overflow: auto ;
-//     max-height: 50% 
-//   }
-
-//   .scheduleContainer  .dropdown-content a {
-//     /*float: none;*/
-//     color: black ;
-//     padding: 12px 16px ;
-//     text-decoration: none ;
-//     display: block ;
-//     text-align: right ;
-//   }
-
-//   .scheduleContainer  .dropdown-content a:hover {
-//     background: #f0fffb ;
-//   }
-
-
-//   .drafts-dropdown-container  .dropdown-content {
-//     display: none ;
-//     position: absolute ;
-//     background-color: #f9f9f9 ;
-//     min-width: 160px ;
-//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2) ;
-//     z-index: 1 ;
-//     font-family: Arial ;
-//     font-size: smaller ;
-//     overflow: auto ;
-//     max-height: 50% ;
-//   }
-
-//   .drafts-dropdown-container .dropdown-content a {
-//     /*float: none;*/
-//     color: black ;
-//     padding: 12px 16px ;
-//     text-decoration: none ;
-//     display: block ;
-//     text-align: right ;
-//   }
-
-//   .drafts-dropdown-container  .dropdown-content a:hover {
-//     background: #f0fffb ;
-//   }
-
-// */
 
 
   .scheduleContainerRo  .show {
@@ -437,23 +323,12 @@
     position: absolute ;
     z-index: 1 ;
     background: linear-gradient(135deg, #8eeecc, #8ebbee) ;
-    /*height: 94.05px;*/
-    /*height: 120px;
-      33 * NUMBER*/
     text-align: center ;
     border: 1px outset black ;
-    /*box-shadow: 10px 10px 5px -10px rgba(0, 0, 0, 0.75);*/
-    /*width: 180px;*/
     width: 99% ;
     font-size: small ;
     font-weight: bold ;
-    /*margin-left: auto;
-      margin-right: auto;*/
     justify-content: center ;
-    /*margin-right: 15px;
-      margin-top: -18px;*/
-    /*line-height: 200px;*/
-    /*white-space: pre;*/
     display: -webkit-box ;
     display: flex ;
     transition: 0.2s ease box-shadow, 0.2s ease transform ;
@@ -469,7 +344,6 @@
   .scheduleContainerRo  .courseTableDivRo p {
     margin: auto ;
     position: relative ;
-    /*top: 30%;*/
     font-size: small ;
     font-weight: bold ;
     vertical-align: middle ;
@@ -477,12 +351,6 @@
     margin-right: auto ;
     text-align: center ;
   }
-
-  /*
-  table tbody tr:nth-child(4n+0) td {
-      border-bottom: 1px solid #626E7E;
-  }
-  */
 
   .scheduleContainerRo  table tbody tr td {
     text-align: center ;
@@ -492,14 +360,7 @@
     height: 32px ;
   }
 
-  /*
-  table tbody tr td:last-child {
-      border-right: 1px solid #626E7E;
-  }
-  */
-
   .scheduleContainerRo  table tbody tr td.hour {
-    /*font-size: 2em;*/
     padding: 0 ;
     color: #626e7e ;
     background: #fff ;
@@ -514,59 +375,6 @@
     display: block ;
   }
 
-  // .scheduleContainer  .courseDetails {
-	//   box-shadow:inset 0px 1px 0px 0px #91b8b3 ;
-	//   background:linear-gradient(to bottom, #85b8aa 5%, #6c7c7c 100%) ;
-	//   background-color:#85b8aa ;
-	//   border-radius:6px ;
-	//   border:1px solid #566963 ;
-	//   display:inline-block ;
-	//   color:#ffffff ;
-	//   font-family:Arial ;
-	//   font-size:15px ;
-	//   font-weight:bold ;
-	//   padding:6px 24px ;
-	//   text-decoration:none ;
-	//   text-shadow:0px 1px 0px #2b665e ;
-  //   margin-bottom: 10px ;
-  //   line-height: 100% ;
-  // }
-
-  // .scheduleContainer  .courseDetails:hover {
-	//   background:linear-gradient(to bottom, #6c7c7c 5%, #85b8aa 100%) ;
-	//   background-color:#6c7c7c ;
-  // }
-
-  // .scheduleContainer  .courseDetails:active {
-  //   position: relative ;
-  //   top: 1px ;
-  // }
-
-  // .scheduleContainer  .courseDetailsContainer {
-  //   border-radius: 10px 10px 10px 10px ;
-  //   -moz-border-radius: 10px 10px 10px 10px ;
-  //   -webkit-border-radius: 10px 10px 10px 10px ;
-  //   border: 1px solid #000000 ;
-  //   font-family: Arial, Helvetica, sans-serif ;
-  //   /*padding-bottom: 20px;*/
-  //   padding-right: 5px ;
-  //   margin-bottom: 10px ;
-  // }
-
-  // .scheduleContainer  .courseDetailsContainer h1 {
-  //   text-align: right ;
-  //   margin-top: -10px ;
-  //   height: 20px ;
-  //   line-height: 20px ;
-  //   font-size: 12px ;
-  // }
-
-  // .scheduleContainer  .courseDetailsContainer h1 span {
-  //   background-color: white ;
-  // }
-
-  
-
   @media (max-width: 60em) {
     table thead tr th .long {
       display: none ;
@@ -580,10 +388,10 @@
       -moz-transform: rotate(270deg) ;
     }
   }
-  
-  
 
-    @media (max-width: 27em) {
+
+
+  @media (max-width: 27em) {
     table thead tr th {
       font-size: 65% ;
     }
@@ -611,111 +419,61 @@
   }
 
   .tabRo {
-	margin-bottom: 20px ;
-	position: relative ;
-	overflow: hidden ;
-	background: #fff ;
-	font-family: "Arial" ;
-	line-height: 1.5 ;
-	font-weight: 300 ;
-	color: #888 ;
-	-webkit-font-smoothing: antialiased ;
-  direction: rtl ;
-    text-align:center ;/* Add This*/
-    
-}
+    margin-bottom: 20px ;
+    position: relative ;
+    overflow: hidden ;
+    background: #fff ;
+    font-family: "Arial" ;
+    line-height: 1.5 ;
+    font-weight: 300 ;
+    color: #888 ;
+    -webkit-font-smoothing: antialiased ;
+    direction: rtl ;
+    text-align:center ;
 
-.tabsRo {
-	/*display: table;
-	position: relative;*/
-	overflow: hidden ;
-	margin: 0 ;
-	width: 100% ;
-  direction: rtl ;
+  }
+
+  .tabsRo {
+    overflow: hidden ;
+    margin: 0 ;
+    width: 100% ;
+    direction: rtl ;
     display: flex ;
-  justify-content: center ;
-  align-items: center ;
+    justify-content: center ;
+    align-items: center ;
 
 
 
-	li {
-		float: left ;
-		line-height: 38px ;
-		overflow: hidden ;
-		padding: 0 ;
-		position: relative ;
+    li {
+      float: left ;
+      line-height: 38px ;
+      overflow: hidden ;
+      padding: 0 ;
+      position: relative ;
 
 
-	}
+    }
 
-	a {
-		background-color: #eff0f2 ;
-		border-bottom: 1px solid #fff ;
-		color: #888 ;
-		font-weight: 500 ;
-		display: block ;
-		letter-spacing: 0 ;
-		outline: none ;
-		padding: 0 20px ;
-		text-decoration: none ;
-		-webkit-transition: all 0.2s ease-in-out ;
-		-moz-transition: all 0.2s ease-in-out ;
-		transition: all 0.2s ease-in-out ;
-		border-bottom: 2px solid #67b897 ;
-	}
-}
+    a {
+      background-color: #eff0f2 ;
+      border-bottom: 1px solid #fff ;
+      color: #888 ;
+      font-weight: 500 ;
+      display: block ;
+      letter-spacing: 0 ;
+      outline: none ;
+      padding: 0 20px ;
+      text-decoration: none ;
+      -webkit-transition: all 0.2s ease-in-out ;
+      -moz-transition: all 0.2s ease-in-out ;
+      transition: all 0.2s ease-in-out ;
+      border-bottom: 2px solid #67b897 ;
+    }
+  }
 
-.current a{
-	color: #fff ;
-	background: #67b897 ;
-}
-
-// .tabs-drafts-container {
-//   display: flex ;
-//   flex-direction: row ;
-// }
-
-// .reset-layout-btn-cls {
-//   background-color:gray ;
-// 	border-radius:28px ;
-// 	display:inline-block ;
-// 	color:#ffffff ;
-// 	font-family:Arial ;
-// 	font-size:17px ;
-// 	padding:0.4em 1em ;
-// 	text-decoration: rtl ;
-// }
-
-// .reset-layout-btn-cls:hover {
-//   background-color:#696969 ;
-// 	border-radius:28px ;
-// 	display:inline-block ;
-// 	color:#ffffff ;
-// 	font-family:Arial ;
-// 	font-size:17px ;
-// 	padding:0.4em 1em ;
-// 	text-decoration:rtl ;
-// }
-
-// .save-draft-btn {
-// 	background-color:#67b897 ;
-// 	border-radius:28px ;
-// 	display:inline-block ;
-// 	color:#ffffff ;
-// 	font-family:Arial ;
-// 	font-size:17px ;
-// 	padding:0.4em 1em ;
-// 	text-decoration:rtl ;
-// 	text-shadow:0px 1px 0px #2f6627 ;
-
-
-// }
-// .save-draft-btn:hover {
-// 	background-color:#49856c ;
-// }
-
-// .save-draft-btn.disabled {
-//   visibility: hidden ;
-// }
+  .current a{
+    color: #fff ;
+    background: #67b897 ;
+  }
 
 </style> 
