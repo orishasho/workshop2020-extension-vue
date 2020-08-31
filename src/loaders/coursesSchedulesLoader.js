@@ -1,26 +1,17 @@
+import { baseCourseScheduleEndpoint } from '../utils/api';
+import { getLoggedInUserIdFromChromeStorage } from '../utils/userAuth';
+
 const axios = require('axios');
-const possibleCoursesApiUrl = 'http://localhost:8080/course_schedule/possible_courses';
-const allCoursesSchedulesApiUrl = 'http://localhost:8080/course_schedule/all';
+const possibleCoursesApiUrl = `${baseCourseScheduleEndpoint}/possible_courses`;
+const allCoursesSchedulesApiUrl = `${baseCourseScheduleEndpoint}/all`;
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default class CoursesSchedulesLoader {
 
-    async getLoggedInUserIdFromChromeStorage() {
-        return new Promise((resolve, reject) => {
-            try {
-                chrome.storage.sync.get('loggedUserId', function(value) {
-                    resolve(value.loggedUserId);
-                })
-            } catch (ex) {
-                reject(ex);
-            }
-        });
-    }
-
     async getPossibleCourses(semester) {
         try {
-            const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
+            const loggedUserId = await getLoggedInUserIdFromChromeStorage();
             const response = await axios.get(`${possibleCoursesApiUrl}?user_id=${loggedUserId}&semester=${semester}`);
             const possibleCoursesArray = response.data;
             return possibleCoursesArray;

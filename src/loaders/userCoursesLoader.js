@@ -1,33 +1,18 @@
+import { baseUserCourseEndpoint, baseCourseEndpoint, baseManagementCollegeEndpoint } from '../utils/api';
+import { getLoggedInUserIdFromChromeStorage } from '../utils/userAuth';
+
 const axios = require('axios');
-
-const userCourseApiUrl = 'http://localhost:8080/user_course';
-const courseApiUrl = 'http://localhost:8080/course';
-
-const userCourseApiUrlManagement = 'http://localhost:8080/management_college/user_course';
-const courseApiUrlManagement = 'http://localhost:8080/management_college/course';
-
+const userCourseApiUrlManagement = `${baseManagementCollegeEndpoint}/user_course`;
+const courseApiUrlManagement = `${baseManagementCollegeEndpoint}/course`;
 const isManagementCollege = window.location.href.includes('colman');
-
-const actualCourseApiUrl = isManagementCollege ? courseApiUrlManagement : courseApiUrl;
-const actualUserCourseApiUrl = isManagementCollege ? userCourseApiUrlManagement : userCourseApiUrl;
+const actualCourseApiUrl = isManagementCollege ? courseApiUrlManagement : baseCourseEndpoint;
+const actualUserCourseApiUrl = isManagementCollege ? userCourseApiUrlManagement : baseUserCourseEndpoint;
 
 export default class UserCoursesLoader {
 
-    async getLoggedInUserIdFromChromeStorage() {
-        return new Promise((resolve, reject) => {
-            try {
-                chrome.storage.sync.get('loggedUserId', function(value) {
-                    resolve(value.loggedUserId);
-                })
-            } catch (ex) {
-                reject(ex);
-            }
-        });
-    }
-
     async getUserCourses() {
         try {
-            const loggedUserId = await this.getLoggedInUserIdFromChromeStorage();
+            const loggedUserId = await getLoggedInUserIdFromChromeStorage();
             const response = await axios.get(`${actualUserCourseApiUrl}/detailed?user_id=${loggedUserId}`);
             const userCoursesArray = response.data;
             return userCoursesArray;

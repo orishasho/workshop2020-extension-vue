@@ -13,6 +13,8 @@
 </template>
 
 <script>
+    import { getLoggedInEmailFromChromeStorage } from '../../utils/userAuth';
+    import { baseUserEndpoint } from '../../utils/api';
     const axios = require('axios');
     export default {
         name: "UserDetails",
@@ -24,25 +26,12 @@
         },
         created: async function() {
             try {
-                const loggedEmail = await this.getLoggedInEmailFromChromeStorage();
-                const response = await axios.get(`http://localhost:8080/user?user_email=${loggedEmail}`);
+                const loggedEmail = await getLoggedInEmailFromChromeStorage();
+                const response = await axios.get(`${baseUserEndpoint}?user_email=${loggedEmail}`);
                 this.userDetails = response.data[0];
                 this.isLoadingUserDetails = false;
             } catch(e) {
                 console.log(e)
-            }
-        },
-        methods: {
-            async getLoggedInEmailFromChromeStorage() {
-                return new Promise((resolve, reject) => {
-                    try {
-                        chrome.storage.sync.get('loggedEmail', function(value) {
-                            resolve(value.loggedEmail);
-                        })
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                });
             }
         }
     }

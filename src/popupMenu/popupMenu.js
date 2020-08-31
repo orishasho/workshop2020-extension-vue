@@ -1,9 +1,8 @@
 import '../content/css/popupMenu.css';
-import $ from 'jquery';
-const axios = require('axios');
-const userFriendApiUrl = 'http://localhost:8080/user_friend';
-const userApiUrl = 'http://localhost:8080/user';
+import { baseUserEndpoint, baseUserFriendEndpoint } from "../utils/api";
+import { getLoggedInUserIdFromChromeStorage } from '../utils/userAuth';
 
+const axios = require('axios');
 const logoutMenuItem = document.getElementById('logout-li');
 
 function resize() {
@@ -22,7 +21,6 @@ async function setMenu(loggedInEmail) {
             loggedInUserLabel.innerHTML = "<i class=\"fa fa-circle\"></i> " + loggedInUserLabel.innerHTML;
         }
     } else {
-
         //remove options of logout and profile edit
         const logoutMenuItem = document.getElementById("logout-li");
         if (logoutMenuItem) {
@@ -51,23 +49,11 @@ function refreshMeidaNet() {
     });
 }
 
-async function getLoggedInUserIdFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedUserId', function(value) {
-                resolve(value.loggedUserId);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
-
 async function readNumberOfFriendRequests(userId) {
     let friendRequestsCount = -1;
     try {
         const response = await axios.get(
-            `${userFriendApiUrl}/friendRequestsByUserCount`, {
+            `${baseUserFriendEndpoint}/friendRequestsByUserCount`, {
                 params: {
                     user_id: userId
                 }
@@ -88,7 +74,7 @@ async function readUserCollege(userId) {
     let res = "";
     try {
         const response = await axios.get(
-            `${userApiUrl}/collegeByUserId`, {
+            `${baseUserEndpoint}/collegeByUserId`, {
                 params: {
                     user_id: userId
                 }

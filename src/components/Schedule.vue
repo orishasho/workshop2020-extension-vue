@@ -91,8 +91,8 @@
 
 <script>
   import { MountingPortal} from "portal-vue";
-  import CoursesSchedulesLoader from "../loaders/courses-schedules-loader";
-  import UserScheduleDraftsLoader from "../loaders/user-schedule-drafts-loader";
+  import CoursesSchedulesLoader from "../loaders/coursesSchedulesLoader";
+  import UserScheduleDraftsLoader from "../loaders/userScheduleDraftsLoader";
   import _ from "lodash";
   export default {
     name: "Schedule",

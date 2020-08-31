@@ -47,6 +47,8 @@
     import FriendsPanel from "./FriendsPanel";
     import ScheduleModal from "./ScheduleModal";
     import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+    import { getLoggedInUserIdFromChromeStorage } from '../../utils/userAuth';
+    import { baseUserCourseEndpoint, baseUserFriendEndpoint, baseUserRatingEndpoint } from '../../utils/api';
 
     const axios = require('axios');
 
@@ -75,41 +77,30 @@
             }
         },
         created: async function() {
-            this.userId = await this.getLoggedInUserIdFromChromeStorage();
+            this.userId = await getLoggedInUserIdFromChromeStorage();
 
-            const userCoursesToRateFromDb = await axios.get(`http://localhost:8080/user_course/detailed?user_id=${this.userId}`);
+            const userCoursesToRateFromDb = await axios.get(`${baseUserCourseEndpoint}/detailed?user_id=${this.userId}`);
 
             this.userCoursesToRate = userCoursesToRateFromDb.data.map(elem => ({
                 course_name: elem.course_name,
                 course_number: elem.course_number
             }));
 
-            const popularResponse = await axios.get(`http://localhost:8080/user_course/topPopular`);
+            const popularResponse = await axios.get(`${baseUserCourseEndpoint}/topPopular`);
             this.popularCourses = popularResponse.data;
 
-            const interestingResponse = await axios.get(`http://localhost:8080/user_rating/topInteresting`);
+            const interestingResponse = await axios.get(`${baseUserRatingEndpoint}/topInteresting`);
             this.interestingCourses = interestingResponse.data;
             
-            const hardResponse = await axios.get(`http://localhost:8080/user_rating/topHard`);
+            const hardResponse = await axios.get(`${baseUserRatingEndpoint}/topHard`);
             this.hardCourses = hardResponse.data;
 
-            const friendsResponse = await axios.get(`http://localhost:8080/user_friend//friendsByUser?user_id=${this.userId}`);
+            const friendsResponse = await axios.get(`${baseUserFriendEndpoint}/friendsByUser?user_id=${this.userId}`);
             this.userFriends = friendsResponse.data;
 
             this.isLoading = false;
         },
         methods: {
-            async getLoggedInUserIdFromChromeStorage() {
-                return new Promise((resolve, reject) => {
-                    try {
-                        chrome.storage.sync.get('loggedUserId', function(value) {
-                            resolve(value.loggedUserId);
-                        })
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                });
-            },
             showScheduleModal(finalDraft) {
                 this.showModal = true;
                 this.modalSchedule = finalDraft;
@@ -129,7 +120,6 @@
     .main-container {
         display: flex;
         flex-direction: column;
-        margin-right: 6.5%;
         background-color: #f7fffd;
         box-shadow: 1px 3px 14px -2px rgba(0,0,0,0.51);
     }

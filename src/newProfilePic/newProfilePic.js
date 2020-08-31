@@ -1,48 +1,20 @@
 import '../content/css/newProfilePic.css';
+import { baseUserEndpoint, baseImgurEndpoint, imgurClientId } from '../utils/api';
+import { getLoggedInUserIdFromChromeStorage, getLoggedInEmailFromChromeStorage } from '../utils/userAuth';
+
 const axios = require('axios');
-const usersApiUrl = 'http://localhost:8080/user';
-const imgurApiUrl = 'https://api.imgur.com/3/image';
-
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
 const backBtn = document.getElementById('go-back');
-
 
 backBtn.addEventListener('click', function() {
     window.location = "../popupMenu/popupMenu.html";
 });
 
-async function getLoggedInUserIdFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedUserId', function(value) {
-                resolve(value.loggedUserId);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
-
-async function getLoggedInEmailFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedEmail', function(value) {
-                resolve(value.loggedEmail);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
-
-
-
 async function readUserDetails(email) {
     let res = {};
     try {
         const response = await axios.get(
-            usersApiUrl, {
+            baseUserEndpoint, {
                 params: {
                     user_email: email
                 }
@@ -65,14 +37,14 @@ async function generatePage() {
 
 async function uploadImgToImgur(event) {
     const authHeader = {
-        'Authorization': 'Client-ID b0fd2fb1b5098c9'
+        'Authorization': imgurClientId
     };
     const imgFile = event.target.files[0];
     const requestFormData = new FormData();
     requestFormData.append('image', imgFile);
     try {
         const imgurResponse = await axios.post(
-            imgurApiUrl,
+            baseImgurEndpoint,
             requestFormData, { headers: authHeader });
         const newImgUrl = imgurResponse.data.data.link;
         //Change current img src
@@ -87,7 +59,7 @@ async function uploadImgToDb(imgUrl) {
     try {
         const userId = await getLoggedInUserIdFromChromeStorage();
         await axios.put(
-            `${usersApiUrl}/updateImgByUserId`, { user_id: userId, img: imgUrl }
+            `${baseUserEndpoint}/updateImgByUserId`, { user_id: userId, img: imgUrl }
         );
     } catch (e) {
         console.log(e);

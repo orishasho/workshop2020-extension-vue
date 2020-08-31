@@ -1,17 +1,14 @@
 import '../content/css/login.css';
-const axios = require('axios');
-const usersDetailsApi = 'http://localhost:8080/user';
+import { baseUserEndpoint } from '../utils/api';
 
+const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
 const backBtn = document.getElementById('go-back');
-
 const loginSubmitBtn = document.getElementById('login-submit-btn');
 const signupSubmitBtn = document.getElementById('signup-submit-btn');
-
-const signoutSubmitBtn = document.getElementById('signout-submit-btn');
 
 backBtn.addEventListener('click', function() {
     window.location = "../popupMenu/popupMenu.html";
@@ -105,7 +102,7 @@ async function readUserDetails(emailAddress) {
     let userId = "";
     try {
         const response = await axios.get(
-            usersDetailsApi, { params: { user_email: emailAddress } }
+            baseUserEndpoint, { params: { user_email: emailAddress } }
         )
         if (response.data[0]) {
             pw = response.data[0].password;
@@ -122,7 +119,7 @@ async function storeUserDetails(userEmail, userPassword, college) {
     const apiUserDetails = { "user_email": userEmail, "user_password": userPassword, "college": college };
     try {
         await axios.post(
-            usersDetailsApi,
+            baseUserEndpoint,
             apiUserDetails
         );
     } catch (error) {

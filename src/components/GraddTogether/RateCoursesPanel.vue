@@ -28,10 +28,14 @@
 </template>
 
 <script>
-    const axios = require('axios');
-    axios.defaults.headers.post['Content-Type'] = 'application/json';
     import DropdownWrapper from "../Dropdown/DropdownWrapper";
     import StarRating from 'vue-star-rating';
+    import { getLoggedInUserIdFromChromeStorage } from '../../utils/userAuth';
+    import { baseUserRatingEndpoint } from '../../utils/api';
+
+    const axios = require('axios');
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+
     export default {
         name: "RateCoursesPanel",
         components: {
@@ -51,17 +55,6 @@
             }
         },
         methods: {
-            async getLoggedInUserIdFromChromeStorage() {
-                return new Promise((resolve, reject) => {
-                    try {
-                        chrome.storage.sync.get('loggedUserId', function(value) {
-                            resolve(value.loggedUserId);
-                        })
-                    } catch (ex) {
-                        reject(ex);
-                    }
-                });
-            },
             showStars(course_number) {
                 this.toggleShowStars = true;
                 this.currentCourseToRate = course_number;
@@ -69,9 +62,9 @@
                 this.currentCourseToRateHardRating = 0;
             },
             async postRating() {
-                const user_id = await this.getLoggedInUserIdFromChromeStorage();
+                const user_id = await getLoggedInUserIdFromChromeStorage();
                 try {
-                    await axios.post('http://localhost:8080/user_rating/byCourseNumber', 
+                    await axios.post(`${baseUserRatingEndpoint}/byCourseNumber`,
                                     {
                                         user_id: user_id,
                                         course_number: this.currentCourseToRate,

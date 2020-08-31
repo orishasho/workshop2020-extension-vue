@@ -1,8 +1,8 @@
 import '../content/css/friendRequests.css';
-const axios = require('axios');
-const usersFriendsApiUrl = 'http://localhost:8080/user_friend';
-const usersApiUrl = 'http://localhost:8080/user';
+import { baseUserFriendEndpoint, baseUserEndpoint } from '../utils/api';
+import { getLoggedInUserIdFromChromeStorage } from '../utils/userAuth';
 
+const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const backBtn = document.getElementById('go-back');
@@ -17,7 +17,7 @@ async function readFriendRequests(userId) {
     let res = {};
     try {
         const response = await axios.get(
-            `${usersFriendsApiUrl}/friendRequestsByUser`, {
+            `${baseUserFriendEndpoint}/friendRequestsByUser`, {
                 params: {
                     user_id: userId
                 }
@@ -27,18 +27,6 @@ async function readFriendRequests(userId) {
         console.log("Error reading the data . " + e)
     }
     return res;
-}
-
-async function getLoggedInUserIdFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedUserId', function(value) {
-                resolve(value.loggedUserId);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
 }
 
 async function generateFriendRequestsPage() {
@@ -97,7 +85,7 @@ async function handleRequestActionClick(evt) {
     const apiDetails = { "sender": evt.target.sender, "receiver": evt.target.receiver, "status": evt.target.status };
     try {
         await axios.put(
-            `${usersFriendsApiUrl}/setReceivedFriendRequest`,
+            `${baseUserFriendEndpoint}/setReceivedFriendRequest`,
             apiDetails
         );
     } catch (error) {
@@ -111,7 +99,7 @@ function setClickEventsForTabs() {
     const friendRequestTab = document.querySelector("#requests-tabs");
     const searchTab = document.querySelector("#search-tabs");
     friendRequestTab.addEventListener("click", handleFriendRequestTabClick);
-    searchTab.addEventListener("click", handlesearchTabClick);
+    searchTab.addEventListener("click", handleSearchTabClick);
 }
 
 async function handleFriendRequestTabClick(evt) {
@@ -125,7 +113,7 @@ async function handleFriendRequestTabClick(evt) {
     await generateFriendRequestsPage();
 }
 
-async function handlesearchTabClick(evt) {
+async function handleSearchTabClick(evt) {
     const requestsTab = document.querySelector("#requests-tabs");
     requestsTab.classList.remove("active-tab");
     requestsTab.classList.add("tab");
@@ -158,7 +146,7 @@ async function generateSearchPage() {
     container.appendChild(searchContainerDiv);
 }
 
-async function handleFriendSearch(evt) {
+async function handleFriendSearch() {
     const friendToSearch = document.querySelector("input").value;
     const container = document.querySelector("#main-container");
     let userCard = document.getElementsByClassName("friend-request-card")[0];
@@ -222,7 +210,7 @@ async function readFriendToSearchStatus(userId, friendToAdd) {
     let res = {};
     try {
         const response = await axios.get(
-            `${usersFriendsApiUrl}/friendStatusByUser`, {
+            `${baseUserFriendEndpoint}/friendStatusByUser`, {
                 params: {
                     user_id: userId,
                     friend_to_add: friendToAdd
@@ -239,7 +227,7 @@ async function readFriendToSearchDetails(email) {
     let res = {};
     try {
         const response = await axios.get(
-            usersApiUrl, {
+            baseUserEndpoint, {
                 params: {
                     user_email: email
                 }
@@ -255,7 +243,7 @@ async function handleSendFriendRequestClick(evt) {
     const apiDetails = { "sender": evt.target.sender, "receiver": evt.target.receiver };
     try {
         await axios.post(
-            `${usersFriendsApiUrl}/sendFriendRequest`,
+            `${baseUserFriendEndpoint}/sendFriendRequest`,
             apiDetails
         );
         alert("הבקשה נשלחה");

@@ -20,7 +20,7 @@ const config = {
         'login/login': './login/login.js',
         'friendRequestsScreen/friendRequests': './friendRequestsScreen/friendRequests',
         'newProfilePic/newProfilePic': './newProfilePic/newProfilePic',
-        'CoursesSchedulesLoader': './loaders/courses-schedules-loader.js'
+        'CoursesSchedulesLoader': './loaders/coursesSchedulesLoader.js'
     },
     output: {
         path: __dirname + '/dist',

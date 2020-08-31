@@ -1,6 +1,7 @@
 import $ from 'jquery';
+import { baseUserCourseEndpoint } from '../../utils/api';
+import { getLoggedInUserIdFromChromeStorage } from '../../utils/userAuth';
 const axios = require('axios');
-const userCourseApiUrl = 'http://localhost:8080/user_course';
 
 function getColor(colorCode) {
     const backgroundColors = {
@@ -21,7 +22,7 @@ async function readAllStatusesAndGrades(userId) {
     let res = [];
     try {
         const response = await axios.get(
-            `${userCourseApiUrl}/statusAndGrade`, {
+            `${baseUserCourseEndpoint}/statusAndGrade`, {
                 params: {
                     user_id: userId
                 }
@@ -32,19 +33,6 @@ async function readAllStatusesAndGrades(userId) {
         console.log("Error reading the data . " + e)
     }
     return res;
-}
-
-
-async function getLoggedInUserIdFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedUserId', function(value) {
-                resolve(value.loggedUserId);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
 }
 
 export async function handleCoursesTableColoring() {
