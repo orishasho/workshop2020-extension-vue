@@ -4,7 +4,6 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 body {
     direction: rtl;
-    /*background-color: #e1dddc;*/
     background-color: #E1E8EE;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -97,7 +96,6 @@ body {
 .input .input__support {
     border-radius: 0;
     display: block;
-    /*width: 100%;*/
     padding: .5rem .75rem;
     font-size: 1rem;
     line-height: 1.25;

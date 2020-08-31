@@ -51,7 +51,6 @@ async function readUserDetails(email) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
-    console.dir(res);
     return res;
 }
 
@@ -75,8 +74,6 @@ async function uploadImgToImgur(event) {
         const imgurResponse = await axios.post(
             imgurApiUrl,
             requestFormData, { headers: authHeader });
-        // THIS IS THE IMAGE URL:
-        //console.log(imgurResponse.data.data.link);
         const newImgUrl = imgurResponse.data.data.link;
         //Change current img src
         setImg(newImgUrl);
@@ -103,8 +100,7 @@ function setImg(imgUrl) {
 }
 
 async function setPageElements() {
-    //setClickEventsForTabs();
-    generatePage()
+    await generatePage()
 }
 
 addEventListener('DOMContentLoaded', setPageElements);

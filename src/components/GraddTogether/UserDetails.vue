@@ -24,7 +24,6 @@
         },
         created: async function() {
             try {
-                console.log('getting data')
                 const loggedEmail = await this.getLoggedInEmailFromChromeStorage();
                 const response = await axios.get(`http://localhost:8080/user?user_email=${loggedEmail}`);
                 this.userDetails = response.data[0];

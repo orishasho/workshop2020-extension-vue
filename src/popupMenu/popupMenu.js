@@ -45,8 +45,6 @@ function refreshMeidaNet() {
     chrome.tabs.query({ status: 'complete' }, (tabs) => {
         tabs.forEach((tab) => {
             if (tab.url.match(/mtamn\.mta\.ac\.il/) || tab.url.match(/wwwi\.colman\.ac\.il/)) {
-                console.log(tab.url);
-                //chrome.tabs.update(tab.id, { url: tab.url });
                 chrome.tabs.reload(tab.id);
             }
         });
@@ -110,8 +108,6 @@ async function updateFriendRequestsMenuItem() {
     if (userCollege[0].college === "mta") {
         const numberOfFriendRequests = await readNumberOfFriendRequests(user_id);
         if (friendRequestsMenuItem) {
-            //friendRequestsMenuItem.classList.remove("unavilable-feature");
-            //profilePicMenuItem.classList.remove("unavilable-feature");
             const friendRequestsLink = document.querySelector("#friend-requests-a");
             friendRequestsLink.innerHTML = friendRequestsLink.innerHTML + " <b>(" + numberOfFriendRequests + ")</b>";
         }
@@ -119,8 +115,6 @@ async function updateFriendRequestsMenuItem() {
         if (friendRequestsMenuItem) {
             const friendRequestDiv = document.createElement("div");
             const profilePicDiv = document.createElement("div");
-            //friendRequestDiv.classList.add("unavailable-feature-div");
-            //profilePicDiv.classList.add("unavailable-feature-div");
             friendRequestDiv.classList.add("popup-tooltip");
             profilePicDiv.classList.add("popup-tooltip");
             friendRequestsMenuItem.classList.add("unavilable-feature-li");

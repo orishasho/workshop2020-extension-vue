@@ -20,7 +20,7 @@ let isUserNameUpdated = false;
 let loggedInEmail = "";
 chrome.storage.sync.get('loggedEmail', function(data) {
     loggedInEmail = data.loggedEmail;
-    init(loggedInEmail); // All your code is contained here, or executes later that this
+    init(loggedInEmail);
 });
 
 async function init(loggedInEmail) {
@@ -77,10 +77,6 @@ async function init(loggedInEmail) {
         pleaseLoginMessageHeader.setAttribute("style", "color:red");
         pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
         pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
-
-
-        console.log(pleaseLoginMessageLocator[0]);
-
         pleaseLoginMessageLocator[1].appendChild(pleaseLoginMessageDiv);
     }
 }

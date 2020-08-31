@@ -3,7 +3,6 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 body {
     direction: rtl;
-    /*background-color: #e1dddc;*/
     background-color: #E1E8EE;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -31,7 +30,6 @@ h3 {
 /** Layout **/
 
 .container {
-    /*padding: 80px;*/
     box-sizing: border-box;
     display: flex;
     align-items: center;

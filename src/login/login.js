@@ -1,5 +1,4 @@
 import '../content/css/login.css';
-//import { propagateChangeConfirmed } from 'mobx/lib/internal';
 const axios = require('axios');
 const usersDetailsApi = 'http://localhost:8080/user';
 
@@ -49,7 +48,6 @@ loginSubmitBtn.addEventListener('click', async(e) => {
     } else if (response.password !== pwVal) {
         alert("הסיסמה שהוכנסה אינה נכונה");
     } else {
-        console.log("after login, going to save user id: " + response.user_id);
         chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
             alert(emailAddVal + " ברוכ/ה הבא/ה!");
             refreshMeidaNet();
@@ -58,18 +56,7 @@ loginSubmitBtn.addEventListener('click', async(e) => {
     }
 });
 
-/*
-signoutSubmitBtn.addEventListener('click', (e) => {
-    chrome.storage.sync.set({ 'loggedEmail': "", 'loggedUserId': "" }, function() {
-        alert("התנתקת מהתוסף");
-        refreshMeidaNet();
-        window.close();
-    })
-});
-*/
-
 loginBtn.addEventListener('click', (e) => {
-    console.log("isideee");
     let parent = e.target.parentNode.parentNode;
     Array.from(e.target.parentNode.parentNode.classList).find((element) => {
         if (element !== "slide-up") {
@@ -113,25 +100,6 @@ function validatePassword(inputText) {
     }
 }
 
-/*
-async function readUserDetails(emailAddress) {
-    let pw = "";
-    try {
-        const url = "http://localhost:8080/user?user_email=" + emailAddress;
-        const result = await fetch(url);
-
-        const user_details = await result.json();
-        if (user_details[0]) {
-            pw = user_details[0].password;
-        }
-
-    } catch (e) {
-        console.log("Error reading the data . " + e)
-    }
-    return pw;
-}
-*/
-
 async function readUserDetails(emailAddress) {
     let pw = "";
     let userId = "";
@@ -139,8 +107,6 @@ async function readUserDetails(emailAddress) {
         const response = await axios.get(
             usersDetailsApi, { params: { user_email: emailAddress } }
         )
-        console.log("login get response");
-        console.log(response);
         if (response.data[0]) {
             pw = response.data[0].password;
             userId = response.data[0].user_id;
@@ -148,7 +114,6 @@ async function readUserDetails(emailAddress) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
-    console.log("in read user details, pw: " + pw);
     return { user_id: userId, password: pw };
 }
 
@@ -156,14 +121,11 @@ async function readUserDetails(emailAddress) {
 async function storeUserDetails(userEmail, userPassword, college) {
     const apiUserDetails = { "user_email": userEmail, "user_password": userPassword, "college": college };
     try {
-        const response = await axios.post(
+        await axios.post(
             usersDetailsApi,
             apiUserDetails
         );
-        //TODO: handle response properly
-        console.log(response);
     } catch (error) {
-        //TODO: handle errors properly
         console.log(error);
     }
 }
@@ -172,8 +134,6 @@ function refreshMeidaNet() {
     chrome.tabs.query({ status: 'complete' }, (tabs) => {
         tabs.forEach((tab) => {
             if (tab.url.match(/mtamn\.mta\.ac\.il/) || tab.url.match(/wwwi\.colman\.ac\.il/)) {
-                console.log(tab.url);
-                //chrome.tabs.update(tab.id, { url: tab.url });
                 chrome.tabs.reload(tab.id);
             }
         });

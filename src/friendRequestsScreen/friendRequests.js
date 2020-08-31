@@ -26,7 +26,6 @@ async function readFriendRequests(userId) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
-    console.dir(res);
     return res;
 }
 
@@ -97,11 +96,10 @@ async function generateFriendRequestsPage() {
 async function handleRequestActionClick(evt) {
     const apiDetails = { "sender": evt.target.sender, "receiver": evt.target.receiver, "status": evt.target.status };
     try {
-        const response = await axios.put(
+        await axios.put(
             `${usersFriendsApiUrl}/setReceivedFriendRequest`,
             apiDetails
         );
-        console.log(response);
     } catch (error) {
         console.log(error);
     }
@@ -172,7 +170,6 @@ async function handleFriendSearch(evt) {
     userCard.innerHTML = "";
     const user_id = await getLoggedInUserIdFromChromeStorage();
     const friendToAddStatus = await readFriendToSearchStatus(user_id, friendToSearch);
-    console.dir(friendToAddStatus);
     switch (friendToAddStatus[0].res) {
         case "no_user":
             const label_no_user = document.createElement("div");
@@ -235,7 +232,6 @@ async function readFriendToSearchStatus(userId, friendToAdd) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
-    console.dir(res);
     return res;
 }
 
@@ -252,18 +248,16 @@ async function readFriendToSearchDetails(email) {
     } catch (e) {
         console.log("Error reading the data . " + e)
     }
-    console.dir(res);
     return res;
 }
 
 async function handleSendFriendRequestClick(evt) {
     const apiDetails = { "sender": evt.target.sender, "receiver": evt.target.receiver };
     try {
-        const response = await axios.post(
+        await axios.post(
             `${usersFriendsApiUrl}/sendFriendRequest`,
             apiDetails
         );
-        console.log(response);
         alert("הבקשה נשלחה");
         document.querySelector("#search-tabs").click();
     } catch (error) {
