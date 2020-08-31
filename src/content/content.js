@@ -10,11 +10,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMedal, faAngleDown, faCheckSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueEllipseProgress from 'vue-ellipse-progress';
+import { baseUserEndpoint } from '../utils/api';
 
 const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-const userApiUrl = 'http://localhost:8080/user';
-
 let isUserNameUpdated = false;
 
 let loggedInEmail = "";
@@ -115,7 +114,7 @@ function handleSendDataToApiClick(event) {
 
 async function saveUserName(userEmail) {
     const userName = document.querySelector(".loginbar.pull-right").children[2].innerText.trim();
-    await axios.put(`${userApiUrl}/updateUserNameByEmail`, {
+    await axios.put(`${baseUserEndpoint}/updateUserNameByEmail`, {
         user_email: userEmail,
         name: userName
     });

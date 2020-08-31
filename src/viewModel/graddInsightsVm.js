@@ -1,9 +1,9 @@
 import { computed } from 'mobx';
 import { ViewModel, inject } from 'mmlpx';
-import UserCoursesStore from "../store/user-courses-store";
+import UserCoursesStore from "../store/userCoursesStore";
 
 @ViewModel
-export default class DegreeStatusVm {
+export default class graddInsightsVm {
     @inject(UserCoursesStore) userCoursesStore;
 
     isManagementCollege = window.location.href.includes('colman');

@@ -1,22 +1,11 @@
+import { baseUserCourseEndpoint, baseManagementCollegeEndpoint } from '../../utils/api';
+import { getLoggedInUserIdFromChromeStorage } from '../../utils/userAuth';
+
 const HtmlTableToJson = require('html-table-to-json');
-const axios = require('axios');
-const userCourseApiUrl = 'http://localhost:8080/user_course';
-const userCourseApiUrlManagementCollege = 'http://localhost:8080/management_college/user_course';
+const userCourseApiUrlManagementCollege = `${baseManagementCollegeEndpoint}/user_course`;
 const isManagementCollege = window.location.href.includes('colman');
-
+const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-async function getLoggedInUserIdFromChromeStorage() {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get('loggedUserId', function(value) {
-                resolve(value.loggedUserId);
-            })
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
 
 export async function sendUserCoursesDataToApi() {
     const coursesInfoHtmlTable = document.getElementById("myTable0");
@@ -152,7 +141,7 @@ function getActualUserCourseApiUrl() {
     if (isManagementCollege) {
         return userCourseApiUrlManagementCollege;
     } else {
-        return userCourseApiUrl;
+        return baseUserCourseEndpoint;
     }
 }
 

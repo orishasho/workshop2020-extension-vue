@@ -1,6 +1,6 @@
 import {action, observable} from "mobx"
 import {inject, postConstruct, Store} from "mmlpx"
-import UserCoursesLoader from "../loaders/user-courses-loader";
+import UserCoursesLoader from "../loaders/userCoursesLoader";
 
 @Store
 export default class UserCoursesStore {
