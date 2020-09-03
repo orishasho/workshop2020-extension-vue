@@ -74,7 +74,7 @@ async function init(loggedInEmail) {
         let pleaseLoginMessageDiv = document.createElement("div");
         let pleaseLoginMessageHeader = document.createElement("h2");
         pleaseLoginMessageHeader.setAttribute("style", "color:red");
-        pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף, עליך להתחבר";
+        pleaseLoginMessageHeader.innerHTML = "שים לב! על מנת להשתמש בתוסף Gradd, עליך להתחבר";
         pleaseLoginMessageDiv.appendChild(pleaseLoginMessageHeader);
         pleaseLoginMessageLocator[1].appendChild(pleaseLoginMessageDiv);
     }
