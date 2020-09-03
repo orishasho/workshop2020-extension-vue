@@ -9,26 +9,30 @@
     <div v-else>
       <div class="tabs-drafts-container">
 
-        <div class="drafts-dropdown-container">
-          <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
-            בחר טיוטת מערכת...
-            &emsp;
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content" id="myDropdown-drafts"></div>
-        </div>
+        <div class="left-tabs-panel">
 
-        <div class="save-btn-1">
-          <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
-        </div>
+          <div class="drafts-dropdown-container">
+            <button class="dropbtn-drafts" id="coursesDropdownBtn-drafts" v-on:click="openDraftsDropdown()">
+              בחר טיוטת מערכת...
+              &emsp;
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="myDropdown-drafts"></div>
+          </div>
 
-        <div class="save-btn-1">
-          <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
-        </div>
+          <div class="save-btn-1 left-tabs-panel-item">
+            <div class="save-draft-btn disabled" id="overwrite-draft-btn" @click="updateDraft()">שמור</div>
+          </div>
 
-        <div class="save-btn-2">
-          <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
-        </div>
+          <div class="save-btn-1 left-tabs-panel-item">
+            <div class="save-draft-btn disabled" id="finalize-draft-btn" @click="finalizeDraft()">סמן כטיוטה ראשית</div>
+          </div>
+
+          <div class="save-btn-2 left-tabs-panel-item">
+            <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
+          </div>
+
+      </div>
 
         <div class="tab">
           <ul class="tabs">
@@ -1035,6 +1039,15 @@
   .not-available {
     display: flex !important;
     justify-content: center !important;
+  }
+
+  .left-tabs-panel {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .left-tabs-panel-item {
+    margin-right: 5px;
   }
 
 </style> 
