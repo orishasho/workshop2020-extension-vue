@@ -1,5 +1,5 @@
 <template>
-    <img src="https://i.imgur.com/dGRXLm8.png" height="100" width="100">
+    <img src="https://i.imgur.com/dGRXLm8.png" :height="logoHeight" :width="logoWidth">
 </template>
 
 <script>
