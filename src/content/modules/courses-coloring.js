@@ -5,7 +5,7 @@ const axios = require('axios');
 
 function getColor(colorCode) {
     const backgroundColors = {
-        green: "#4fff81",
+        green: "#72c02c",
         red: "#ff7575",
         yellow: "#fff475"
     };

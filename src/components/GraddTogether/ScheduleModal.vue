@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import ScheduleReadOnly from "../ScheduleReadOnly";
+    import ScheduleReadOnly from "../Schedule/ScheduleReadOnly";
     export default {
         name: "ScheduleModal",
         components: {

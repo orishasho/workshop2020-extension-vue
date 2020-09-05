@@ -13,7 +13,7 @@
 
 <script>
     import UserCard from "./UserCard";
-    import ScheduleReadOnly from "../ScheduleReadOnly";
+    import ScheduleReadOnly from "../../Schedule/ScheduleReadOnly";
     export default {
         name: "FriendsPanel",
         components: {
@@ -33,7 +33,7 @@
     .friends-panel-container {
         display: flex;
         flex-direction: column;
-        margin-right: 10% !important;
+        margin-right: 5% !important;
         margin-top: 5%;
 
         h3 {

@@ -9,7 +9,7 @@
 
 <script>
     import GraddInsights from "../GraddInsights/GraddInsights";
-    import Schedule from "../Schedule";
+    import Schedule from "../Schedule/Schedule";
     import GraddTogetherContainer from "../GraddTogether/GraddTogetherContainer";
     export default {
         name: "ExtensionDropdownLink",

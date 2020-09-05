@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Logo from "../Logo";
+    import Logo from "../../Logo";
     import UserDetails from "./UserDetails"
     export default {
         name: "TopPanel",
