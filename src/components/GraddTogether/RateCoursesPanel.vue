@@ -89,7 +89,7 @@
     .dropdown-container {
         display: flex;
         margin-top: 5%;
-        margin-right: 10%;
+        margin-right: 5%;
 
         h4 {
             margin-left: 20px !important;

@@ -32,7 +32,7 @@
             <div class="save-draft-btn" id="saveas-draft-btn" @click="saveDraftAs()">שמור טיוטה בשם...</div>
           </div>
 
-      </div>
+        </div>
 
         <div class="tab">
           <ul class="tabs">
@@ -95,8 +95,8 @@
 
 <script>
   import { MountingPortal} from "portal-vue";
-  import CoursesSchedulesLoader from "../loaders/coursesSchedulesLoader";
-  import UserScheduleDraftsLoader from "../loaders/userScheduleDraftsLoader";
+  import CoursesSchedulesLoader from "../../loaders/coursesSchedulesLoader";
+  import UserScheduleDraftsLoader from "../../loaders/userScheduleDraftsLoader";
   import _ from "lodash";
   export default {
     name: "Schedule",
@@ -132,62 +132,56 @@
     },
     mounted:  function () {
       this.$nextTick(() => {
-            this.coursesSchedulesLoader = new CoursesSchedulesLoader();
-            this.draftsLoader = new UserScheduleDraftsLoader();
-            this.createClickEventsForSemesterButtons();
-            this.generateTableCells();
-            this.fillCoursesDropdown();
-            this.fillDraftsDropdown();
-          });
+        this.coursesSchedulesLoader = new CoursesSchedulesLoader();
+        this.draftsLoader = new UserScheduleDraftsLoader();
+        this.createClickEventsForSemesterButtons();
+        this.generateTableCells();
+        this.fillCoursesDropdown();
+        this.fillDraftsDropdown();
+      });
     },
-
     created:  async function () {
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-              if (!e.target.matches('.dropbtn')) {
-                let myDropdown = document.getElementById("myDropdown");
-                if (myDropdown.classList.contains('show')) {
-                  myDropdown.classList.remove('show');
-                }
-              }
-              if (!e.target.matches('.dropbtn-drafts')) {
-                let myDropdown = document.getElementById("myDropdown-drafts");
-                if (myDropdown.classList.contains('show')) {
-                  myDropdown.classList.remove('show');
-                }
-              }
-            }
-      },
-
-
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function (e) {
+        if (!e.target.matches('.dropbtn')) {
+          let myDropdown = document.getElementById("myDropdown");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
+        }
+        if (!e.target.matches('.dropbtn-drafts')) {
+          let myDropdown = document.getElementById("myDropdown-drafts");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
+        }
+      }
+    },
     methods: {
       isInManagementCollege() {
         return window.location.href.includes('colman');
       },
-
       fillCoursesDropdown() {
         this.coursesSchedulesLoader
-        .getPossibleCourses(this.currentSemester)
-        .then(possibleCourses => {
-          possibleCourses.forEach(course => this.addCourseToDropdown(course));
-          return possibleCourses;
-        })
-        .then(async possibleCourses => {
-          const possibleCoursesNumbers = possibleCourses.map(possibleCourse => possibleCourse.course_number_res);
-          this.coursesSchedules = await this.coursesSchedulesLoader.getCoursesSchedules(possibleCoursesNumbers, this.currentSemester);
-        })
+                .getPossibleCourses(this.currentSemester)
+                .then(possibleCourses => {
+                  possibleCourses.forEach(course => this.addCourseToDropdown(course));
+                  return possibleCourses;
+                })
+                .then(async possibleCourses => {
+                  const possibleCoursesNumbers = possibleCourses.map(possibleCourse => possibleCourse.course_number_res);
+                  this.coursesSchedules = await this.coursesSchedulesLoader.getCoursesSchedules(possibleCoursesNumbers, this.currentSemester);
+                })
       },
-
       fillDraftsDropdown() {
         this.draftsLoader.getUserScheduleDraftNames()
-        .then(draftNamesArray => {
-          draftNamesArray.forEach(draftName => {
-            this.addDraftToDropdown(draftName);
-            this.allUserDraftNames.push(draftName.draft_name);
-            });
-        });
+                .then(draftNamesArray => {
+                  draftNamesArray.forEach(draftName => {
+                    this.addDraftToDropdown(draftName);
+                    this.allUserDraftNames.push(draftName.draft_name);
+                  });
+                });
       },
-
       createCourseTableItem(evt) {
         let course = evt.target.courseParam;
         let courseTitle = course.course_name;
@@ -224,29 +218,28 @@
 
           this.placeCourseInTable(divItem, course);
 
-           if (evt.target.parentNode) {
-                const evtTargetContainer = evt.target.parentNode;
+          if (evt.target.parentNode) {
+            const evtTargetContainer = evt.target.parentNode;
 
-                evt.target.parentNode.removeChild(evt.target);
+            evt.target.parentNode.removeChild(evt.target);
 
-                const evtTargetContainerChildren = evtTargetContainer.children;
+            const evtTargetContainerChildren = evtTargetContainer.children;
 
-                
-                if (course.type === "lecture") {
-                    for (let i = 0; i < evtTargetContainerChildren.length; i++) {
-                        if (evtTargetContainerChildren[i].className === "courseDetails" && 
-                            evtTargetContainerChildren[i].courseParam.type === "lecture") {
-                            evtTargetContainerChildren[i].click();
-                        }
-                    }
-                  if (this.needToRemoveOverlaps === 1) {
-                    this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
-                  }
+
+            if (course.type === "lecture") {
+              for (let i = 0; i < evtTargetContainerChildren.length; i++) {
+                if (evtTargetContainerChildren[i].className === "courseDetails" &&
+                        evtTargetContainerChildren[i].courseParam.type === "lecture") {
+                  evtTargetContainerChildren[i].click();
                 }
-          } 
+              }
+              if (this.needToRemoveOverlaps === 1) {
+                this.removeLecturesFromSchedule(course.course_number, course.course_group, course.type);
+              }
+            }
+          }
         }
       },
-
       removeCourseFromTimeTable(evt) {
         const course = evt.target.courseDetails;
         const course_number = course.course_number;
@@ -262,27 +255,23 @@
 
         this.removeLecturesFromSchedule(course_number, course_group, type);
       },
-
       removeLecturesFromSchedule(course_number, course_group, type) {
         let currentDivsInTable = document.getElementsByClassName("courseTableDiv");
         if (type === "lecture") {
           for (let i = 0; i < currentDivsInTable.length; i++) {
             let divItem = currentDivsInTable[i];
             if (divItem.courseDetails.course_number === course_number && divItem.courseDetails.course_group === course_group &&
-                divItem.courseDetails.type === "lecture") {
-                    divItem.click();
-                }
+                    divItem.courseDetails.type === "lecture") {
+              divItem.click();
+            }
           }
         }
       },
-
       placeCourseInTable(divItem, course) {
         let courseDay = course.day;
         let courseTimesSplit = (course.start_time.replace(":",".")).split(".");
         let courseStartH = courseTimesSplit[0];
         let courseStartM = courseTimesSplit[1];
-
-
 
         if (parseInt(courseStartM) >= 30) {
           courseStartM = "30";
@@ -299,14 +288,12 @@
           }
         }
       },
-
       createClickEventsForSemesterButtons() {
         const allSemestersButtons = document.querySelectorAll('[id^="semester"]');
         for (let i = 0; i < allSemestersButtons.length; i++) {
           allSemestersButtons[i].addEventListener("click", this.semesterButtonOnClick);
         }
       },
-
       semesterButtonOnClick(evt) {
         if (evt.target.parentNode.id.slice(-1) === this.currentSemester) { return; }
         const allSemestersButtons = document.querySelectorAll('[id^="semester"]');
@@ -319,21 +306,18 @@
         this.fillCoursesDropdown();
         this.loadCurrentSemesterDraft();
       },
-
       handleSemesterSwitch() {
-          document.getElementById("myDropdown").innerHTML = "";
-          document.getElementById("courses-details").innerHTML = "";    //empty course containers
-          document.getElementById("coursesDropdownBtn").innerHTML = "אנא בחר קורס...&emsp;<i class=\"fa fa-caret-down\"></i>";
-          this.saveCurrentSemesterCoursesToMap(true);
+        document.getElementById("myDropdown").innerHTML = "";
+        document.getElementById("courses-details").innerHTML = "";    //empty course containers
+        document.getElementById("coursesDropdownBtn").innerHTML = "אנא בחר קורס...&emsp;<i class=\"fa fa-caret-down\"></i>";
+        this.saveCurrentSemesterCoursesToMap(true);
       },
-
       loadCurrentSemesterDraft() {
         this.draftBySemesterMap[this.currentSemester].forEach (courseToPlaceInTable => {
-            const fakeCoursePlacementButton = this.generateCoursePlacementButton(courseToPlaceInTable);
-            fakeCoursePlacementButton.click();
+          const fakeCoursePlacementButton = this.generateCoursePlacementButton(courseToPlaceInTable);
+          fakeCoursePlacementButton.click();
         });
       },
-
       isCourseOverlap(courseToCheck) {
         const courseDay = courseToCheck.day;
         const courseStartHour = courseToCheck.start_time.replace(":",".");
@@ -367,7 +351,6 @@
         this.needToRemoveOverlaps = 0;
         return false;
       },
-
       generateTableCells() {
         const body = this.$refs.mytbody;
         for (let i = 8; i <= 20; i++) {
@@ -399,7 +382,6 @@
           }
         }
       },
-
       generateCoursePlacementButton(course) {
         let divItem = document.createElement("button");
         divItem.setAttribute("class", "courseDetails")
@@ -409,7 +391,6 @@
 
         return divItem;
       },
-
       generateCourseDiv(course_number, course_name) {
         const filteredCoursesSchedules = this.coursesSchedules.filter(courseSchedule => courseSchedule.course_number === course_number);
         const filteredCoursesSchedulesGrouped = _.groupBy(filteredCoursesSchedules, courseSchedule => courseSchedule.course_group);
@@ -419,20 +400,19 @@
           let courseGroupContainer = this.generateCourseGroupContainer(course_name + " " + courseGroupName);
           place.appendChild(courseGroupContainer);
           courseGroupClasses.forEach(courseGroupClass => {
-              let divItem = this.generateCoursePlacementButton(courseGroupClass);
+            let divItem = this.generateCoursePlacementButton(courseGroupClass);
 
-              if (this.isCourseAlreadyInTable(divItem.courseParam)) {
-                  divItem.style.visibility = "hidden";
-              }
+            if (this.isCourseAlreadyInTable(divItem.courseParam)) {
+              divItem.style.visibility = "hidden";
+            }
 
 
-              if (!this.isCourseAlreadyInTable(divItem.courseParam)) {
-                  courseGroupContainer.appendChild(divItem);
-              }
+            if (!this.isCourseAlreadyInTable(divItem.courseParam)) {
+              courseGroupContainer.appendChild(divItem);
+            }
           });
         });
       },
-
       generateCourseGroupContainer(courseGroupName) {
         let coursesGroupsDiv = document.createElement("div");
         coursesGroupsDiv.setAttribute("class", "courseDetailsContainer");
@@ -440,29 +420,26 @@
         coursesGroupsDiv.innerHTML = "<h1><span>" + courseGroupName + "</span></h1>";
         return coursesGroupsDiv;
       },
-
       isCourseAlreadyInTable(course) {
         let currentCoursesInTable = document.getElementsByClassName("courseTableDiv");
         for (let i = 0; i < currentCoursesInTable.length; i++) {
           let courseInTable = currentCoursesInTable[i];
-          if (_.isEqual(course, courseInTable.courseDetails)) { 
+          if (_.isEqual(course, courseInTable.courseDetails)) {
             return true;
           }
         }
         return false;
       },
-
       addCourseToDropdown(course) {
         const dropdown = document.getElementById('myDropdown');
         let newCourseInDropdown = document.createElement("a");
         newCourseInDropdown.setAttribute("href", "#");
         newCourseInDropdown.innerText = course.course_name_res;
-        newCourseInDropdown.course_name= course.course_name_res;  
-        newCourseInDropdown.course_number = course.course_number_res;  
+        newCourseInDropdown.course_name= course.course_name_res;
+        newCourseInDropdown.course_number = course.course_number_res;
         newCourseInDropdown.addEventListener("click", this.courseDropDownOnClick);
         dropdown.appendChild(newCourseInDropdown);
       },
-
       addDraftToDropdown(scheduleDraft) {
         const dropdown = document.getElementById('myDropdown-drafts');
         let newDraftInDropdown = document.createElement("a");
@@ -476,24 +453,22 @@
         newDraftInDropdown.addEventListener("click", this.draftDropDownOnClick);
         dropdown.appendChild(newDraftInDropdown);
       },
-
       courseDropDownOnClick(evt) {
         const dropdownBtn = document.getElementById("coursesDropdownBtn");
         dropdownBtn.innerHTML = evt.target.innerText + "&emsp;" + "<i class=\"fa fa-caret-down\"></i>";
         document.getElementById("courses-details").style.visibility = "visible";
         document.getElementById("courses-details").innerHTML = "";
-        this.generateCourseDiv(evt.target.course_number, evt.target.course_name);     
+        this.generateCourseDiv(evt.target.course_number, evt.target.course_name);
       },
-
       async draftDropDownOnClick(evt) {
         const dropdownBtn = document.getElementById("coursesDropdownBtn-drafts");
         let draftName = evt.target.innerText;
         dropdownBtn.innerHTML = draftName + "&emsp;" + "<i class=\"fa fa-caret-down\"></i>";
         if (this.currentDraftName === "") {
-            const overwriteDraftBtn = document.getElementById("overwrite-draft-btn");
-            overwriteDraftBtn.classList.remove("disabled");
-            const finalizeDraftBtn = document.getElementById("finalize-draft-btn");
-            finalizeDraftBtn.classList.remove("disabled");
+          const overwriteDraftBtn = document.getElementById("overwrite-draft-btn");
+          overwriteDraftBtn.classList.remove("disabled");
+          const finalizeDraftBtn = document.getElementById("finalize-draft-btn");
+          finalizeDraftBtn.classList.remove("disabled");
         }
         if (draftName.includes(" (טיוטה ראשית)")) {
           draftName = draftName.slice(0, draftName.length - " (טיוטה ראשית)".length + 1);
@@ -504,15 +479,12 @@
         this.draftBySemesterMap = await this.draftsLoader.getUserScheduleDraftByName(draftName);
         this.loadCurrentSemesterDraft();
       },
-
       myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
       },
-
       openDraftsDropdown() {
         document.getElementById("myDropdown-drafts").classList.toggle("show");
       },
-
       async saveDraftAs() {
         const draftName = window.prompt("אנא בחר שם לטיוטת המערכת");
         if (!draftName || draftName.length === 0) {
@@ -528,32 +500,28 @@
           this.fillDraftsDropdown();
         }
       },
-
       async updateDraft() {
-          this.saveCurrentSemesterCoursesToMap(false);
-          await this.draftsLoader.updateDraft(this.currentDraftName, this.draftBySemesterMap);
-          alert("הטיוטה נשמרה בהצלחה"); 
+        this.saveCurrentSemesterCoursesToMap(false);
+        await this.draftsLoader.updateDraft(this.currentDraftName, this.draftBySemesterMap);
+        alert("הטיוטה נשמרה בהצלחה");
       },
-
       async finalizeDraft() {
-          await this.draftsLoader.finalizeDraft(this.currentDraftName);
-          alert("הטיוטה סומנה כראשית"); 
-          document.getElementById("myDropdown-drafts").innerHTML = "";
-          document.getElementById("coursesDropdownBtn-drafts").innerHTML = "בחר  טיוטת מערכת...&emsp;<i class=\"fa fa-caret-down\"></i>";
-          this.fillDraftsDropdown();
+        await this.draftsLoader.finalizeDraft(this.currentDraftName);
+        alert("הטיוטה סומנה כראשית");
+        document.getElementById("myDropdown-drafts").innerHTML = "";
+        document.getElementById("coursesDropdownBtn-drafts").innerHTML = "בחר  טיוטת מערכת...&emsp;<i class=\"fa fa-caret-down\"></i>";
+        this.fillDraftsDropdown();
       },
-
       saveCurrentSemesterCoursesToMap(removeFromTable) {
         const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
-          this.draftBySemesterMap[this.currentSemester] = [];
-          for (let i = 0; i < currentCoursesInTable.length; i++) {
-            this.draftBySemesterMap[this.currentSemester].push(currentCoursesInTable[i].courseDetails);
-            if(removeFromTable) {
-                currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
-            }
+        this.draftBySemesterMap[this.currentSemester] = [];
+        for (let i = 0; i < currentCoursesInTable.length; i++) {
+          this.draftBySemesterMap[this.currentSemester].push(currentCoursesInTable[i].courseDetails);
+          if(removeFromTable) {
+            currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
           }
+        }
       },
-
       clearSchedule() {
         this.draftBySemesterMap = {1:[], 2:[], 3:[]};
         document.getElementById("myDropdown").innerHTML = "";
@@ -563,14 +531,11 @@
         const currentCoursesInTable = document.querySelectorAll(".courseTableDiv");
         for (let i = 0; i < currentCoursesInTable.length; i++) {
           currentCoursesInTable[i].parentNode.removeChild(currentCoursesInTable[i]);
+        }
       }
-     }
     }
   }
-
 </script>
-
-
 
 <style lang="scss">
   .scheduleContainer  {
@@ -590,7 +555,7 @@
     position: relative !important;
   }
 
-    .scheduleContainer  th {
+  .scheduleContainer  th {
     text-align: center !important;
   }
 
@@ -692,7 +657,7 @@
     font-weight: bold !important;
   }
 
-    .scheduleContainer  .dropbtn{
+  .scheduleContainer  .dropbtn{
     cursor: pointer !important;
     font-size: 16px !important;
     border: none !important;
@@ -825,27 +790,27 @@
   }
 
   .scheduleContainer  .courseDetails {
-	  box-shadow:inset 0px 1px 0px 0px #91b8b3 !important;
-	  background:linear-gradient(to bottom, #85b8aa 5%, #6c7c7c 100%) !important;
-	  background-color:#85b8aa !important;
-	  border-radius:6px !important;
-	  border:1px solid #566963 !important;
-	  display:inline-block !important;
-	  cursor:pointer !important;
-	  color:#ffffff !important;
-	  font-family:Arial !important;
-	  font-size:15px !important;
-	  font-weight:bold !important;
-	  padding:6px 24px !important;
-	  text-decoration:none !important;
-	  text-shadow:0px 1px 0px #2b665e !important;
+    box-shadow:inset 0px 1px 0px 0px #91b8b3 !important;
+    background:linear-gradient(to bottom, #85b8aa 5%, #6c7c7c 100%) !important;
+    background-color:#85b8aa !important;
+    border-radius:6px !important;
+    border:1px solid #566963 !important;
+    display:inline-block !important;
+    cursor:pointer !important;
+    color:#ffffff !important;
+    font-family:Arial !important;
+    font-size:15px !important;
+    font-weight:bold !important;
+    padding:6px 24px !important;
+    text-decoration:none !important;
+    text-shadow:0px 1px 0px #2b665e !important;
     margin-bottom: 10px !important;
     line-height: 100% !important;
   }
 
   .scheduleContainer  .courseDetails:hover {
-	  background:linear-gradient(to bottom, #6c7c7c 5%, #85b8aa 100%) !important;
-	  background-color:#6c7c7c !important;
+    background:linear-gradient(to bottom, #6c7c7c 5%, #85b8aa 100%) !important;
+    background-color:#6c7c7c !important;
   }
 
   .scheduleContainer  .courseDetails:active {
@@ -875,7 +840,7 @@
     background-color: white !important;
   }
 
-  
+
 
   @media (max-width: 60em) {
     table thead tr th .long {
@@ -891,7 +856,7 @@
     }
   }
 
-    @media (max-width: 27em) {
+  @media (max-width: 27em) {
     table thead tr th {
       font-size: 65% !important;
     }
@@ -919,122 +884,122 @@
   }
 
   .tab {
-	margin-bottom: 20px !important;
-	position: relative !important;
-	overflow: hidden !important;
-	background: #fff !important;
-	font-family: "Arial" !important;
-	line-height: 1.5 !important;
-	font-weight: 300 !important;
-	color: #888 !important;
-	-webkit-font-smoothing: antialiased !important;
-  direction: rtl !important;
-  text-align:center !important;
-  margin-left: 250px;
-}
+    margin-bottom: 20px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    font-family: "Arial" !important;
+    line-height: 1.5 !important;
+    font-weight: 300 !important;
+    color: #888 !important;
+    -webkit-font-smoothing: antialiased !important;
+    direction: rtl !important;
+    text-align:center !important;
+    margin-left: 250px;
+  }
 
-.tabs {
-	overflow: hidden !important;
-	margin: 0 !important;
-	width: 100% !important;
+  .tabs {
+    overflow: hidden !important;
+    margin: 0 !important;
+    width: 100% !important;
     direction: rtl !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
 
-	li {
-		float: left !important;
-		line-height: 38px !important;
-		overflow: hidden !important;
-		padding: 0 !important;
-		position: relative !important;
-	}
+    li {
+      float: left !important;
+      line-height: 38px !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      position: relative !important;
+    }
 
-	a {
-		background-color: #eff0f2 !important;
-		border-bottom: 1px solid #fff !important;
-		color: #888 !important;
-		font-weight: 500 !important;
-		display: block !important;
-		letter-spacing: 0 !important;
-		outline: none !important;
-		padding: 0 20px !important;
-		text-decoration: none !important;
-		-webkit-transition: all 0.2s ease-in-out !important;
-		-moz-transition: all 0.2s ease-in-out !important;
-		transition: all 0.2s ease-in-out !important;
-		border-bottom: 2px solid #67b897 !important;
-	}
-}
+    a {
+      background-color: #eff0f2 !important;
+      border-bottom: 1px solid #fff !important;
+      color: #888 !important;
+      font-weight: 500 !important;
+      display: block !important;
+      letter-spacing: 0 !important;
+      outline: none !important;
+      padding: 0 20px !important;
+      text-decoration: none !important;
+      -webkit-transition: all 0.2s ease-in-out !important;
+      -moz-transition: all 0.2s ease-in-out !important;
+      transition: all 0.2s ease-in-out !important;
+      border-bottom: 2px solid #67b897 !important;
+    }
+  }
 
-.current a{
-	color: #fff !important;
-	background: #67b897 !important;
-}
+  .current a{
+    color: #fff !important;
+    background: #67b897 !important;
+  }
 
-.top-left-container{
-  display: flex;
-}
+  .top-left-container{
+    display: flex;
+  }
 
-.tabs-drafts-container {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: space-between;
-}
+  .tabs-drafts-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+  }
 
-.save-btn-1 {
-  margin-right: 10px;
-}
+  .save-btn-1 {
+    margin-right: 10px;
+  }
 
-.save-btn-2 {
-  margin-right: 10px;
-}
+  .save-btn-2 {
+    margin-right: 10px;
+  }
 
-.reset-layout-btn-cls {
-  background-color:gray;
-	border-radius:28px !important;
-	display:inline-block !important;
-	cursor:pointer !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration:rtl !important;
-}
+  .reset-layout-btn-cls {
+    background-color:gray;
+    border-radius:28px !important;
+    display:inline-block !important;
+    cursor:pointer !important;
+    color:#ffffff !important;
+    font-family:Arial !important;
+    font-size:17px !important;
+    padding:0.4em 1em !important;
+    text-decoration:rtl !important;
+  }
 
-.reset-layout-btn-cls:hover {
-  background-color:#696969 !important;
-	border-radius:28px !important;
-	display:inline-block !important;
-	cursor:pointer !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration:rtl !important;
-}
+  .reset-layout-btn-cls:hover {
+    background-color:#696969 !important;
+    border-radius:28px !important;
+    display:inline-block !important;
+    cursor:pointer !important;
+    color:#ffffff !important;
+    font-family:Arial !important;
+    font-size:17px !important;
+    padding:0.4em 1em !important;
+    text-decoration:rtl !important;
+  }
 
-.save-draft-btn {
-	background-color:#67b897 !important;
-	border-radius:28px !important;
-	display:inline-block !important;
-	cursor:pointer !important;
-	color:#ffffff !important;
-	font-family:Arial !important;
-	font-size:17px !important;
-	padding:0.4em 1em !important;
-	text-decoration:rtl !important;
-	text-shadow:0px 1px 0px #2f6627 !important;
+  .save-draft-btn {
+    background-color:#67b897 !important;
+    border-radius:28px !important;
+    display:inline-block !important;
+    cursor:pointer !important;
+    color:#ffffff !important;
+    font-family:Arial !important;
+    font-size:17px !important;
+    padding:0.4em 1em !important;
+    text-decoration:rtl !important;
+    text-shadow:0px 1px 0px #2f6627 !important;
 
 
-}
-.save-draft-btn:hover {
-	background-color:#49856c !important;
-}
+  }
+  .save-draft-btn:hover {
+    background-color:#49856c !important;
+  }
 
-.save-draft-btn.disabled {
-  visibility: hidden !important;
-}
+  .save-draft-btn.disabled {
+    visibility: hidden !important;
+  }
 
   .not-available {
     display: flex !important;

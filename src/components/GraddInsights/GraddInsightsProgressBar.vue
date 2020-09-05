@@ -2,6 +2,9 @@
     <vue-ellipse-progress
             :progress="(creditsCompleted/requiredCredits) * 100"
             :legend-value="creditsCompleted"
+            lineMode="in 5"
+            :thickness="5"
+            :empty-thickness="3"
             color="#007090">
 
         <span slot="legend-value">/{{ requiredCredits }}</span>

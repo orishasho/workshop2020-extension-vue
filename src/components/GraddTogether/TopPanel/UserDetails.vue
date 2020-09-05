@@ -13,8 +13,8 @@
 </template>
 
 <script>
-    import { getLoggedInEmailFromChromeStorage } from '../../utils/userAuth';
-    import { baseUserEndpoint } from '../../utils/api';
+    import { getLoggedInEmailFromChromeStorage } from '../../../utils/userAuth';
+    import { baseUserEndpoint } from '../../../utils/api';
     const axios = require('axios');
     export default {
         name: "UserDetails",

@@ -1,27 +1,19 @@
 <template>
     <MountingPortal mountTo="#main-content-container-id" name="source" append>
-
         <div v-if="isInManagementCollege()" class="not-available">
             <h1>אפשרות זו אינה זמינה עדיין באתר המכללה למנהל</h1>
         </div>
-
         <div v-else>
-
             <div class="spinner-container" v-if="isLoading">
-                <pulse-loader :loading="isLoading"></pulse-loader>
+                <pulse-loader :loading="isLoading" color="#007090"></pulse-loader>
             </div>
 
             <div class="main-container" v-if="!isLoading">
                 <TopPanel/>
-                <GenericRatingPanel
-                        :heading="'הקורסים הפופולריים ביותר:'"
-                        :places="popularCourses"/>
-                <GenericRatingPanel
-                        :heading="'הקורסים המעניינים ביותר:'"
-                        :places="interestingCourses"/>
-                <GenericRatingPanel
-                        :heading="'הקורסים הקשים ביותר:'"
-                        :places="hardCourses"/>
+                <StatisticsSection
+                        :popularCourses="popularCourses"
+                        :interestingCourses="interestingCourses"
+                        :hardCourses="hardCourses"/>
                 <RateCoursesPanel
                         :userCoursesToRate="userCoursesToRate"/>
                 <FriendsPanel
@@ -33,18 +25,16 @@
                         :draft="modalSchedule"
                         @close-modal="closeScheduleModal"/>
             </div>
-
         </div>
-
     </MountingPortal>
 </template>
 
 <script>
     import { MountingPortal} from "portal-vue";
-    import TopPanel from "./TopPanel";
-    import GenericRatingPanel from "./GenericRatingPanel";
+    import TopPanel from "./TopPanel/TopPanel";
+    import StatisticsSection from "./StatisticsSection/StatisticsSection";
     import RateCoursesPanel from "./RateCoursesPanel";
-    import FriendsPanel from "./FriendsPanel";
+    import FriendsPanel from "./FriendsPanel/FriendsPanel";
     import ScheduleModal from "./ScheduleModal";
     import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
     import { getLoggedInUserIdFromChromeStorage } from '../../utils/userAuth';
@@ -56,12 +46,12 @@
         name: "GraddTogetherContainer",
         components: {
             TopPanel,
-            GenericRatingPanel,
+            StatisticsSection,
             RateCoursesPanel,
             FriendsPanel,
             MountingPortal,
             ScheduleModal,
-            PulseLoader
+            PulseLoader,
         },
         data: function() {
             return {
