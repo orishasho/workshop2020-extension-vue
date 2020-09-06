@@ -1,5 +1,6 @@
 import '../content/css/login.css';
 import { baseUserEndpoint } from '../utils/api';
+import { createToast } from '../utils/notifications';
 
 const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -22,14 +23,13 @@ signupSubmitBtn.addEventListener('click', async(e) => {
     if (validateEmail(emailAddVal) && validatePassword(pwVal)) {
         let response = await readUserDetails(emailAddVal);
         if (response.password !== "") { //user exists already
-            alert("המשתמש כבר קיים במערכת");
+            showNotification("המשתמש כבר קיים במערכת", "error");
         } else {
             await storeUserDetails(emailAddVal, pwVal, college);
             let response = await readUserDetails(emailAddVal);
             chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
-                alert("הרשמה בוצעה הצלחה");
-                refreshMeidaNet();
-                window.close();
+                showNotification("הרשמה בוצעה הצלחה", "notification");
+                setTimeout(windowClose, 3000);
             })
         }
     }
@@ -41,14 +41,14 @@ loginSubmitBtn.addEventListener('click', async(e) => {
     let response = await readUserDetails(emailAddVal);
 
     if (response.password === "") {
-        alert("כתובת המייל שהוכנסה אינה קיימת במערכת");
+        showNotification("כתובת המייל שהוכנסה אינה קיימת במערכת", "error");
     } else if (response.password !== pwVal) {
-        alert("הסיסמה שהוכנסה אינה נכונה");
+        showNotification("הסיסמה שהוכנסה אינה נכונה", "error");
     } else {
         chrome.storage.sync.set({ 'loggedEmail': emailAddVal, 'loggedUserId': response.user_id }, function() {
-            alert(emailAddVal + " ברוכ/ה הבא/ה!");
-            refreshMeidaNet();
-            window.close();
+            const text = emailAddVal + " ברוכ/ה הבא/ה!";
+            showNotification(text, "notification");
+            setTimeout(windowClose, 3000);
         })
     }
 });
@@ -82,7 +82,7 @@ function validateEmail(inputText) {
     if (inputText.match(mailformat)) {
         return true;
     } else {
-        alert("כתובת הדואר האלקטרוני שהוכנסה אינה תקינה")
+        showNotification("כתובת הדואר האלקטרוני שהוכנסה אינה תקינה", "error");
         return false;
     }
 }
@@ -92,7 +92,7 @@ function validatePassword(inputText) {
     if (inputText.match(pwformat)) {
         return true;
     } else {
-        alert("הסיסמה חייבת להכיל 7-15 תווים")
+        showNotification("הסיסמה חייבת להכיל 7-15 תווים", "error");
         return false;
     }
 }
@@ -135,4 +135,15 @@ function refreshMeidaNet() {
             }
         });
     });
+}
+
+function showNotification(text, typeOfNotification) {
+    const toast = createToast(text, typeOfNotification);
+    const appendLocation = document.getElementById("form-structue-id");
+    appendLocation.prepend(toast);
+}
+
+function windowClose() {
+    refreshMeidaNet();
+    window.close();
 }
