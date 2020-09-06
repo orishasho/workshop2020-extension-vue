@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans");
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap');
+@import "./toast.css";
 html,
 body {
     direction: rtl;
@@ -38,7 +39,7 @@ button {
     background-repeat: no-repeat;
     background-position: left bottom;
     background-size: 500px;
-    background-image: url("https://images.unsplash.com/photo-1587613863965-74d82b39ef79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=100");
+    background-image: url("https://i.imgur.com/RR1vqjN.jpg");
 }
 
 .form-structor .signup {

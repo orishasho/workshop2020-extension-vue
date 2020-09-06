@@ -1014,5 +1014,4 @@
   .left-tabs-panel-item {
     margin-right: 5px;
   }
-
 </style> 

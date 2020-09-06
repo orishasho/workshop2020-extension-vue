@@ -1,6 +1,7 @@
 import '../content/css/friendRequests.css';
 import { baseUserFriendEndpoint, baseUserEndpoint } from '../utils/api';
 import { getLoggedInUserIdFromChromeStorage } from '../utils/userAuth';
+import { createToast } from '../utils/notifications';
 
 const axios = require('axios');
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -246,8 +247,8 @@ async function handleSendFriendRequestClick(evt) {
             `${baseUserFriendEndpoint}/sendFriendRequest`,
             apiDetails
         );
-        alert("הבקשה נשלחה");
-        document.querySelector("#search-tabs").click();
+        showNotification("הבקשה נשלחה", "notification");
+        setTimeout(clickSearchTabs, 3000);
     } catch (error) {
         console.log(error);
     }
@@ -256,6 +257,16 @@ async function handleSendFriendRequestClick(evt) {
 async function setPageElements() {
     setClickEventsForTabs();
     generateFriendRequestsPage();
+}
+
+function clickSearchTabs() {
+    document.querySelector("#search-tabs").click();
+}
+
+function showNotification(text, typeOfNotification) {
+    const toast = createToast(text, typeOfNotification);
+    const appendLocation = document.getElementById("body-id");
+    appendLocation.prepend(toast);
 }
 
 addEventListener('DOMContentLoaded', setPageElements);
