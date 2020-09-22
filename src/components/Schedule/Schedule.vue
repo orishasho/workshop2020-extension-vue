@@ -667,7 +667,7 @@
     font-family: Arial, Helvetica, sans-serif !important;
     margin-right: 20px !important;
     margin-top: 20px !important;
-    background: #9bdecb !important;
+    background: #67b897 !important;
     color: #fff !important;
     font-weight: bold !important;
   }
